@@ -1,39 +1,39 @@
-import {NextResponse} from 'next/server' // Import NextResponse from Next.js for handling responses
+import { NextResponse } from "next/server"; // Import NextResponse from Next.js for handling responses
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function POST(request) {
-    try {
-      const body = await request.json(); // Parse the JSON body
-      const { prompt } = body;
-  
-      if (!prompt) {
-        return NextResponse.json(
-          { error: 'Prompt is required' },
-          { status: 400 } // Bad Request
-        );
-      }
-        const result = await model.generateContent(prompt);
-		// console.log(result.response.text());
+  try {
+    const body = await request.json(); // Parse the JSON body
+    const { prompt } = body;
 
-        return NextResponse.json(result.response.text());
-    } catch (error) {
-      console.error('Error in API route:', error);
+    if (!prompt) {
       return NextResponse.json(
-        { error: 'Internal Server Error' },
-        { status: 500 } // Internal Server Error
+        { error: "Prompt is required" },
+        { status: 400 } // Bad Request
       );
     }
+    const result = await model.generateContent(prompt);
+    // console.log(result.response.text());
+
+    return NextResponse.json(result.response.text());
+  } catch (error) {
+    console.error("Error in API route:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 } // Internal Server Error
+    );
+  }
 }
 // export async function POST(request) {
 //     const apiKey = process.env.GEMINI_API_KEY; // Securely accessed on the server
-    
+
 //     if (!apiKey) {
 //       return NextResponse.json({ error: 'API key not found.' }, { status: 500 });
 //     }
-  
+
 //     // // Example of making a request to the Gemini API
 //     // const res = await fetch('https://gemini-api.example.com', {
 //     //   method: 'POST',
@@ -43,20 +43,13 @@ export async function POST(request) {
 //     //   },
 //     //   body: JSON.stringify(await request.json()), // Pass client data
 //     // });
-  
+
 //     const data = await res.json();
 //     return NextResponse.json(data);
 //   }
 
-
-
-
-
-
-
 // import GeminiAPI from 'gemini-api'
 // // System prompt for the AI, providing guidelines on how to respond to users
-
 
 // // POST function to handle incoming requests
 // export async function POST(req) {
@@ -65,9 +58,9 @@ export async function POST(request) {
 //         secret: process.env.GEMINI_API_SECRET, // Your Gemini API secret
 //         sandbox: true, // Set to false for production
 //     });
-    
+
 //     const data = await req.json();
-    
+
 //     let response;
 //     try {
 //         // Determine the type of request from the incoming data
@@ -90,7 +83,7 @@ export async function POST(request) {
 //     } catch (error) {
 //         return NextResponse.json({ error: error.message }, { status: 500 });
 //     }
-    
+
 //     // Return the response as JSON
 //     return NextResponse.json(response);
 // }
