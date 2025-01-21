@@ -13,6 +13,19 @@ const theme = createTheme({
   cssVariables: true,
   palette: {
     mode: "dark",
+    primary: {
+      main: "#c595d4",
+    },
+    link: {
+      main: "#858585",
+    },
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
