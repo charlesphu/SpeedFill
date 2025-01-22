@@ -21,7 +21,8 @@
     "next": "^15.1.5",
     "openai": "^4.79.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
