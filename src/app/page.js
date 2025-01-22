@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { useDropzone } from 'react-dropzone';
+
 // MUI
 import { Box } from "@mui/system";
-import { Button, Card, Divider, IconButton, TextField } from "@mui/material";
+import { Button, Divider, TextField, Tooltip } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinkIcon from "@mui/icons-material/Link";
@@ -32,14 +33,44 @@ export default function Home() {
   //     </Typography>
   //   </Box>
   // );
+
   const { response, error, loading, sendPrompt } = useAIPrompt();
   const [resumeText, setResumeText] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [jobUrl, setJobUrl] = useState("")
   const [applicationQuestion, setApplicationQuestion] = useState("");
+  const [urlError, setUrlError] = useState(false);
+  const [formError, setFormError] = useState(false);
+  const [resumeError, setResumeError] = useState(false);
+  const [urlWarning, setUrlWarning] = useState(false);
+
+  /*
+    Priority of submit button errors
+      1. If no resume is entered, flash a resumeError
+      2. If neither a URL or description for a job was given, flash a formError
+      3. If the user submitted an invalid URL, flash a urlError
+  */
+
   const handleSubmit = () => {
-    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription}\nApplication Question: ${applicationQuestion}`;
+    if (!resumeText) {
+      setResumeError(true);
+      return;
+    } else {
+      setResumeError(false);
+    }
+    if (!jobUrl && !jobDescription) {
+      setFormError(true);
+      return;
+    }
+    if (jobUrl && !validateUrl(jobUrl)) {
+      setUrlError(true);
+      return;
+    }
+    setFormError(false);
+    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`}\nApplication Question: ${applicationQuestion}`;
     sendPrompt(prompt);
   };
+
 
   const onDrop = (acceptedFiles) => {
     const reader = new FileReader();
@@ -52,6 +83,50 @@ export default function Home() {
     accept: { "application/pdf": [], "application/msword": [], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [] },
     maxSize: 5242880,
   });
+
+  /* 
+    Clear the "type in" job description and update the URL
+  */
+
+  const handleUrlChange = (e) => {
+    const url = e.target.value;
+    setJobUrl(url);
+    setJobDescription("");
+    setUrlError(false);
+    setFormError(false);
+    setUrlWarning(false);
+  };
+
+  /* 
+    Clear the url job description and update the "type in" description
+  */
+
+  const handleJobDescriptionChange = (e) => {
+    setJobDescription(e.target.value);
+    setJobUrl("");
+    setUrlError(false);
+    setFormError(false);
+    setUrlWarning(false);
+  };
+
+  /*
+    Ensure url given is a valid link.
+  */
+
+  const validateUrl = (url) => {
+    const urlPattern = new RegExp(
+      "^(https?://)?" +
+      "([\\da-z.-]+)\\.([a-z.]{2,6})" +
+      "([/\\w .-]*)*/?$"
+    );
+    return urlPattern.test(url);
+  };
+
+  const handleUrlBlur = () => {
+    if (jobUrl && !validateUrl(jobUrl)) {
+      setUrlWarning(true);
+    }
+  };
 
   return (
     <>
@@ -132,6 +207,14 @@ export default function Home() {
               />
             </Box>
           </Box>
+          {resumeError && (
+            <Typography
+              variant="body2"
+              color="error"
+              style={{ marginTop: "8px" }}>
+              Please upload or paste your resume.
+            </Typography>
+          )}
 
           <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
 
@@ -148,8 +231,14 @@ export default function Home() {
           <Box display="flex" flexDirection="row" marginBottom="10px">
             <TextField
               variant="outlined"
+              type="url"
               placeholder="Paste the job application URL here"
               style={{ flex: 1, marginRight: "15px" }}
+              value={jobUrl}
+              onChange={handleUrlChange}
+              onBlur={handleUrlBlur}
+              error={urlError}
+              helperText={urlError ? "Invalid URL format!" : urlWarning ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting." : ""}
             />
             <Button
               color="link"
@@ -171,8 +260,16 @@ export default function Home() {
             multiline
             placeholder="Paste the job description here"
             value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
+            onChange={handleJobDescriptionChange}
           />
+          {formError && (
+            <Typography
+              variant="body2"
+              color="error"
+              style={{ marginTop: "8px" }}>
+              Please provide either a job URL or a job description.
+            </Typography>
+          )}
           <Typography variant="h5" fontWeight="medium" marginTop="20px">
             Application Questions
           </Typography>
