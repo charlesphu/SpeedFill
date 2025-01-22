@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import { useDropzone } from 'react-dropzone';
 // MUI
 import { Box } from "@mui/system";
 import { Button, Card, Divider, IconButton, TextField } from "@mui/material";
@@ -40,6 +40,18 @@ export default function Home() {
     const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription}\nApplication Question: ${applicationQuestion}`;
     sendPrompt(prompt);
   };
+
+  const onDrop = (acceptedFiles) => {
+    const reader = new FileReader();
+    reader.onload = (e) => setResumeText(e.target.result);
+    reader.readAsText(acceptedFiles[0]);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { "application/pdf": [], "application/msword": [], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [] },
+    maxSize: 5242880,
+  });
 
   return (
     <>
@@ -92,7 +104,10 @@ export default function Home() {
               bgcolor="#282828"
               color="#999"
               textAlign="center"
-              style={{ cursor: "pointer" }}>
+              style={{ cursor: "pointer" }}
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
               <FileUpload style={{ fontSize: "48px", marginBottom: "10px" }} />
               <Typography variant="body1" marginBottom="5px">
                 Drag and drop or <strong>Click to upload</strong>
