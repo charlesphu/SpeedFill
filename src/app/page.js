@@ -5,13 +5,13 @@ import React from "react";
 // MUI
 import { Box } from "@mui/system";
 import { Button, Card, Divider, IconButton, TextField } from "@mui/material";
-
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinkIcon from "@mui/icons-material/Link";
-
-import useAIPrompt from "../hooks/useAIPrompt";
 import { FileUpload } from "@mui/icons-material";
+
+// AI prompt
+import useAIPrompt from "../hooks/useAIPrompt";
 
 export default function Home() {
   // const { response, error, loading, sendPrompt } = useAIPrompt();
@@ -32,6 +32,7 @@ export default function Home() {
   //     </Typography>
   //   </Box>
   // );
+  const { response, error, loading, sendPrompt } = useAIPrompt();
 
   return (
     <>
@@ -152,7 +153,10 @@ export default function Home() {
           <Button
             variant="contained"
             color="primary"
-            endIcon={<AutoAwesomeIcon />}>
+            endIcon={<AutoAwesomeIcon />}
+          // uncomment this if you want to see the console log something
+          // onClick={() => sendPrompt("how do i get a job")}
+          >
             Submit
           </Button>
         </Box>

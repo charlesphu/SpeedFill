@@ -20,6 +20,7 @@ export default function useAIPrompt() {
       }
 
       const data = await response.json();
+      console.log(data);
       setResponse(data);
     } catch (error) {
       setError(error);
