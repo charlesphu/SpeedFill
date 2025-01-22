@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 // MUI
 import { Box } from "@mui/system";
@@ -21,7 +21,7 @@ export default function Home() {
   //     <Button
   //       variant="contained"
   //       endIcon={<AutoAwesomeIcon />}
-  //       onClick={() => sendPrompt("how do i get a job")}
+  //       onClick={() => sendPrompt("how do i study?")}
   //       loading={loading}
   //       loadingPosition={"end"}>
   //       Ask AI
@@ -33,6 +33,13 @@ export default function Home() {
   //   </Box>
   // );
   const { response, error, loading, sendPrompt } = useAIPrompt();
+  const [resumeText, setResumeText] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [applicationQuestion, setApplicationQuestion] = useState("");
+  const handleSubmit = () => {
+    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription}\nApplication Question: ${applicationQuestion}`;
+    sendPrompt(prompt);
+  };
 
   return (
     <>
@@ -105,6 +112,8 @@ export default function Home() {
                 variant="outlined"
                 fullWidth
                 placeholder="Or paste your resume content here..."
+                value={resumeText}
+                onChange={(e) => setResumeText(e.target.value)}
               />
             </Box>
           </Box>
@@ -146,20 +155,40 @@ export default function Home() {
             rows={5}
             multiline
             placeholder="Paste the job description here"
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
           />
-
+          <Typography variant="h5" fontWeight="medium" marginTop="20px">
+            Application Questions
+          </Typography>
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            marginTop="2px"
+            marginBottom="2px">
+            Is there any question that hard for you to answer? We can help you with that
+          </Typography>
           <Divider style={{ marginTop: "23px", marginBottom: "23px" }} />
-
+          <TextField
+            variant="outlined"
+            rows={5}
+            multiline
+            placeholder="Paste your application's question here"
+            value={applicationQuestion}
+            onChange={(e) => setApplicationQuestion(e.target.value)}
+          />
+          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
           <Button
             variant="contained"
             color="primary"
             endIcon={<AutoAwesomeIcon />}
-          // uncomment this if you want to see the console log something
-          // onClick={() => sendPrompt("how do i get a job")}
+            // uncomment this if you want to see the console log something
+            onClick={handleSubmit}
           >
             Submit
           </Button>
         </Box>
+        {response && <Typography variant="body1" marginTop={2}>{response}</Typography>}
       </Box>
     </>
   );
