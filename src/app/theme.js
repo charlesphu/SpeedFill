@@ -21,6 +21,16 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background: 'linear-gradient(rgb(46, 46, 46) 30%, rgb(20, 20, 20) 100%)',
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+          backgroundRepeat: 'no-repeat',
+        }
+      }
+    },
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
