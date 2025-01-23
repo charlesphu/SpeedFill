@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 // MUI
 import { Box } from "@mui/system";
-import { Button, Card, Divider, IconButton, TextField } from "@mui/material";
+import { Button, Divider, TextField } from "@mui/material";
+
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinkIcon from "@mui/icons-material/Link";
@@ -14,28 +15,12 @@ import { FileUpload } from "@mui/icons-material";
 import useAIPrompt from "../hooks/useAIPrompt";
 
 export default function Home() {
-  // const { response, error, loading, sendPrompt } = useAIPrompt();
-
-  // return (
-  //   <Box>
-  //     <Button
-  //       variant="contained"
-  //       endIcon={<AutoAwesomeIcon />}
-  //       onClick={() => sendPrompt("how do i study?")}
-  //       loading={loading}
-  //       loadingPosition={"end"}>
-  //       Ask AI
-  //     </Button>
-
-  //     <Typography variant="body1" className="ai-output">
-  //       {response}
-  //     </Typography>
-  //   </Box>
-  // );
   const { response, error, loading, sendPrompt } = useAIPrompt();
+
   const [resumeText, setResumeText] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [applicationQuestion, setApplicationQuestion] = useState("");
+
   const handleSubmit = () => {
     const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription}\nApplication Question: ${applicationQuestion}`;
     sendPrompt(prompt);
@@ -64,16 +49,16 @@ export default function Home() {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        paddingTop="20px"
-        paddingBottom="40px"
+        paddingTop="1.25rem"
+        paddingBottom="2.5rem"
         elevation={0}>
-        <Typography variant="h1" fontWeight="bold" marginBottom="10px">
+        <Typography variant="h1" fontWeight="bold" marginBottom="0.625rem">
           SpeedFill
         </Typography>
-        <Typography variant="h5" marginBottom="10px" color="textSecondary">
+        <Typography variant="h5" marginBottom="0.625rem" color="textSecondary">
           Seamless Job Applications, Every Time.
         </Typography>
-        <Typography variant="body1" color="textSecondary" marginTop="2px">
+        <Typography variant="body1" color="textSecondary" marginTop="0.125rem">
           Upload your resume and let AI help you land your dream job!
         </Typography>
 
@@ -84,22 +69,26 @@ export default function Home() {
           }}
           display="flex"
           flexDirection="column"
-          padding="20px"
+          padding="1.25rem"
           bgcolor="#212121"
-          borderRadius="8px"
+          borderRadius="0.5rem"
           width="80%"
-          maxWidth="800px"
-          marginTop="20px">
+          maxWidth="50rem"
+          marginTop="1.25rem">
           <Typography variant="h5" fontWeight="medium">
             Your Resume
           </Typography>
-          <Typography variant="body1" color="textSecondary" marginTop="2px">
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            marginTop="0.125rem"
+            marginBottom="1rem">
             Share your resume with us and AI will take a look
           </Typography>
-          <Box display="flex" flexDirection="row" marginTop="15px">
+          <Box display="flex" flexDirection="row">
             <Box
               flex="1"
-              marginRight="9px"
+              marginRight="0.5rem"
               display="flex"
               flexDirection="column"
               alignItems="center"
@@ -112,8 +101,10 @@ export default function Home() {
               style={{ cursor: "pointer" }}
               {...getRootProps()}>
               <input {...getInputProps()} />
-              <FileUpload style={{ fontSize: "48px", marginBottom: "10px" }} />
-              <Typography variant="body1" marginBottom="5px">
+              <FileUpload
+                style={{ fontSize: "3rem", marginBottom: "0.625rem" }}
+              />
+              <Typography variant="body1" marginBottom="0.3125rem">
                 Drag and drop or <strong>Click to upload</strong>
               </Typography>
               <Typography variant="body2" color="textTertiary">
@@ -122,7 +113,7 @@ export default function Home() {
             </Box>
             <Box
               flex="1"
-              marginLeft="9px"
+              marginLeft="1rem"
               display="flex"
               flexDirection="column">
               <TextField
@@ -137,7 +128,7 @@ export default function Home() {
             </Box>
           </Box>
 
-          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
 
           <Typography variant="h5" fontWeight="medium">
             Job Description
@@ -145,27 +136,27 @@ export default function Home() {
           <Typography
             variant="body1"
             color="textSecondary"
-            marginTop="2px"
-            marginBottom="15px">
+            marginTop="0.125rem"
+            marginBottom="1rem">
             Tell us a little about the job you're applying for
           </Typography>
-          <Box display="flex" flexDirection="row" marginBottom="10px">
+          <Box display="flex" flexDirection="row">
             <TextField
               variant="outlined"
               placeholder="Paste the job application URL here"
-              style={{ flex: 1, marginRight: "15px" }}
+              style={{ flex: 1, marginRight: "0.8rem" }}
             />
             <Button
               color="link"
               variant="outlined"
-              style={{ minWidth: "48px" }}>
+              style={{ minWidth: "3rem" }}>
               <LinkIcon fontSize="medium" />
             </Button>
           </Box>
           <Divider
             style={{
               width: "50%",
-              margin: "2px auto 8px auto",
+              margin: "0.5rem auto 0.5rem auto",
             }}>
             <span style={{ color: "#999" }}>OR</span>
           </Divider>
@@ -178,7 +169,7 @@ export default function Home() {
             onChange={(e) => setJobDescription(e.target.value)}
           />
 
-          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
 
           <Typography variant="h5" fontWeight="medium">
             Additional Questions
@@ -186,9 +177,9 @@ export default function Home() {
           <Typography
             variant="body1"
             color="textSecondary"
-            marginTop="2px"
-            marginBottom="15px">
-            Anything else you'd like us to cover? Let us know!
+            marginTop="0.125rem"
+            marginBottom="1rem">
+            Anything else you'd like us to cover?
           </Typography>
           <TextField
             variant="outlined"
@@ -199,7 +190,7 @@ export default function Home() {
             onChange={(e) => setApplicationQuestion(e.target.value)}
           />
 
-          <Divider style={{ marginTop: "23px", marginBottom: "23px" }} />
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "1.25rem" }} />
 
           <Button
             variant="contained"
