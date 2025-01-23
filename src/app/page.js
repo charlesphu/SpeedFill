@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 
 // MUI
 import { Box } from "@mui/system";
-import { Button, Divider, TextField, LinearProgress, FormControlLabel, Switch, Fade } from "@mui/material";
+import {
+  Button,
+  Divider,
+  TextField,
+  LinearProgress,
+  FormControlLabel,
+  Switch,
+  Fade,
+} from "@mui/material";
 
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
@@ -25,7 +33,7 @@ export default function Home() {
   // Text fields
   const [resumeText, setResumeText] = useState("");
   const [jobDescription, setJobDescription] = useState("");
-  const [jobUrl, setJobUrl] = useState("")
+  const [jobUrl, setJobUrl] = useState("");
   const [applicationQuestion, setApplicationQuestion] = useState("");
 
   // Error / Warning Handling
@@ -34,12 +42,12 @@ export default function Home() {
   const [resumeError, setResumeError] = useState(false);
   const [urlWarning, setUrlWarning] = useState(false);
   const [fileError, setFileError] = useState(false);
-  const [fileErrorMessage, setFileErrorMessage] = useState('');
+  const [fileErrorMessage, setFileErrorMessage] = useState("");
 
   // File handling
   const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState("")
-  const [file, setFile] = useState(null)
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   // Control flow (select upload vs. text)
@@ -51,10 +59,10 @@ export default function Home() {
 
   // Style variable for hovering over text
   const textHoverStyle = {
-    transition: 'transform 0.5s ease',
-    willChange: 'transform',
-    '&:hover': {
-      transform: 'scale(1.03)',
+    transition: "transform 0.5s ease",
+    willChange: "transform",
+    "&:hover": {
+      transform: "scale(1.03)",
     },
   };
 
@@ -63,11 +71,11 @@ export default function Home() {
   */
 
   /**
-   * Simulates the file upload process by setting the uploading state, 
+   * Simulates the file upload process by setting the uploading state,
    * updating the file name, and incrementally increasing upload progress.
-   * 
+   *
    * NOTE - placeholder for actual backend upload progress.
-   * 
+   *
    * @param {File} file The resume file to be uploaded. Expected to be file object.
    * @returns {void} Does not return anything.
    */
@@ -92,7 +100,7 @@ export default function Home() {
 
   /**
    * Clears the current resume file information, & resets the uploading progress.
-   * 
+   *
    * @returns {void} Does not return anything.
    */
   const handleClearResume = () => {
@@ -102,14 +110,14 @@ export default function Home() {
   };
 
   /**
-   * Handles form submission by validating the resume, job description, and URL. 
+   * Handles form submission by validating the resume, job description, and URL.
    * Ensures information passes basic validity checks
-   * 
+   *
    * The error priorities are:
    * 1. If no resume is entered, a resumeError is given.
    * 2. If neither a job URL nor description is provided, a formError is given.
    * 3. If an invalid URL is provided, a urlError is given.
-   * 
+   *
    * @returns {void} Does not return anything.
    */
   const handleSubmit = () => {
@@ -128,16 +136,18 @@ export default function Home() {
       return;
     }
     setFormError(false);
-    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`}\nApplication Question: ${applicationQuestion}`;
+    const prompt = `Resume: ${resumeText}\nJob Description: ${
+      jobDescription || `URL: ${jobUrl}`
+    }\nApplication Question: ${applicationQuestion}`;
     sendPrompt(prompt);
   };
 
   /**
    * Handles the file drop event when a user drops a file into the upload area.
-   * If there is already a file uploaded (i.e., `fileName` is not empty), 
+   * If there is already a file uploaded (i.e., `fileName` is not empty),
    * it clears the previous file and resets the upload state before uploading the new file.
-   * 
-   * @param {Array<File>} acceptedFiles An array of files that the user has dropped. 
+   *
+   * @param {Array<File>} acceptedFiles An array of files that the user has dropped.
    * Hopefully this is only one file, as the other functionality here relies on there only being on file in this array.
    * @returns {void} Does not return anything.
    */
@@ -152,7 +162,7 @@ export default function Home() {
     }
 
     setFileError(false);
-    setFileErrorMessage('');
+    setFileErrorMessage("");
 
     if (fileName) {
       handleClearResume(file);
@@ -163,7 +173,7 @@ export default function Home() {
   /**
    * Initializes the file drop zone using the `useDropzone` hook.
    * NOTE - The drop zone is disabled while the upload is in progress.
-   * 
+   *
    * @returns {Object} The `getRootProps`, `getInputProps` methods
    */
   const { getRootProps, getInputProps } = useDropzone({
@@ -180,8 +190,8 @@ export default function Home() {
 
   /**
    * Handles changes to the job URL input field.
-   * Updates the job URL state and resets related states. 
-   * 
+   * Updates the job URL state and resets related states.
+   *
    * @param {React.ChangeEvent} e The event object from the input field (new URL value).
    * @returns {void} Does not return anything.
    */
@@ -196,8 +206,8 @@ export default function Home() {
 
   /**
    * Handles changes to the job description text input field.
-   * Updates the job text state and resets related states. 
-   * 
+   * Updates the job text state and resets related states.
+   *
    * @param {React.ChangeEvent} e The event object from the input field (new job description).
    * @returns {void} Does not return anything.
    */
@@ -211,23 +221,21 @@ export default function Home() {
 
   /**
    * Validates whether the given URL is in a valid format.
-   * 
+   *
    * @param {string} url The URL to be validated.
    * @returns {boolean} Returns `true` if the URL matches the valid pattern, otherwise returns `false`.
    */
   const validateUrl = (url) => {
     const urlPattern = new RegExp(
-      "^(https?://)?" +
-      "([\\da-z.-]+)\\.([a-z.]{2,6})" +
-      "([/\\w .-]*)*/?$"
+      "^(https?://)?" + "([\\da-z.-]+)\\.([a-z.]{2,6})" + "([/\\w .-]*)*/?$"
     );
     return urlPattern.test(url);
   };
 
   /**
-   * Handles the blur event for the job URL input field. 
+   * Handles the blur event for the job URL input field.
    * If the URL is not empty and is incorrectly formatted, a warning state (`urlWarning`) is set to `true`.
-   * 
+   *
    * @returns {void} Does not return anything.
    */
   const handleUrlBlur = () => {
@@ -235,7 +243,6 @@ export default function Home() {
       setUrlWarning(true);
     }
   };
-
 
   return (
     <>
@@ -246,35 +253,37 @@ export default function Home() {
         paddingTop="1.25rem"
         paddingBottom="2.5rem"
         elevation={0}>
-
-//         <Typography variant="h1" fontWeight="bold" marginBottom="10px" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.52)' }}>
-//           Speed
-//           <span
-//             style={{
-//               background: 'linear-gradient(45deg,rgb(171, 117, 188) 30%,rgb(255, 255, 255)) 30%',
-//               WebkitBackgroundClip: 'text',
-//               color: 'transparent',
-//             }}>
-//             Fill
-//           </span>
-//         </Typography>
-//         <Typography sx={textHoverStyle} variant="h5" marginBottom="10px" color="textSecondary" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
-//           Seamless Job Applications, Every Time.
-//         </Typography>
-//         <Typography sx={textHoverStyle} variant="body1" color="textSecondary" marginTop="2px" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
-
-        <Typography variant="h1" fontWeight="bold" marginBottom="0.625rem">
-          SpeedFill
+        <Typography
+          variant="h1"
+          fontWeight="bold"
+          marginBottom="0.625rem"
+          style={{ textShadow: "1px 1px 2px rgba(255, 255, 255, 0.52)" }}>
+          Speed
+          <span
+            style={{
+              background:
+                "linear-gradient(45deg,rgb(171, 117, 188) 30%,rgb(255, 255, 255)) 30%",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+            }}>
+            Fill
+          </span>
         </Typography>
-        <Typography variant="h5" marginBottom="0.625rem" color="textSecondary">
+        <Typography
+          sx={textHoverStyle}
+          variant="h5"
+          marginBottom="0.625rem"
+          color="textSecondary"
+          style={{ textShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)" }}>
           Seamless Job Applications, Every Time.
         </Typography>
         <Typography
+          sx={textHoverStyle}
           variant="body1"
           color="textSecondary"
           marginTop="0.125rem"
-          marginBottom="0.9rem">
-
+          marginBottom="0.9rem"
+          style={{ textShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)" }}>
           Upload your resume and let AI help you land your dream job!
         </Typography>
 
@@ -291,7 +300,11 @@ export default function Home() {
           borderRadius="0.5rem"
           width="80%"
           maxWidth="50rem">
-          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%">
             <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
               Your Resume
             </Typography>
@@ -299,14 +312,17 @@ export default function Home() {
               control={<Switch checked={checked} onChange={handleChange} />}
               label="Type in Resume"
               sx={{
-                '.MuiTypography-root': {
-                  fontSize: '0.8rem',
-                  color: 'text.primary',
+                ".MuiTypography-root": {
+                  fontSize: "0.8rem",
+                  color: "text.primary",
                 },
               }}
             />
           </Box>
-          <Typography variant="body1" color="textSecondary" marginTop="0.125rem"
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            marginTop="0.125rem"
             marginBottom="0.9rem">
             Share your resume with us and AI will take a look
           </Typography>
@@ -326,43 +342,53 @@ export default function Home() {
                 textAlign="center"
                 style={{ cursor: "pointer" }}
                 disabled={uploading}
-                {...getRootProps()}
-              >
+                {...getRootProps()}>
                 <input {...getInputProps()} disabled={fileName} />
                 {uploading ? (
                   <>
-                    <LinearProgress variant="determinate" value={uploadProgress} sx={{ width: '30%', marginTop: '10px' }} />
-                    <Typography variant="body1" marginTop="10px">Uploading...</Typography>
+                    <LinearProgress
+                      variant="determinate"
+                      value={uploadProgress}
+                      sx={{ width: "30%", marginTop: "10px" }}
+                    />
+                    <Typography variant="body1" marginTop="10px">
+                      Uploading...
+                    </Typography>
                   </>
                 ) : fileName ? (
                   <>
-                    <InsertDriveFile fontSize="large" style={{ marginBottom: "10px" }} />
-                    <Typography variant="body1" >{fileName}</Typography>
+                    <InsertDriveFile
+                      fontSize="large"
+                      style={{ marginBottom: "10px" }}
+                    />
+                    <Typography variant="body1">{fileName}</Typography>
                     <Button
                       variant="text"
                       color="secondary"
                       onClick={handleClearResume}
                       style={{
                         padding: "1px 7px",
-                        marginTop: "5px"
+                        marginTop: "5px",
                       }}
-                      disabled={uploading}
-                    >
+                      disabled={uploading}>
                       Clear File
                     </Button>
                     <Button
                       variant="text"
                       color="secondary"
-                      onClick={() => window.open(URL.createObjectURL(file), '_blank')}
+                      onClick={() =>
+                        window.open(URL.createObjectURL(file), "_blank")
+                      }
                       style={{ padding: "1px 7px" }}
-                      disabled={uploading}
-                    >
+                      disabled={uploading}>
                       Preview Document
                     </Button>
                   </>
                 ) : (
                   <>
-                    <FileUpload style={{ fontSize: "48px", marginBottom: "10px" }} />
+                    <FileUpload
+                      style={{ fontSize: "48px", marginBottom: "10px" }}
+                    />
                     <Typography variant="body1" marginBottom="5px">
                       Drag and drop or <strong>Click to upload</strong>
                     </Typography>
@@ -372,7 +398,10 @@ export default function Home() {
                   </>
                 )}
                 {fileError && (
-                  <Typography variant="body2" color="error" style={{ marginTop: "8px" }}>
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    style={{ marginTop: "8px" }}>
                     {fileErrorMessage}
                   </Typography>
                 )}
@@ -383,8 +412,7 @@ export default function Home() {
                 flex="1"
                 marginLeft="1rem"
                 display="flex"
-                flexDirection="column"
-              >
+                flexDirection="column">
                 <TextField
                   multiline
                   rows={8}
@@ -409,7 +437,11 @@ export default function Home() {
           )}
 
           <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
-          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%">
             <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
               Job Description
             </Typography>
@@ -431,7 +463,13 @@ export default function Home() {
               onChange={handleUrlChange}
               onBlur={handleUrlBlur}
               error={urlError}
-              helperText={urlError ? "Invalid URL format!" : urlWarning ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting." : ""}
+              helperText={
+                urlError
+                  ? "Invalid URL format!"
+                  : urlWarning
+                  ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
+                  : ""
+              }
             />
             <Button
               color="link"
@@ -463,10 +501,14 @@ export default function Home() {
               Please provide either a job URL or a job description.
             </Typography>
           )}
-          
+
           <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
 
-          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%">
             <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
               Additional Questions
             </Typography>
