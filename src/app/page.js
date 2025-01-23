@@ -58,7 +58,11 @@ export default function Home() {
         <Typography variant="h5" marginBottom="0.625rem" color="textSecondary">
           Seamless Job Applications, Every Time.
         </Typography>
-        <Typography variant="body1" color="textSecondary" marginTop="0.125rem">
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          marginTop="0.125rem"
+          marginBottom="0.9rem">
           Upload your resume and let AI help you land your dream job!
         </Typography>
 
@@ -73,8 +77,7 @@ export default function Home() {
           bgcolor="#212121"
           borderRadius="0.5rem"
           width="80%"
-          maxWidth="50rem"
-          marginTop="1.25rem">
+          maxWidth="50rem">
           <Typography variant="h5" fontWeight="medium">
             Your Resume
           </Typography>
@@ -82,7 +85,7 @@ export default function Home() {
             variant="body1"
             color="textSecondary"
             marginTop="0.125rem"
-            marginBottom="1rem">
+            marginBottom="0.9rem">
             Share your resume with us and AI will take a look
           </Typography>
           <Box display="flex" flexDirection="row">
@@ -137,7 +140,7 @@ export default function Home() {
             variant="body1"
             color="textSecondary"
             marginTop="0.125rem"
-            marginBottom="1rem">
+            marginBottom="0.9rem">
             Tell us a little about the job you're applying for
           </Typography>
           <Box display="flex" flexDirection="row">
@@ -156,7 +159,7 @@ export default function Home() {
           <Divider
             style={{
               width: "50%",
-              margin: "0.5rem auto 0.5rem auto",
+              margin: "0.6rem auto 0.6rem auto",
             }}>
             <span style={{ color: "#999" }}>OR</span>
           </Divider>
