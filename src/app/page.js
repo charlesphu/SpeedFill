@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone';
 // MUI
 import { Box } from "@mui/system";
 import { Button, Divider, TextField, LinearProgress, FormControlLabel, Switch, Fade } from "@mui/material";
+
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinkIcon from "@mui/icons-material/Link";
@@ -15,7 +16,6 @@ import { FileUpload, InsertDriveFile, Opacity } from "@mui/icons-material";
 import useAIPrompt from "../hooks/useAIPrompt";
 
 export default function Home() {
-
   /*
     STATE VARIABLES
   */
@@ -168,7 +168,12 @@ export default function Home() {
    */
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: { "application/pdf": [], "application/msword": [], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [] },
+    accept: {
+      "application/pdf": [],
+      "application/msword": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+    },
     maxSize: 5242880,
     disabled: uploading,
   });
@@ -238,24 +243,38 @@ export default function Home() {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        paddingTop="20px"
-        paddingBottom="40px"
+        paddingTop="1.25rem"
+        paddingBottom="2.5rem"
         elevation={0}>
-        <Typography variant="h1" fontWeight="bold" marginBottom="10px" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.52)' }}>
-          Speed
-          <span
-            style={{
-              background: 'linear-gradient(45deg,rgb(171, 117, 188) 30%,rgb(255, 255, 255)) 30%',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
-            }}>
-            Fill
-          </span>
+
+//         <Typography variant="h1" fontWeight="bold" marginBottom="10px" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.52)' }}>
+//           Speed
+//           <span
+//             style={{
+//               background: 'linear-gradient(45deg,rgb(171, 117, 188) 30%,rgb(255, 255, 255)) 30%',
+//               WebkitBackgroundClip: 'text',
+//               color: 'transparent',
+//             }}>
+//             Fill
+//           </span>
+//         </Typography>
+//         <Typography sx={textHoverStyle} variant="h5" marginBottom="10px" color="textSecondary" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
+//           Seamless Job Applications, Every Time.
+//         </Typography>
+//         <Typography sx={textHoverStyle} variant="body1" color="textSecondary" marginTop="2px" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
+
+        <Typography variant="h1" fontWeight="bold" marginBottom="0.625rem">
+          SpeedFill
         </Typography>
-        <Typography sx={textHoverStyle} variant="h5" marginBottom="10px" color="textSecondary" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
+        <Typography variant="h5" marginBottom="0.625rem" color="textSecondary">
           Seamless Job Applications, Every Time.
         </Typography>
-        <Typography sx={textHoverStyle} variant="body1" color="textSecondary" marginTop="2px" style={{ textShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)' }}>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          marginTop="0.125rem"
+          marginBottom="0.9rem">
+
           Upload your resume and let AI help you land your dream job!
         </Typography>
 
@@ -267,12 +286,11 @@ export default function Home() {
           display="flex"
           justifyContent="space-between"
           flexDirection="column"
-          padding="20px"
+          padding="1.25rem"
           bgcolor="#212121"
-          borderRadius="8px"
+          borderRadius="0.5rem"
           width="80%"
-          maxWidth="800px"
-          marginTop="20px">
+          maxWidth="50rem">
           <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
             <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
               Your Resume
@@ -288,7 +306,8 @@ export default function Home() {
               }}
             />
           </Box>
-          <Typography variant="body1" color="textSecondary" marginTop="2px">
+          <Typography variant="body1" color="textSecondary" marginTop="0.125rem"
+            marginBottom="0.9rem">
             Share your resume with us and AI will take a look
           </Typography>
           <Box display="flex" flexDirection="row" marginTop="15px">
@@ -362,7 +381,7 @@ export default function Home() {
             <Fade in={checked}>
               <Box
                 flex="1"
-                marginLeft="9px"
+                marginLeft="1rem"
                 display="flex"
                 flexDirection="column"
               >
@@ -389,7 +408,7 @@ export default function Home() {
             </Typography>
           )}
 
-          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
           <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
             <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
               Job Description
@@ -398,16 +417,16 @@ export default function Home() {
           <Typography
             variant="body1"
             color="textSecondary"
-            marginTop="2px"
-            marginBottom="15px">
+            marginTop="0.125rem"
+            marginBottom="0.9rem">
             Tell us a little about the job you're applying for
           </Typography>
-          <Box display="flex" flexDirection="row" marginBottom="10px">
+          <Box display="flex" flexDirection="row">
             <TextField
               variant="outlined"
               type="url"
               placeholder="Paste the job application URL here..."
-              style={{ flex: 1, marginRight: "15px" }}
+              style={{ flex: 1, marginRight: "0.8rem" }}
               value={jobUrl}
               onChange={handleUrlChange}
               onBlur={handleUrlBlur}
@@ -417,14 +436,14 @@ export default function Home() {
             <Button
               color="link"
               variant="outlined"
-              style={{ minWidth: "48px" }}>
+              style={{ minWidth: "3rem" }}>
               <LinkIcon fontSize="medium" />
             </Button>
           </Box>
           <Divider
             style={{
               width: "50%",
-              margin: "2px auto 8px auto",
+              margin: "0.6rem auto 0.6rem auto",
             }}>
             <span style={{ color: "#999" }}>OR</span>
           </Divider>
@@ -444,39 +463,42 @@ export default function Home() {
               Please provide either a job URL or a job description.
             </Typography>
           )}
+          
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
+
           <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-            <Typography sx={textHoverStyle} variant="h5" fontWeight="medium" marginTop="20px">
-              Application Questions
+            <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
+              Additional Questions
             </Typography>
           </Box>
           <Typography
             variant="body1"
             color="textSecondary"
-            marginTop="2px"
-            marginBottom="2px">
-            Is there any question that hard for you to answer? We can help you with that
+            marginTop="0.125rem"
+            marginBottom="1rem">
+            Anything else you'd like us to cover?
           </Typography>
-          <Divider style={{ marginTop: "23px", marginBottom: "23px" }} />
           <TextField
             variant="outlined"
             rows={5}
             multiline
-            placeholder="Paste your application's question here..."
+            placeholder="Paste your application questions here"
             value={applicationQuestion}
             onChange={(e) => setApplicationQuestion(e.target.value)}
           />
-          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+
+          <Divider style={{ marginTop: "1.25rem", marginBottom: "1.25rem" }} />
+
           <Button
             variant="contained"
             color="primary"
             endIcon={<AutoAwesomeIcon />}
-            onClick={handleSubmit}
-          >
+            // uncomment this if you want to see the console log something
+            onClick={handleSubmit}>
             Submit
           </Button>
         </Box>
-        {response && <Typography variant="body1" marginTop={2}>{response}</Typography>}
-      </Box >
+      </Box>
     </>
   );
 }
