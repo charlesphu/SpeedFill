@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 // MUI
 import { Box } from "@mui/system";
 import { Button, Card, Divider, IconButton, TextField } from "@mui/material";
@@ -49,7 +49,12 @@ export default function Home() {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: { "application/pdf": [], "application/msword": [], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [] },
+    accept: {
+      "application/pdf": [],
+      "application/msword": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+    },
     maxSize: 5242880,
   });
 
@@ -105,8 +110,7 @@ export default function Home() {
               color="#999"
               textAlign="center"
               style={{ cursor: "pointer" }}
-              {...getRootProps()}
-            >
+              {...getRootProps()}>
               <input {...getInputProps()} />
               <FileUpload style={{ fontSize: "48px", marginBottom: "10px" }} />
               <Typography variant="body1" marginBottom="5px">
@@ -173,37 +177,39 @@ export default function Home() {
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
           />
-          <Typography variant="h5" fontWeight="medium" marginTop="20px">
-            Application Questions
+
+          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+
+          <Typography variant="h5" fontWeight="medium">
+            Additional Questions
           </Typography>
           <Typography
             variant="body1"
             color="textSecondary"
             marginTop="2px"
-            marginBottom="2px">
-            Is there any question that hard for you to answer? We can help you with that
+            marginBottom="15px">
+            Anything else you'd like us to cover? Let us know!
           </Typography>
-          <Divider style={{ marginTop: "23px", marginBottom: "23px" }} />
           <TextField
             variant="outlined"
             rows={5}
             multiline
-            placeholder="Paste your application's question here"
+            placeholder="Paste your application questions here"
             value={applicationQuestion}
             onChange={(e) => setApplicationQuestion(e.target.value)}
           />
-          <Divider style={{ marginTop: "28px", marginBottom: "20px" }} />
+
+          <Divider style={{ marginTop: "23px", marginBottom: "23px" }} />
+
           <Button
             variant="contained"
             color="primary"
             endIcon={<AutoAwesomeIcon />}
             // uncomment this if you want to see the console log something
-            onClick={handleSubmit}
-          >
+            onClick={handleSubmit}>
             Submit
           </Button>
         </Box>
-        {response && <Typography variant="body1" marginTop={2}>{response}</Typography>}
       </Box>
     </>
   );
