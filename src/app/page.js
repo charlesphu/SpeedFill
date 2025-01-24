@@ -136,9 +136,9 @@ export default function Home() {
       return;
     }
     setFormError(false);
-    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`
-      }\nApplication Question: ${applicationQuestion}`;
-    sendPrompt(prompt);
+    const prompt = `Resume: ${resumeText}\nJob Description: ${
+      jobDescription || `URL: ${jobUrl}`
+    }\nApplication Question: ${applicationQuestion}`;
   };
 
   /**
@@ -466,8 +466,8 @@ export default function Home() {
                 urlError
                   ? "Invalid URL format!"
                   : urlWarning
-                    ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
-                    : ""
+                  ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
+                  : ""
               }
             />
             <Button
