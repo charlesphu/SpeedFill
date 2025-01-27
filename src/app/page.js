@@ -136,10 +136,8 @@ export default function Home() {
       return;
     }
     setFormError(false);
-    const prompt = `Resume: ${resumeText}\nJob Description: ${
-      jobDescription || `URL: ${jobUrl}`
-    }\nApplication Question: ${applicationQuestion}`;
-    sendPrompt(prompt);
+    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`
+      }\nApplication Question: ${applicationQuestion}`;
   };
 
   /**
@@ -256,8 +254,7 @@ export default function Home() {
         <Typography
           variant="h1"
           fontWeight="bold"
-          marginBottom="0.625rem"
-          style={{ textShadow: "1px 1px 2px rgba(255, 255, 255, 0.52)" }}>
+          marginBottom="0.625rem">
           Speed
           <span
             style={{
@@ -326,106 +323,131 @@ export default function Home() {
             marginBottom="0.9rem">
             Share your resume with us and AI will take a look
           </Typography>
-          <Box display="flex" flexDirection="row" marginTop="15px">
-            <Fade in={!checked}>
+          <Box
+            flex="1"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="#282828"
+            color="#999"
+            borderRadius="8px"
+            textAlign="center"
+            style={{
+              cursor: "pointer",
+              height: "100%",
+              width: "100%",
+              transition: "border 0.3s ease",
+              border: checked ? "none" : "2px dashed #999",
+            }}
+            minHeight="220px"
+          >
+            {!checked ? (
+              <Fade in={!checked}>
+                <Box
+                  {...getRootProps()}
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{ width: "100%", height: "100%", padding: "1rem" }}
+                >
+                  <input {...getInputProps()} disabled={fileName} />
+                  {uploading ? (
+                    <>
+                      <LinearProgress
+                        variant="determinate"
+                        value={uploadProgress}
+                        sx={{ width: "50%", marginTop: "10px" }}
+                      />
+                      <Typography variant="body1" marginTop="10px">
+                        Uploading...
+                      </Typography>
+                    </>
+                  ) : fileName ? (
+                    <>
+                      <InsertDriveFile
+                        fontSize="large"
+                        style={{ marginBottom: "10px" }}
+                      />
+                      <Typography variant="body1">{fileName}</Typography>
+                      <Button
+                        variant="text"
+                        color="secondary"
+                        onClick={handleClearResume}
+                        style={{
+                          padding: "1px 7px",
+                          marginTop: "5px",
+                        }}
+                        disabled={uploading}
+                      >
+                        Clear File
+                      </Button>
+                      <Button
+                        variant="text"
+                        color="secondary"
+                        onClick={() =>
+                          window.open(URL.createObjectURL(file), "_blank")
+                        }
+                        style={{ padding: "1px 7px" }}
+                        disabled={uploading}
+                      >
+                        Preview Document
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <FileUpload
+                        style={{ fontSize: "48px", marginBottom: "10px" }}
+                      />
+                      <Typography variant="body1" marginBottom="5px">
+                        Drag and drop or <strong>Click to upload</strong>
+                      </Typography>
+                      <Typography variant="body2" color="textTertiary">
+                        PDF, DOC, or DOCX (MAX. 5MB)
+                      </Typography>
+                    </>
+                  )}
+                  {fileError && (
+                    <Typography
+                      variant="body2"
+                      color="error"
+                      style={{ marginTop: "8px" }}
+                    >
+                      {fileErrorMessage}
+                    </Typography>
+                  )}
+                </Box>
+              </Fade>
+            ) : (
               <Box
-                flex="1"
-                marginRight="9px"
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                bgcolor="#282828"
-                color="#999"
-                border="2px dashed"
-                borderRadius="8px"
-                textAlign="center"
-                style={{ cursor: "pointer" }}
-                disabled={uploading}
-                {...getRootProps()}>
-                <input {...getInputProps()} disabled={fileName} />
-                {uploading ? (
-                  <>
-                    <LinearProgress
-                      variant="determinate"
-                      value={uploadProgress}
-                      sx={{ width: "30%", marginTop: "10px" }}
-                    />
-                    <Typography variant="body1" marginTop="10px">
-                      Uploading...
-                    </Typography>
-                  </>
-                ) : fileName ? (
-                  <>
-                    <InsertDriveFile
-                      fontSize="large"
-                      style={{ marginBottom: "10px" }}
-                    />
-                    <Typography variant="body1">{fileName}</Typography>
-                    <Button
-                      variant="text"
-                      color="secondary"
-                      onClick={handleClearResume}
-                      style={{
-                        padding: "1px 7px",
-                        marginTop: "5px",
-                      }}
-                      disabled={uploading}>
-                      Clear File
-                    </Button>
-                    <Button
-                      variant="text"
-                      color="secondary"
-                      onClick={() =>
-                        window.open(URL.createObjectURL(file), "_blank")
-                      }
-                      style={{ padding: "1px 7px" }}
-                      disabled={uploading}>
-                      Preview Document
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <FileUpload
-                      style={{ fontSize: "48px", marginBottom: "10px" }}
-                    />
-                    <Typography variant="body1" marginBottom="5px">
-                      Drag and drop or <strong>Click to upload</strong>
-                    </Typography>
-                    <Typography variant="body2" color="textTertiary">
-                      PDF, DOC or DOCX (MAX. 5MB)
-                    </Typography>
-                  </>
-                )}
-                {fileError && (
-                  <Typography
-                    variant="body2"
-                    color="error"
-                    style={{ marginTop: "8px" }}>
-                    {fileErrorMessage}
-                  </Typography>
-                )}
-              </Box>
-            </Fade>
-            <Fade in={checked}>
-              <Box
-                flex="1"
-                marginLeft="1rem"
-                display="flex"
-                flexDirection="column">
+                style={{ width: "100%", height: "100%" }}
+              >
                 <TextField
                   multiline
                   rows={8}
                   variant="outlined"
-                  fullWidth
                   placeholder="Type your resume content here..."
                   value={resumeText}
                   onChange={(e) => {
                     setResumeText(e.target.value);
+                    setResumeError(false);
+                  }}
+                  style={{
+                    minHeight: "200px",
+                    height: "100%",
+                    width: "100%",
+                    color: "#fff",
+                    backgroundColor: "transparent",
+                    border: "none",
                   }}
                 />
               </Box>
-            </Fade>
+            )}
           </Box>
           {resumeError && (
             <Typography
@@ -467,16 +489,18 @@ export default function Home() {
                 urlError
                   ? "Invalid URL format!"
                   : urlWarning
-                  ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
-                  : ""
+                    ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
+                    : ""
               }
             />
             <Button
               color="link"
               variant="outlined"
-              style={{ minWidth: "3rem" }}>
-              <LinkIcon fontSize="medium" />
-            </Button>
+              style={{
+                minWidth: "3.5rem",
+                height: "3.5rem",
+              }}
+            ><LinkIcon fontSize="medium" /></Button>
           </Box>
           <Divider
             style={{
@@ -524,7 +548,7 @@ export default function Home() {
             variant="outlined"
             rows={5}
             multiline
-            placeholder="Paste your application questions here"
+            placeholder="Paste your application questions here..."
             value={applicationQuestion}
             onChange={(e) => setApplicationQuestion(e.target.value)}
           />
