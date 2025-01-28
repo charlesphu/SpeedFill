@@ -102,6 +102,8 @@ export default function Home() {
       } else {
         clearInterval(interval);
         setIsFileUploading(false);
+
+        updateResumeError(false);
         setHasResume(true);
       }
     }, 500);
@@ -118,40 +120,6 @@ export default function Home() {
 
     setIsFileUploading(false);
     setHasResume(false);
-  };
-
-  /**
-   * Handles form submission by validating the resume, job description, and URL.
-   * Ensures information passes basic validity checks
-   *
-   * The error priorities are:
-   * 1. If no resume is entered, a resumeError is given.
-   * 2. If neither a job URL nor description is provided, a formError is given.
-   * 3. If an invalid URL is provided, a urlError is given.
-   *
-   * @returns {void} Does not return anything.
-   */
-  const handleSubmit = () => {
-    // const resumeText = "This is a test resume text";
-    // const jobDescription = "This is a test job description";
-
-    // We want to display all missing fields at once
-    if (!hasResume) {
-      updateResumeError(true);
-    }
-
-    if (!hasJobDetail) {
-      updateJobDetailError(true);
-    }
-
-    // Only proceed if all fields are filled
-    if (hasResume && hasJobDetail) {
-      setShowResponse(true);
-      // const prompt = `Resume: ${resumeText}\nJob Description: ${
-      //   jobDescription || `URL: ${jobUrl}`
-      // }\nApplication Question: ${applicationQuestion}`;
-      // sendPrompt(prompt);
-    }
   };
 
   /**
@@ -262,6 +230,40 @@ export default function Home() {
     } else if (jobUrl) {
       updateJobUrlError(true);
       setHasJobDetail(false);
+    }
+  };
+
+  /**
+   * Handles form submission by validating the resume, job description, and URL.
+   * Ensures information passes basic validity checks
+   *
+   * The error priorities are:
+   * 1. If no resume is entered, a resumeError is given.
+   * 2. If neither a job URL nor description is provided, a formError is given.
+   * 3. If an invalid URL is provided, a urlError is given.
+   *
+   * @returns {void} Does not return anything.
+   */
+  const handleSubmit = () => {
+    // const resumeText = "This is a test resume text";
+    // const jobDescription = "This is a test job description";
+
+    // We want to display all missing fields at once
+    if (!hasResume) {
+      updateResumeError(true);
+    }
+
+    if (!hasJobDetail) {
+      updateJobDetailError(true);
+    }
+
+    // Only proceed if all fields are filled
+    if (hasResume && hasJobDetail) {
+      setShowResponse(true);
+      // const prompt = `Resume: ${resumeText}\nJob Description: ${
+      //   jobDescription || `URL: ${jobUrl}`
+      // }\nApplication Question: ${applicationQuestion}`;
+      // sendPrompt(prompt);
     }
   };
 
