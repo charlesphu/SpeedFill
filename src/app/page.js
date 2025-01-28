@@ -36,28 +36,32 @@ export default function Home() {
   const [jobUrl, setJobUrl] = useState("");
   const [applicationQuestion, setApplicationQuestion] = useState("");
 
+  // Control flow
+  const [acceptResumeAsText, setResumeAcceptanceType] = useState(false);
+
+  const [hasResume, setHasResume] = useState(false);
+  const [hasJobDetail, setHasJobDetail] = useState(false);
+
   // Error / Warning Handling
-  const [urlError, setUrlError] = useState(false);
-  const [formError, setFormError] = useState(false);
-  const [resumeError, setResumeError] = useState(false);
-  const [urlWarning, setUrlWarning] = useState(false);
+  const [showJobUrlError, updateJobUrlError] = useState(false);
+  const [showJobDetailError, updateJobDetailError] = useState(false);
+  const [showResumeError, updateResumeError] = useState(false);
+
   const [fileError, setFileError] = useState(false);
   const [fileErrorMessage, setFileErrorMessage] = useState("");
 
   // File handling
-  const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [fileName, setFileName] = useState("");
 
-  // Control flow (select upload vs. text)
-  const [checked, setChecked] = useState(false);
+  const [isFileUploading, setIsFileUploading] = useState(false);
+  const [fileUploadProgress, setFileUploadProgress] = useState(0);
 
   // Show response component
   const [showResponse, setShowResponse] = useState(false);
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleResumeTextChange = (event) => {
+    setResumeAcceptanceType(event.target.checked);
   };
 
   // Style variable for hovering over text
@@ -83,20 +87,22 @@ export default function Home() {
    * @returns {void} Does not return anything.
    */
   const uploadResume = (file) => {
-    setUploading(true);
+    let progress = 0;
+
+    setIsFileUploading(true);
     setFileName(file.name);
     setFile(file);
-    let progress = 0;
 
     // FAKE LOADING, REPLACE WITH ACTUAL BACKEND LOADING PROGRESS LATER!
     // come back and replace with circular/linear indeterminate once backend is set up to handle (see https://mui.com/material-ui/react-progress/)
     const interval = setInterval(() => {
       if (progress < 100) {
         progress += 10;
-        setUploadProgress(progress);
+        setFileUploadProgress(progress);
       } else {
         clearInterval(interval);
-        setUploading(false);
+        setIsFileUploading(false);
+        setHasResume(true);
       }
     }, 500);
   };
@@ -108,8 +114,10 @@ export default function Home() {
    */
   const handleClearResume = () => {
     setFileName("");
-    setUploading(false);
-    setUploadProgress(0);
+    setFileUploadProgress(0);
+
+    setIsFileUploading(false);
+    setHasResume(false);
   };
 
   /**
@@ -124,33 +132,26 @@ export default function Home() {
    * @returns {void} Does not return anything.
    */
   const handleSubmit = () => {
-    const resumeText = "This is a test resume text";
-    const jobDescription = "This is a test job description";
+    // const resumeText = "This is a test resume text";
+    // const jobDescription = "This is a test job description";
 
-    if (!resumeText) {
-      setResumeError(true);
-      return;
-    } else {
-      setResumeError(false);
+    // We want to display all missing fields at once
+    if (!hasResume) {
+      updateResumeError(true);
     }
 
-    if (!jobUrl && !jobDescription) {
-      setFormError(true);
-      return;
+    if (!hasJobDetail) {
+      updateJobDetailError(true);
     }
 
-    if (jobUrl && !validateUrl(jobUrl)) {
-      setUrlError(true);
-      return;
+    // Only proceed if all fields are filled
+    if (hasResume && hasJobDetail) {
+      setShowResponse(true);
+      // const prompt = `Resume: ${resumeText}\nJob Description: ${
+      //   jobDescription || `URL: ${jobUrl}`
+      // }\nApplication Question: ${applicationQuestion}`;
+      // sendPrompt(prompt);
     }
-
-    setFormError(false);
-    setShowResponse(true);
-
-    const prompt = `Resume: ${resumeText}\nJob Description: ${
-      jobDescription || `URL: ${jobUrl}`
-    }\nApplication Question: ${applicationQuestion}`;
-    // sendPrompt(prompt);
   };
 
   /**
@@ -178,6 +179,7 @@ export default function Home() {
     if (fileName) {
       handleClearResume(file);
     }
+
     uploadResume(file);
   };
 
@@ -196,7 +198,7 @@ export default function Home() {
         [],
     },
     maxSize: 5242880,
-    disabled: uploading,
+    disabled: isFileUploading,
   });
 
   /**
@@ -208,11 +210,12 @@ export default function Home() {
    */
   const handleUrlChange = (e) => {
     const url = e.target.value;
+
     setJobUrl(url);
     setJobDescription("");
-    setUrlError(false);
-    setFormError(false);
-    setUrlWarning(false);
+
+    updateJobUrlError(false);
+    updateJobDetailError(false);
   };
 
   /**
@@ -223,11 +226,12 @@ export default function Home() {
    * @returns {void} Does not return anything.
    */
   const handleJobDescriptionChange = (e) => {
-    setJobDescription(e.target.value);
+    updateJobUrlError(false);
+    updateJobDetailError(false);
+
     setJobUrl("");
-    setUrlError(false);
-    setFormError(false);
-    setUrlWarning(false);
+    setJobDescription(e.target.value);
+    setHasJobDetail(e.target.value.length > 0);
   };
 
   /**
@@ -245,13 +249,16 @@ export default function Home() {
 
   /**
    * Handles the blur event for the job URL input field.
-   * If the URL is not empty and is incorrectly formatted, a warning state (`urlWarning`) is set to `true`.
+   * If the URL is invalid, sets the URL error state to `true`.
    *
    * @returns {void} Does not return anything.
    */
   const handleUrlBlur = () => {
     if (jobUrl && !validateUrl(jobUrl)) {
-      setUrlWarning(true);
+      updateJobUrlError(true);
+      setHasJobDetail(false);
+    } else {
+      setHasJobDetail(true);
     }
   };
 
@@ -326,7 +333,12 @@ export default function Home() {
                   Your Resume
                 </Typography>
                 <FormControlLabel
-                  control={<Switch checked={checked} onChange={handleChange} />}
+                  control={
+                    <Switch
+                      checked={acceptResumeAsText}
+                      onChange={handleResumeTextChange}
+                    />
+                  }
                   label="Type in Resume"
                   sx={{
                     ".MuiTypography-root": {
@@ -358,11 +370,11 @@ export default function Home() {
                   height: "100%",
                   width: "100%",
                   transition: "border 0.3s ease",
-                  border: checked ? "none" : "2px dashed #999",
+                  border: acceptResumeAsText ? "none" : "2px dashed #999",
                 }}
                 minHeight="220px">
-                {!checked ? (
-                  <Fade in={!checked}>
+                {!acceptResumeAsText ? (
+                  <Fade in={!acceptResumeAsText}>
                     <Box
                       {...getRootProps()}
                       display="flex"
@@ -375,11 +387,11 @@ export default function Home() {
                         padding: "1rem",
                       }}>
                       <input {...getInputProps()} disabled={fileName} />
-                      {uploading ? (
+                      {isFileUploading ? (
                         <>
                           <LinearProgress
                             variant="determinate"
-                            value={uploadProgress}
+                            value={fileUploadProgress}
                             sx={{ width: "50%", marginTop: "10px" }}
                           />
                           <Typography variant="body1" marginTop="10px">
@@ -401,7 +413,7 @@ export default function Home() {
                               padding: "1px 7px",
                               marginTop: "5px",
                             }}
-                            disabled={uploading}>
+                            disabled={isFileUploading}>
                             Clear File
                           </Button>
                           <Button
@@ -411,7 +423,7 @@ export default function Home() {
                               window.open(URL.createObjectURL(file), "_blank")
                             }
                             style={{ padding: "1px 7px" }}
-                            disabled={uploading}>
+                            disabled={isFileUploading}>
                             Preview Document
                           </Button>
                         </>
@@ -453,7 +465,9 @@ export default function Home() {
                       value={resumeText}
                       onChange={(e) => {
                         setResumeText(e.target.value);
-                        setResumeError(false);
+                        updateResumeError(false);
+
+                        setHasResume(e.target.value.length > 0);
                       }}
                       style={{
                         minHeight: "200px",
@@ -467,7 +481,7 @@ export default function Home() {
                   </Box>
                 )}
               </Box>
-              {resumeError && (
+              {showResumeError && (
                 <Typography
                   variant="body2"
                   color="error"
@@ -507,14 +521,7 @@ export default function Home() {
                   value={jobUrl}
                   onChange={handleUrlChange}
                   onBlur={handleUrlBlur}
-                  error={urlError}
-                  helperText={
-                    urlError
-                      ? "Invalid URL format!"
-                      : urlWarning
-                      ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
-                      : ""
-                  }
+                  error={showJobUrlError}
                 />
                 <Button
                   color="link"
@@ -526,6 +533,14 @@ export default function Home() {
                   <LinkIcon fontSize="medium" />
                 </Button>
               </Box>
+              {showJobUrlError && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  style={{ marginTop: "8px" }}>
+                  This seems to be an invalid URL. Please double-check the link.
+                </Typography>
+              )}
               <Divider
                 style={{
                   width: "50%",
@@ -541,12 +556,12 @@ export default function Home() {
                 value={jobDescription}
                 onChange={handleJobDescriptionChange}
               />
-              {formError && (
+              {showJobDetailError && (
                 <Typography
                   variant="body2"
                   color="error"
                   style={{ marginTop: "8px" }}>
-                  Please provide either a job URL or a job description.
+                  Please provide a job application URL or a job description.
                 </Typography>
               )}
 
