@@ -216,6 +216,8 @@ export default function Home() {
 
     updateJobUrlError(false);
     updateJobDetailError(false);
+
+    setHasJobDetail(false);
   };
 
   /**
@@ -231,6 +233,7 @@ export default function Home() {
 
     setJobUrl("");
     setJobDescription(e.target.value);
+
     setHasJobDetail(e.target.value.length > 0);
   };
 
@@ -254,11 +257,11 @@ export default function Home() {
    * @returns {void} Does not return anything.
    */
   const handleUrlBlur = () => {
-    if (jobUrl && !validateUrl(jobUrl)) {
+    if (jobUrl && validateUrl(jobUrl)) {
+      setHasJobDetail(true);
+    } else if (jobUrl) {
       updateJobUrlError(true);
       setHasJobDetail(false);
-    } else {
-      setHasJobDetail(true);
     }
   };
 
