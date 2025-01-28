@@ -21,7 +21,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { FileUpload, InsertDriveFile, Opacity } from "@mui/icons-material";
 
 // AI prompting
-import useAIPrompt from "../hooks/useAIPrompt";
+import useAIPrompt from "../../../hooks/useAIPrompt";
 
 export default function Home() {
   /*
