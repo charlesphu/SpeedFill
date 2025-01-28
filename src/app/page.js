@@ -53,6 +53,9 @@ export default function Home() {
   // Control flow (select upload vs. text)
   const [checked, setChecked] = useState(false);
 
+  // Show response component
+  const [showResponse, setShowResponse] = useState(false);
+
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -121,23 +124,33 @@ export default function Home() {
    * @returns {void} Does not return anything.
    */
   const handleSubmit = () => {
+    const resumeText = "This is a test resume text";
+    const jobDescription = "This is a test job description";
+
     if (!resumeText) {
       setResumeError(true);
       return;
     } else {
       setResumeError(false);
     }
+
     if (!jobUrl && !jobDescription) {
       setFormError(true);
       return;
     }
+
     if (jobUrl && !validateUrl(jobUrl)) {
       setUrlError(true);
       return;
     }
+
     setFormError(false);
-    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`
-      }\nApplication Question: ${applicationQuestion}`;
+    setShowResponse(true);
+
+    const prompt = `Resume: ${resumeText}\nJob Description: ${
+      jobDescription || `URL: ${jobUrl}`
+    }\nApplication Question: ${applicationQuestion}`;
+    // sendPrompt(prompt);
   };
 
   /**
@@ -251,10 +264,7 @@ export default function Home() {
         paddingTop="1.25rem"
         paddingBottom="2.5rem"
         elevation={0}>
-        <Typography
-          variant="h1"
-          fontWeight="bold"
-          marginBottom="0.625rem">
+        <Typography variant="h1" fontWeight="bold" marginBottom="0.625rem">
           Speed
           <span
             style={{
@@ -297,272 +307,295 @@ export default function Home() {
           borderRadius="0.5rem"
           width="80%"
           maxWidth="50rem">
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            width="100%">
-            <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
-              Your Resume
-            </Typography>
-            <FormControlLabel
-              control={<Switch checked={checked} onChange={handleChange} />}
-              label="Type in Resume"
-              sx={{
-                ".MuiTypography-root": {
-                  fontSize: "0.8rem",
-                  color: "text.primary",
-                },
-              }}
+          {showResponse ? (
+            <TextField
+              value="This is an example response"
+              InputProps={{ readOnly: true }}
             />
-          </Box>
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            marginTop="0.125rem"
-            marginBottom="0.9rem">
-            Share your resume with us and AI will take a look
-          </Typography>
-          <Box
-            flex="1"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="#282828"
-            color="#999"
-            borderRadius="8px"
-            textAlign="center"
-            style={{
-              cursor: "pointer",
-              height: "100%",
-              width: "100%",
-              transition: "border 0.3s ease",
-              border: checked ? "none" : "2px dashed #999",
-            }}
-            minHeight="220px"
-          >
-            {!checked ? (
-              <Fade in={!checked}>
-                <Box
-                  {...getRootProps()}
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  justifyContent="center"
-                  style={{ width: "100%", height: "100%", padding: "1rem" }}
-                >
-                  <input {...getInputProps()} disabled={fileName} />
-                  {uploading ? (
-                    <>
-                      <LinearProgress
-                        variant="determinate"
-                        value={uploadProgress}
-                        sx={{ width: "50%", marginTop: "10px" }}
-                      />
-                      <Typography variant="body1" marginTop="10px">
-                        Uploading...
-                      </Typography>
-                    </>
-                  ) : fileName ? (
-                    <>
-                      <InsertDriveFile
-                        fontSize="large"
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <Typography variant="body1">{fileName}</Typography>
-                      <Button
-                        variant="text"
-                        color="secondary"
-                        onClick={handleClearResume}
-                        style={{
-                          padding: "1px 7px",
-                          marginTop: "5px",
-                        }}
-                        disabled={uploading}
-                      >
-                        Clear File
-                      </Button>
-                      <Button
-                        variant="text"
-                        color="secondary"
-                        onClick={() =>
-                          window.open(URL.createObjectURL(file), "_blank")
-                        }
-                        style={{ padding: "1px 7px" }}
-                        disabled={uploading}
-                      >
-                        Preview Document
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <FileUpload
-                        style={{ fontSize: "48px", marginBottom: "10px" }}
-                      />
-                      <Typography variant="body1" marginBottom="5px">
-                        Drag and drop or <strong>Click to upload</strong>
-                      </Typography>
-                      <Typography variant="body2" color="textTertiary">
-                        PDF, DOC, or DOCX (MAX. 5MB)
-                      </Typography>
-                    </>
-                  )}
-                  {fileError && (
-                    <Typography
-                      variant="body2"
-                      color="error"
-                      style={{ marginTop: "8px" }}
-                    >
-                      {fileErrorMessage}
-                    </Typography>
-                  )}
-                </Box>
-              </Fade>
-            ) : (
+          ) : (
+            <>
               <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%">
+                <Typography
+                  sx={textHoverStyle}
+                  variant="h5"
+                  fontWeight="medium">
+                  Your Resume
+                </Typography>
+                <FormControlLabel
+                  control={<Switch checked={checked} onChange={handleChange} />}
+                  label="Type in Resume"
+                  sx={{
+                    ".MuiTypography-root": {
+                      fontSize: "0.8rem",
+                      color: "text.primary",
+                    },
+                  }}
+                />
+              </Box>
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                marginTop="0.125rem"
+                marginBottom="0.9rem">
+                Share your resume with us and AI will take a look
+              </Typography>
+              <Box
+                flex="1"
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                style={{ width: "100%", height: "100%" }}
-              >
-                <TextField
-                  multiline
-                  rows={8}
-                  variant="outlined"
-                  placeholder="Type your resume content here..."
-                  value={resumeText}
-                  onChange={(e) => {
-                    setResumeText(e.target.value);
-                    setResumeError(false);
-                  }}
-                  style={{
-                    minHeight: "200px",
-                    height: "100%",
-                    width: "100%",
-                    color: "#fff",
-                    backgroundColor: "transparent",
-                    border: "none",
-                  }}
-                />
+                bgcolor="#282828"
+                color="#999"
+                borderRadius="8px"
+                textAlign="center"
+                style={{
+                  cursor: "pointer",
+                  height: "100%",
+                  width: "100%",
+                  transition: "border 0.3s ease",
+                  border: checked ? "none" : "2px dashed #999",
+                }}
+                minHeight="220px">
+                {!checked ? (
+                  <Fade in={!checked}>
+                    <Box
+                      {...getRootProps()}
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        padding: "1rem",
+                      }}>
+                      <input {...getInputProps()} disabled={fileName} />
+                      {uploading ? (
+                        <>
+                          <LinearProgress
+                            variant="determinate"
+                            value={uploadProgress}
+                            sx={{ width: "50%", marginTop: "10px" }}
+                          />
+                          <Typography variant="body1" marginTop="10px">
+                            Uploading...
+                          </Typography>
+                        </>
+                      ) : fileName ? (
+                        <>
+                          <InsertDriveFile
+                            fontSize="large"
+                            style={{ marginBottom: "10px" }}
+                          />
+                          <Typography variant="body1">{fileName}</Typography>
+                          <Button
+                            variant="text"
+                            color="secondary"
+                            onClick={handleClearResume}
+                            style={{
+                              padding: "1px 7px",
+                              marginTop: "5px",
+                            }}
+                            disabled={uploading}>
+                            Clear File
+                          </Button>
+                          <Button
+                            variant="text"
+                            color="secondary"
+                            onClick={() =>
+                              window.open(URL.createObjectURL(file), "_blank")
+                            }
+                            style={{ padding: "1px 7px" }}
+                            disabled={uploading}>
+                            Preview Document
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <FileUpload
+                            style={{ fontSize: "48px", marginBottom: "10px" }}
+                          />
+                          <Typography variant="body1" marginBottom="5px">
+                            Drag and drop or <strong>Click to upload</strong>
+                          </Typography>
+                          <Typography variant="body2" color="textTertiary">
+                            PDF, DOC, or DOCX (MAX. 5MB)
+                          </Typography>
+                        </>
+                      )}
+                      {fileError && (
+                        <Typography
+                          variant="body2"
+                          color="error"
+                          style={{ marginTop: "8px" }}>
+                          {fileErrorMessage}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Fade>
+                ) : (
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ width: "100%", height: "100%" }}>
+                    <TextField
+                      multiline
+                      rows={8}
+                      variant="outlined"
+                      placeholder="Type your resume content here..."
+                      value={resumeText}
+                      onChange={(e) => {
+                        setResumeText(e.target.value);
+                        setResumeError(false);
+                      }}
+                      style={{
+                        minHeight: "200px",
+                        height: "100%",
+                        width: "100%",
+                        color: "#fff",
+                        backgroundColor: "transparent",
+                        border: "none",
+                      }}
+                    />
+                  </Box>
+                )}
               </Box>
-            )}
-          </Box>
-          {resumeError && (
-            <Typography
-              variant="body2"
-              color="error"
-              style={{ marginTop: "8px" }}>
-              Please upload or paste your resume.
-            </Typography>
+              {resumeError && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  style={{ marginTop: "8px" }}>
+                  Please upload or paste your resume.
+                </Typography>
+              )}
+
+              <Divider
+                style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }}
+              />
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%">
+                <Typography
+                  sx={textHoverStyle}
+                  variant="h5"
+                  fontWeight="medium">
+                  Job Description
+                </Typography>
+              </Box>
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                marginTop="0.125rem"
+                marginBottom="0.9rem">
+                Tell us a little about the job you're applying for
+              </Typography>
+              <Box display="flex" flexDirection="row">
+                <TextField
+                  variant="outlined"
+                  type="url"
+                  placeholder="Paste the job application URL here..."
+                  style={{ flex: 1, marginRight: "0.8rem" }}
+                  value={jobUrl}
+                  onChange={handleUrlChange}
+                  onBlur={handleUrlBlur}
+                  error={urlError}
+                  helperText={
+                    urlError
+                      ? "Invalid URL format!"
+                      : urlWarning
+                      ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
+                      : ""
+                  }
+                />
+                <Button
+                  color="link"
+                  variant="outlined"
+                  style={{
+                    minWidth: "3.5rem",
+                    height: "3.5rem",
+                  }}>
+                  <LinkIcon fontSize="medium" />
+                </Button>
+              </Box>
+              <Divider
+                style={{
+                  width: "50%",
+                  margin: "0.6rem auto 0.6rem auto",
+                }}>
+                <span style={{ color: "#999" }}>OR</span>
+              </Divider>
+              <TextField
+                variant="outlined"
+                rows={5}
+                multiline
+                placeholder="Paste the job description here..."
+                value={jobDescription}
+                onChange={handleJobDescriptionChange}
+              />
+              {formError && (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  style={{ marginTop: "8px" }}>
+                  Please provide either a job URL or a job description.
+                </Typography>
+              )}
+
+              <Divider
+                style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }}
+              />
+
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%">
+                <Typography
+                  sx={textHoverStyle}
+                  variant="h5"
+                  fontWeight="medium">
+                  Additional Questions
+                </Typography>
+              </Box>
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                marginTop="0.125rem"
+                marginBottom="1rem">
+                Anything else you'd like us to cover?
+              </Typography>
+              <TextField
+                variant="outlined"
+                rows={5}
+                multiline
+                placeholder="Paste your application questions here..."
+                value={applicationQuestion}
+                onChange={(e) => setApplicationQuestion(e.target.value)}
+              />
+
+              <Divider
+                style={{ marginTop: "1.25rem", marginBottom: "1.25rem" }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<AutoAwesomeIcon />}
+                // uncomment this if you want to see the console log something
+                onClick={handleSubmit}>
+                Submit
+              </Button>
+            </>
           )}
-
-          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            width="100%">
-            <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
-              Job Description
-            </Typography>
-          </Box>
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            marginTop="0.125rem"
-            marginBottom="0.9rem">
-            Tell us a little about the job you're applying for
-          </Typography>
-          <Box display="flex" flexDirection="row">
-            <TextField
-              variant="outlined"
-              type="url"
-              placeholder="Paste the job application URL here..."
-              style={{ flex: 1, marginRight: "0.8rem" }}
-              value={jobUrl}
-              onChange={handleUrlChange}
-              onBlur={handleUrlBlur}
-              error={urlError}
-              helperText={
-                urlError
-                  ? "Invalid URL format!"
-                  : urlWarning
-                    ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
-                    : ""
-              }
-            />
-            <Button
-              color="link"
-              variant="outlined"
-              style={{
-                minWidth: "3.5rem",
-                height: "3.5rem",
-              }}
-            ><LinkIcon fontSize="medium" /></Button>
-          </Box>
-          <Divider
-            style={{
-              width: "50%",
-              margin: "0.6rem auto 0.6rem auto",
-            }}>
-            <span style={{ color: "#999" }}>OR</span>
-          </Divider>
-          <TextField
-            variant="outlined"
-            rows={5}
-            multiline
-            placeholder="Paste the job description here..."
-            value={jobDescription}
-            onChange={handleJobDescriptionChange}
-          />
-          {formError && (
-            <Typography
-              variant="body2"
-              color="error"
-              style={{ marginTop: "8px" }}>
-              Please provide either a job URL or a job description.
-            </Typography>
-          )}
-
-          <Divider style={{ marginTop: "1.25rem", marginBottom: "0.9rem" }} />
-
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            width="100%">
-            <Typography sx={textHoverStyle} variant="h5" fontWeight="medium">
-              Additional Questions
-            </Typography>
-          </Box>
-          <Typography
-            variant="body1"
-            color="textSecondary"
-            marginTop="0.125rem"
-            marginBottom="1rem">
-            Anything else you'd like us to cover?
-          </Typography>
-          <TextField
-            variant="outlined"
-            rows={5}
-            multiline
-            placeholder="Paste your application questions here..."
-            value={applicationQuestion}
-            onChange={(e) => setApplicationQuestion(e.target.value)}
-          />
-
-          <Divider style={{ marginTop: "1.25rem", marginBottom: "1.25rem" }} />
-
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={<AutoAwesomeIcon />}
-            // uncomment this if you want to see the console log something
-            onClick={handleSubmit}>
-            Submit
-          </Button>
         </Box>
       </Box>
     </>
