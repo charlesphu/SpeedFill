@@ -21,7 +21,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { FileUpload, InsertDriveFile, Opacity } from "@mui/icons-material";
 
 // AI prompting
-import useAIPrompt from "../../../hooks/useAIPrompt";
+import useAIPrompt from "../hooks/useAIPrompt";
 
 export default function Home() {
   /*
@@ -281,7 +281,7 @@ export default function Home() {
           <span
             style={{
               background:
-                "linear-gradient(45deg,rgb(171, 117, 188) 30%,rgb(255, 255, 255)) 30%",
+                "linear-gradient(45deg,rgb(97, 34, 255), rgb(255, 255, 255)) 30%",
               WebkitBackgroundClip: "text",
               color: "transparent",
             }}>
@@ -308,6 +308,8 @@ export default function Home() {
 
         <Box
           style={{
+            border: "1px solid rgb(135, 135, 135, 0.2)",
+            background: "linear-gradient(to bottom, rgba(135, 135, 135, 0.2) 3%, rgb(28, 28, 28) 10%)",
             boxShadow:
               "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
           }}
@@ -617,7 +619,7 @@ export default function Home() {
             </>
           )}
         </Box>
-      </Box>
+      </Box >
     </>
   );
 }

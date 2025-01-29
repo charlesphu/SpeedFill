@@ -14,7 +14,10 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#c595d4",
+      main: "rgb(97, 34, 255)",
+    },
+    secondary: {
+      main: "rgb(110, 83, 179)",
     },
     link: {
       main: "#858585",
@@ -24,12 +27,12 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: 'linear-gradient(rgb(46, 46, 46) 30%, rgb(20, 20, 20) 100%)',
+          background: 'radial-gradient(circle, rgb(47, 47, 47) 0%, rgb(32, 32, 32) 40%, rgb(12, 12, 12) 80%, rgb(0, 0, 0) 100%)',
           backgroundSize: 'cover',
           backgroundAttachment: 'fixed',
           backgroundRepeat: 'no-repeat',
-        }
-      }
+        },
+      },
     },
     MuiButtonBase: {
       defaultProps: {
