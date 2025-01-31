@@ -7,14 +7,24 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 export async function POST(request) {
   try {
     const body = await request.json(); // Parse the JSON body
-    const { prompt } = body;
-
-    if (!prompt) {
+    const { resume, jobDesc, isURL, appQuestion } = body;
+    console.log(`${resume},${jobDesc},${isURL},${appQuestion}`)
+    if (!resume || !jobDesc || !appQuestion) {
       return NextResponse.json(
         { error: "Prompt is required" },
         { status: 400 } // Bad Request
       );
     }
+
+    // webscraping
+    if (isURL) {
+      //webscrape the URL
+    }
+
+    var prompt = `Given my resume: ${resume}, 
+            answer this ${appQuestion}, 
+            in a way that it fits ${jobDesc}`
+
     const result = await model.generateContent(prompt);
     // console.log(result.response.text());
 

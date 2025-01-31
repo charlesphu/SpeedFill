@@ -138,6 +138,9 @@ export default function Home() {
     setFormError(false);
     const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`
       }\nApplication Question: ${applicationQuestion}`;
+
+    const isURL = false;
+    sendPrompt(`${resumeText}`, `${jobDescription}`, isURL, `${applicationQuestion}`)
   };
 
   /**
