@@ -16,6 +16,7 @@ export async function POST(request) {
       );
     }
 
+    var actualJD = jobDesc
     // webscraping
     if (isURL) {
       //webscrape the URL
@@ -23,7 +24,7 @@ export async function POST(request) {
 
     var prompt = `Given my resume: ${resume}, 
             answer this ${appQuestion}, 
-            in a way that it fits ${jobDesc}`
+            in a way that it fits ${actualJD}`
 
     const result = await model.generateContent(prompt);
     // console.log(result.response.text());
