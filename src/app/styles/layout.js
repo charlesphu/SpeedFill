@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 import CssBaseline from "@mui/material/CssBaseline";
 
-import theme from "./theme";
+import theme from "../theme";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,13 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-      // style={{
-      //   background:
-      //     "radial-gradient(circle, rgba(163, 48, 208) 0%, rgba(35, 8, 68) 100%)",
-      //   backgroundRepeat: "no-repeat",
-      // }}>
-      >
+      <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
