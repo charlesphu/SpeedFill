@@ -140,7 +140,8 @@ export default function Home() {
       }\nApplication Question: ${applicationQuestion}`;
 
     const isURL = false;
-    sendPrompt(`${resumeText}`, `${jobDescription}`, isURL, `${applicationQuestion}`)
+    const isPDF = false;
+    sendPrompt(`${resumeText}`, isPDF, `${jobDescription}`, isURL, `${applicationQuestion}`)
   };
 
   /**

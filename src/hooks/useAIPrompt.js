@@ -5,7 +5,7 @@ export default function useAIPrompt() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const sendPrompt = async (resumeText, jobDescription, isURL, applicationQuestion) => {
+  const sendPrompt = async (resumeText, isPDF, jobDescription, isURL, applicationQuestion) => {
     setLoading(true);
 
     try {
@@ -14,6 +14,7 @@ export default function useAIPrompt() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           resume: resumeText, 
+          isPDF: isPDF,
           jobDesc: jobDescription,
           isURL: isURL,
           appQuestion: applicationQuestion
