@@ -1,9 +1,9 @@
-// The background image shared across all pages, not sure if this should be a component or be embedded in the styles
 import React from 'react';
 import { Box, useTheme } from '@mui/material';
 
 const Background = ({ imageUrl, children }) => {
     const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -13,9 +13,11 @@ const Background = ({ imageUrl, children }) => {
                 backgroundColor: theme.palette.primary.main,
                 backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
                 backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundPosition: '0 0',
+                backgroundRepeat: 'repeat-x',
                 display: 'flex',
                 alignItems: 'center',
+                animation: 'scrollBackground 40s linear infinite',
             }}
         >
             {imageUrl && (
@@ -35,6 +37,18 @@ const Background = ({ imageUrl, children }) => {
             <Box sx={{ position: 'relative', zIndex: 1 }}>
                 {children}
             </Box>
+            <style>
+                {`
+                    @keyframes scrollBackground {
+                        0% {
+                            background-position: 0 0;
+                        }
+                        100% {
+                            background-position: 100% 0;
+                        }
+                    }
+                `}
+            </style>
         </Box>
     );
 };

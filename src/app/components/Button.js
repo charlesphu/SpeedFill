@@ -1,29 +1,38 @@
-// This will be our custom generic button Component. Should display a text with an optional icon.
-// Reference: "Generate Cover letter" Button
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-const ComponentButton = ({ text, normalColor, hoverColor, clickColor }) => {
+const CustomButton = ({ children, variant = 'contained', color, fullWidth = true, onClick, type = 'button', sx = {} }) => {
     const theme = useTheme();
+
     return (
         <Button
+            type={type}
+            variant={variant}
+            color={color || 'primary'}
+            fullWidth={fullWidth}
+            onClick={onClick}
             sx={{
-                backgroundColor: normalColor,
-                color: theme.palette.text.primary,
+                borderRadius: '10px',
+                backgroundColor: theme.palette.menu.button,
+                fontSize: "20px",
+                marginTop: '20px',
+                minHeight: '50px',
+                textTransform: 'none',
+                color: theme.palette.text.main,
+                boxShadow: 'none',
+                border: 'none',
+                outline: 'none',
                 '&:hover': {
-                    backgroundColor: hoverColor,
+                    backgroundColor: theme.palette.menu.button_hover,
+                    boxShadow: 'none',
+                    border: 'none',
                 },
-                '&:active': {
-                    backgroundColor: clickColor,
-                },
-                transition: 'background-color 0.3s ease',
-                padding: '10px 20px',
-                fontWeight: 'bold',
+                ...sx,
             }}
         >
-            {text}
+            {children}
         </Button>
     );
 };
 
-export default ComponentButton;
+export default CustomButton;
