@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
@@ -14,16 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-      // style={{
-      //   background:
-      //     "radial-gradient(circle, rgba(163, 48, 208) 0%, rgba(35, 8, 68) 100%)",
-      //   backgroundRepeat: "no-repeat",
-      // }}>
-      >
+      <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             {children}
           </ThemeProvider>
