@@ -136,8 +136,19 @@ export default function Home() {
       return;
     }
     setFormError(false);
-    const prompt = `Resume: ${resumeText}\nJob Description: ${jobDescription || `URL: ${jobUrl}`
-      }\nApplication Question: ${applicationQuestion}`;
+    const prompt = `Resume: ${resumeText}\nJob Description: ${
+      jobDescription || `URL: ${jobUrl}`
+    }\nApplication Question: ${applicationQuestion}`;
+
+    const isURL = false;
+    const isPDF = false;
+    sendPrompt(
+      `${resumeText}`,
+      isPDF,
+      `${jobDescription}`,
+      isURL,
+      `${applicationQuestion}`
+    );
   };
 
   /**
@@ -251,10 +262,7 @@ export default function Home() {
         paddingTop="1.25rem"
         paddingBottom="2.5rem"
         elevation={0}>
-        <Typography
-          variant="h1"
-          fontWeight="bold"
-          marginBottom="0.625rem">
+        <Typography variant="h1" fontWeight="bold" marginBottom="0.625rem">
           Speed
           <span
             style={{
@@ -340,8 +348,7 @@ export default function Home() {
               transition: "border 0.3s ease",
               border: checked ? "none" : "2px dashed #999",
             }}
-            minHeight="220px"
-          >
+            minHeight="220px">
             {!checked ? (
               <Fade in={!checked}>
                 <Box
@@ -350,8 +357,7 @@ export default function Home() {
                   flexDirection="column"
                   alignItems="center"
                   justifyContent="center"
-                  style={{ width: "100%", height: "100%", padding: "1rem" }}
-                >
+                  style={{ width: "100%", height: "100%", padding: "1rem" }}>
                   <input {...getInputProps()} disabled={fileName} />
                   {uploading ? (
                     <>
@@ -379,8 +385,7 @@ export default function Home() {
                           padding: "1px 7px",
                           marginTop: "5px",
                         }}
-                        disabled={uploading}
-                      >
+                        disabled={uploading}>
                         Clear File
                       </Button>
                       <Button
@@ -390,8 +395,7 @@ export default function Home() {
                           window.open(URL.createObjectURL(file), "_blank")
                         }
                         style={{ padding: "1px 7px" }}
-                        disabled={uploading}
-                      >
+                        disabled={uploading}>
                         Preview Document
                       </Button>
                     </>
@@ -412,8 +416,7 @@ export default function Home() {
                     <Typography
                       variant="body2"
                       color="error"
-                      style={{ marginTop: "8px" }}
-                    >
+                      style={{ marginTop: "8px" }}>
                       {fileErrorMessage}
                     </Typography>
                   )}
@@ -425,8 +428,7 @@ export default function Home() {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                style={{ width: "100%", height: "100%" }}
-              >
+                style={{ width: "100%", height: "100%" }}>
                 <TextField
                   multiline
                   rows={8}
@@ -489,8 +491,8 @@ export default function Home() {
                 urlError
                   ? "Invalid URL format!"
                   : urlWarning
-                    ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
-                    : ""
+                  ? "Warning, this doesn't seem to be a valid URL. Please double check before submitting."
+                  : ""
               }
             />
             <Button
@@ -499,8 +501,9 @@ export default function Home() {
               style={{
                 minWidth: "3.5rem",
                 height: "3.5rem",
-              }}
-            ><LinkIcon fontSize="medium" /></Button>
+              }}>
+              <LinkIcon fontSize="medium" />
+            </Button>
           </Box>
           <Divider
             style={{

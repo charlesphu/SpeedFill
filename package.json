@@ -17,9 +17,11 @@
     "@mui/material-nextjs": "^6.3.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "firebase": "^11.2.0",
     "gemini-api": "^2.0.4",
     "next": "^15.1.5",
     "openai": "^4.79.1",
+    "pdf-parse": "^1.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5"
