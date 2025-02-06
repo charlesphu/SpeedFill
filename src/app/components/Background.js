@@ -12,12 +12,12 @@ const Background = ({ imageUrl, children }) => {
                 height: '100vh',
                 backgroundColor: theme.palette.primary.main,
                 backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
-                backgroundSize: 'cover',
+                backgroundSize: '200% auto',
                 backgroundPosition: '0 0',
                 backgroundRepeat: 'repeat-x',
                 display: 'flex',
                 alignItems: 'center',
-                animation: 'scrollBackground 40s linear infinite',
+                animation: 'scrollBackground 120s linear infinite',
             }}
         >
             {imageUrl && (
@@ -44,7 +44,7 @@ const Background = ({ imageUrl, children }) => {
                             background-position: 0 0;
                         }
                         100% {
-                            background-position: 100% 0;
+                            background-position: 200% 0;
                         }
                     }
                 `}

@@ -8,7 +8,7 @@ const Home = () => {
   const theme = useTheme();
   return (
     <Background imageUrl='/background.jpg'>
-    </Background>
+    </Background >
   );
 };
 
