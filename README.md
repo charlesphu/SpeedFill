@@ -10,6 +10,9 @@ A comprehension tool for job seekers, designed to simplify and streamline the ap
 ## Getting Started
 
 First git pull the latest version from main
+```bash
+git pull
+```
 
 Second, download packges:
 
