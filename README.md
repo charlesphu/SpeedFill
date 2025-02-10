@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Speedfill
+A comprehension tool for job seekers, designed to simplify and streamline the application process. 
+## Key Features:
+Personalized Response Generation: Create custom answers to common application questions based on your resume and job description
+Intelligent Autofill: Reduce the time spent on repetitive tasks, allowing you to apply to more opportunities efficiently
 
 ## Getting Started
 
