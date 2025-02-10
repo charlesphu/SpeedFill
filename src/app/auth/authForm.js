@@ -9,13 +9,17 @@ import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
+import { useRouter } from 'next/navigation'
+
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fade, setFade] = useState(true);
+    const [error, setError] = useState('');
 
     const theme = useTheme();
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,10 +30,11 @@ const AuthForm = () => {
             } else {
                 await createUserWithEmailAndPassword(auth, email, password);
             }
+            router.push("/")
 
         }
         catch (error) {
-            console.error(error.message);
+            setError(`${isLogin ? 'Login' : 'Signup'} failed. Email: ${email} - Error: ${error.message}`);
         }
     };
 
@@ -40,6 +45,7 @@ const AuthForm = () => {
         } catch (error) {
             console.error(error.message);
         }
+        router.push("/")
     };
 
 
@@ -63,6 +69,23 @@ const AuthForm = () => {
                     borderRadius: '8px',
                 }}
             >
+                {error && (
+                    <Box sx={{
+                        position: 'absolute',
+                        top: '10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        backgroundColor: 'red',
+                        color: 'white',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                        zIndex: 10,
+                        fontSize: '14px',
+                    }}>
+                        <Typography>{error}</Typography>
+                    </Box>
+                )}
                 <Fade in={fade} timeout={500}>
                     <Typography
                         variant="h5"
