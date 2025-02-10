@@ -20,6 +20,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LinkIcon from "@mui/icons-material/Link";
 import { FileUpload, InsertDriveFile, Opacity } from "@mui/icons-material";
 
+import pdfToText from "../hooks/pdftotext.js"
 // AI prompting
 import useAIPrompt from "../hooks/useAIPrompt";
 
@@ -391,8 +392,11 @@ export default function Home() {
                       <Button
                         variant="text"
                         color="secondary"
-                        onClick={() =>
-                          window.open(URL.createObjectURL(file), "_blank")
+                        onClick={() => {
+                            // window.open(URL.createObjectURL(file), "_blank")
+                            // console.log(URL.createObjectURL(file))
+                            console.log(pdfToText(file))
+                          }
                         }
                         style={{ padding: "1px 7px" }}
                         disabled={uploading}>
