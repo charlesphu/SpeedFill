@@ -5,23 +5,49 @@ import TextArea from '../components/TextArea';
 import CustomButton from '../components/Button';
 import CustomDivider from '../components/Divider';
 
+import { auth } from "../firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
+import { useRouter } from 'next/navigation'
+
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUserame] = useState('');
     const [fade, setFade] = useState(true);
+    const [error, setError] = useState('');
 
     const theme = useTheme();
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isLogin) {
-            console.log('Login with:', email, password);
-        } else {
-            console.log('Sign Up with:', email, password, username);
+
+        try {
+            if (isLogin) {
+                await signInWithEmailAndPassword(auth, email, password);
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+            }
+            router.push("/")
+
+        }
+        catch (error) {
+            setError(`${isLogin ? 'Login' : 'Signup'} failed. Email: ${email} - Error: ${error.message}`);
         }
     };
+
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error(error.message);
+        }
+        router.push("/")
+    };
+
 
     const handleToggleAuth = () => {
         setFade(false);
@@ -30,6 +56,7 @@ const AuthForm = () => {
             setFade(true);
         }, 300);
     };
+
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -42,6 +69,23 @@ const AuthForm = () => {
                     borderRadius: '8px',
                 }}
             >
+                {error && (
+                    <Box sx={{
+                        position: 'absolute',
+                        top: '10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        backgroundColor: 'red',
+                        color: 'white',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                        zIndex: 10,
+                        fontSize: '14px',
+                    }}>
+                        <Typography>{error}</Typography>
+                    </Box>
+                )}
                 <Fade in={fade} timeout={500}>
                     <Typography
                         variant="h5"
@@ -74,15 +118,6 @@ const AuthForm = () => {
                 <Fade in={fade} timeout={500}>
                     <Box position="relative">
                         <form onSubmit={handleSubmit}>
-                            {!isLogin && (
-                                <TextArea
-                                    label="Username"
-                                    type="username"
-                                    value={username}
-                                    onChange={(e) => setUserame(e.target.value)}
-                                    required
-                                />
-                            )}
                             <TextArea
                                 label="Email"
                                 type="email"
@@ -122,6 +157,7 @@ const AuthForm = () => {
                             <CustomDivider />
                             <CustomButton
                                 variant="outlined"
+                                onClick={handleGoogleSignIn}
                                 sx={{
                                     borderRadius: '20px',
                                     fontWeight: '400',
