@@ -393,9 +393,8 @@ export default function Home() {
                         variant="text"
                         color="secondary"
                         onClick={() => {
-                            // window.open(URL.createObjectURL(file), "_blank")
-                            // console.log(URL.createObjectURL(file))
-                            console.log(pdfToText(file))
+                            window.open(URL.createObjectURL(file), "_blank")
+                            // console.log(pdfToText(file))
                           }
                         }
                         style={{ padding: "1px 7px" }}
