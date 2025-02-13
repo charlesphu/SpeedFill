@@ -10,21 +10,26 @@ const Container = ({ title, subtitle, sx, children }) => {
         padding: "1rem",
         borderRadius: "5px",
 
+        maxWidth: "sm",
         width: "100%",
+
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        gap: "0.5rem",
+        justifyContent: "top",
 
-        mx: "auto",
-        maxWidth: "sm",
+        gap: "1.2rem",
+        alignSelf: "flex-start",
 
         ...sx,
       }}>
       <Typography variant="h4" color="title">
         {title}
       </Typography>
-      <Typography variant="subtitle1" color="title" marginTop="-0.8rem">
+      <Typography
+        variant="subtitle1"
+        color="title"
+        marginTop="-1.4rem"
+        marginBottom="-0.5rem">
         {subtitle}
       </Typography>
       {children}
