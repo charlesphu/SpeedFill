@@ -52,12 +52,23 @@ const theme = createTheme({
 
     // These are the container body sizes
     h4: {
-      fontSize: "1.8rem",
+      fontSize: "1.7rem",
       fontWeight: "550",
     },
-    h5: {
-      fontSize: "1.2rem",
+    subtitle1: {
+      fontSize: "1.1rem",
       fontWeight: "100",
+    },
+
+    // Standard body title and text sizes
+    h5: {
+      fontSize: "1.1rem",
+      fontWeight: "550",
+    },
+
+    body1: {
+      fontSize: "1.1rem",
+      fontWeight: "200",
     },
   },
 });
