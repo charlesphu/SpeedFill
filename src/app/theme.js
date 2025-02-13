@@ -15,10 +15,10 @@ const theme = createTheme({
       main: "#d1d7a7",
     },
     secondary: {
-      main: "#3e7a38",
+      main: "#4D7940",
     },
     accent: {
-      main: "#53b26c",
+      main: "#598F54",
     },
     title: {
       main: "#EDEFDE",
@@ -36,6 +36,7 @@ const theme = createTheme({
   typography: {
     fontFamily: "Roboto, sans-serif",
 
+    // These are the title sizes
     h1: {
       fontSize: "4.3rem",
       fontWeight: "bold",
@@ -47,6 +48,16 @@ const theme = createTheme({
     h3: {
       fontSize: "1.175rem",
       fontWeight: "400",
+    },
+
+    // These are the container body sizes
+    h4: {
+      fontSize: "1.8rem",
+      fontWeight: "550",
+    },
+    h5: {
+      fontSize: "1.2rem",
+      fontWeight: "100",
     },
   },
 });
