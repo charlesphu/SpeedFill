@@ -32,6 +32,10 @@ const theme = createTheme({
       google_hover: "#e3e3e3",
       google_border: "#8a8a8a",
     },
+    action: {
+      main: "#41693D",
+      hover: "#264522",
+    },
   },
   typography: {
     fontFamily: "Roboto, sans-serif",
