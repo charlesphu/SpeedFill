@@ -58,8 +58,10 @@ const Title = ({ variant, sx }) => {
           width={74}
           height={72}
           alt="Wand"
+          draggable="false"
           style={{
             marginLeft: "0.5rem",
+            userSelect: "none",
             width: iconSize,
             height: iconSize,
           }}
@@ -77,7 +79,9 @@ const Title = ({ variant, sx }) => {
             height={30}
             src="/icons/scribbles/grass.svg"
             alt="Scribble"
+            draggable="false"
             style={{
+              userSelect: "none",
               position: "absolute",
               transform: "translate(-720%, -60%)",
             }}
@@ -100,7 +104,12 @@ const Title = ({ variant, sx }) => {
             height={30}
             src="/icons/scribbles/letter.svg"
             alt="Scribble"
-            style={{ position: "absolute", transform: "translate(570%, -30%)" }}
+            draggable="false"
+            style={{
+              userSelect: "none",
+              position: "absolute",
+              transform: "translate(570%, -30%)",
+            }}
           />
         )}
       </Box>
@@ -127,7 +136,12 @@ const Title = ({ variant, sx }) => {
             height={20}
             src="/icons/scribbles/underscore.svg"
             alt="Scribble"
-            style={{ position: "absolute", transform: "translate(150%, 160%)" }}
+            draggable="false"
+            style={{
+              userSelect: "none",
+              position: "absolute",
+              transform: "translate(150%, 160%)",
+            }}
           />
         )}
       </Box>
@@ -138,7 +152,12 @@ const Title = ({ variant, sx }) => {
           height={150}
           src="/icons/scribbles/giant_underscore.svg"
           alt="Scribble"
-          style={{ position: "absolute", transform: "translate(-5%, 170%)" }}
+          draggable="false"
+          style={{
+            userSelect: "none",
+            position: "absolute",
+            transform: "translate(-5%, 170%)",
+          }}
         />
       )}
     </Box>

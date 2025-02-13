@@ -30,6 +30,8 @@ const Dashboard = () => {
             alt="scribble"
             width={100}
             height={200}
+            draggable="false"
+            style={{ userSelect: "none" }}
           />
         </Box>
         <ActivityPanel />
