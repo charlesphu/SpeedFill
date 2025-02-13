@@ -26,6 +26,7 @@ const Title = ({ variant, sx }) => {
         flexDirection: "column",
         alignItems: "left",
         position: "relative",
+        userSelect: "none",
         ...sx,
       }}>
       <Box
