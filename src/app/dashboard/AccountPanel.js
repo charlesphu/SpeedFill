@@ -14,7 +14,7 @@ const AccountPanel = () => {
     <Container
       title="Your Infomation"
       subtitle="Manage your password and saved resume"
-      sx={{ marginTop: "3rem", width: "25rem" }}>
+      sx={{ width: "25rem" }}>
       <Panel>
         <Typography variant="h5" color="title">
           Email Address:

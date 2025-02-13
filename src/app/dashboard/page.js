@@ -4,6 +4,8 @@ import { Box, Typography } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
 import AccountPanel from "./AccountPanel";
+import ActivityPanel from "./ActivityPanel";
+import Image from "next/image";
 
 const Dashboard = () => {
   return (
@@ -20,7 +22,18 @@ const Dashboard = () => {
         />
       </Box>
 
-      <AccountPanel />
+      <Box display="flex" justifyContent="center" gap="1rem" marginTop="5rem">
+        <AccountPanel />
+        <Box display="flex" alignItems="center">
+          <Image
+            src="/icons/scribbles/vertical.svg"
+            alt="scribble"
+            width={100}
+            height={200}
+          />
+        </Box>
+        <ActivityPanel />
+      </Box>
 
       <Background imageUrl="/background.jpg" />
     </>
