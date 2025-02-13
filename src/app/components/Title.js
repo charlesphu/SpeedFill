@@ -1,94 +1,147 @@
-import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+"use client";
 
-const Title = ({ secondaryText, teritaryText }) => {
-    const theme = useTheme();
+import React from "react";
+import { Box, Typography, useTheme } from "@mui/material";
+import Image from "next/image";
 
-    const fontSize = '5.5vw';
-    const secondaryFontSize = '1.8vw';
-    const teritaryFontSize = '1.4vw';
-    const iconSize = '4vw';
-    const shadowSize = '0.7vw';
-    const shadowSize2 = '1.5vw';
+const Title = ({ variant, sx }) => {
+  const secondaryText = "Seamless Job Applications, Every Time";
+  const tertiaryText =
+    "Upload your resume and let AI help you land your dream job!";
 
-    return (
-        <Box sx={{ textAlign: 'center', padding: '1vw', width: '100%' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 'fit-content' }}>
-                <Typography
-                    variant="h1"
-                    component="h1"
-                    color="title"
-                    sx={{
-                        textAlign: 'left',
-                        fontSize: fontSize,
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap',
-                        textShadow: `0px ${shadowSize} ${shadowSize2} rgba(0, 0, 0, 0.3)`,
-                    }}
-                >
-                    Speed
-                    <span style={{ textShadow: `0px ${shadowSize} ${shadowSize2} rgba(0, 0, 0, 0.3)`, color: theme.palette.title.secondary }}>Fill</span>
-                </Typography>
+  // Hard code the sizes for the large variant, can't multiply rem
+  const theme = useTheme();
 
-                <svg
-                    fill="none"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={iconSize}
-                    height={iconSize}
-                    style={{
-                        marginLeft: '0.4vw',
-                    }}
-                >
+  const h1Size = variant === "large" ? "8rem" : theme.typography.h1.fontSize;
+  const h2Size = variant === "large" ? "2.5rem" : theme.typography.h2.fontSize;
+  const h3Size = variant === "large" ? "1.9rem" : theme.typography.h3.fontSize;
 
-                    <path
-                        d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z"
-                        clipRule="evenodd"
-                        fill={theme.palette.title.secondary}
-                        fillRule="evenodd"
-                    />
-                </svg>
-            </Box>
+  const iconSize = variant == "large" ? "7rem" : "3.5rem";
+  const textAlignment = variant === "large" ? "left" : "center";
 
-            {secondaryText && (
-                <Typography
-                    variant="h6"
-                    component="p"
-                    color="title"
-                    sx={{
-                        marginTop: '1vw',
-                        textAlign: 'left',
-                        fontSize: secondaryFontSize,
-                        fontWeight: '500',
-                        whiteSpace: 'nowrap',
-                        textShadow: `0px ${shadowSize} ${shadowSize2} rgba(0, 0, 0, 0.3)`,
-                    }}
-                >
-                    {secondaryText}
-                </Typography>
-            )}
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "left",
+        position: "relative",
+        ...sx,
+      }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: textAlignment,
+          minWidth: "fit-content",
+        }}>
+        <Typography
+          variant="h1"
+          component="h1"
+          color="title"
+          sx={{
+            fontSize: h1Size,
+            textAlign: textAlignment,
+            whiteSpace: "nowrap",
+          }}>
+          Speed
+          <span
+            style={{
+              color: theme.palette.title.secondary,
+            }}>
+            Fill
+          </span>
+        </Typography>
+        <Image
+          src="/icons/wand.svg"
+          width={74}
+          height={72}
+          alt="Wand"
+          style={{
+            marginLeft: "0.5rem",
+            width: iconSize,
+            height: iconSize,
+          }}
+        />
+      </Box>
 
-            {teritaryText && (
-                <Typography
-                    variant="h7"
-                    component="p"
-                    color="title"
-                    sx={{
-                        textAlign: 'left',
-                        fontSize: teritaryFontSize,
-                        fontWeight: '200',
-                        whiteSpace: 'nowrap',
-                        overflow: 'visible',
-                        minWidth: 'fit-content',
-                        display: 'block',
-                        maxWidth: '100%'
-                    }}
-                >
-                    {teritaryText}
-                </Typography>
-            )}
-        </Box>
-    );
+      <Box
+        display="flex"
+        justifyContent={textAlignment}
+        position="relative"
+        sx={{ marginTop: variant == "large" ? "1.4rem" : "1.5rem" }}>
+        {variant !== "large" && (
+          <Image
+            width={30}
+            height={30}
+            src="/icons/scribbles/grass.svg"
+            alt="Scribble"
+            style={{
+              position: "absolute",
+              transform: "translate(-720%, -60%)",
+            }}
+          />
+        )}
+        <Typography
+          variant="h2"
+          component="p"
+          color="title"
+          sx={{
+            fontSize: h2Size,
+            textAlign: textAlignment,
+            whiteSpace: "nowrap",
+          }}>
+          {secondaryText}
+        </Typography>
+        {variant !== "large" && (
+          <Image
+            width={40}
+            height={30}
+            src="/icons/scribbles/letter.svg"
+            alt="Scribble"
+            style={{ position: "absolute", transform: "translate(570%, -30%)" }}
+          />
+        )}
+      </Box>
+
+      <Box display="flex" justifyContent={textAlignment} position="relative">
+        <Typography
+          variant="h3"
+          component="p"
+          color="title"
+          sx={{
+            fontSize: h3Size,
+            textAlign: textAlignment,
+            display: "block",
+            overflow: "visible",
+            marginTop: "0.4rem",
+            whiteSpace: variant === "large" ? "normal" : "nowrap",
+            maxWidth: variant === "large" ? "70%" : "100%",
+          }}>
+          {tertiaryText}
+        </Typography>
+        {variant !== "large" && (
+          <Image
+            width={130}
+            height={20}
+            src="/icons/scribbles/underscore.svg"
+            alt="Scribble"
+            style={{ position: "absolute", transform: "translate(150%, 160%)" }}
+          />
+        )}
+      </Box>
+
+      {variant === "large" && (
+        <Image
+          width={900}
+          height={150}
+          src="/icons/scribbles/giant_underscore.svg"
+          alt="Scribble"
+          style={{ position: "absolute", transform: "translate(-5%, 170%)" }}
+        />
+      )}
+    </Box>
+  );
 };
 
 export default Title;

@@ -12,7 +12,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Auth = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery("(max-width: 1000px)");
+  const isSmallScreen = useMediaQuery("(max-width: 1100px)");
 
   const [loading, setLoading] = useState(true);
 
@@ -71,10 +71,7 @@ const Auth = () => {
               paddingLeft: "0vw",
             }}>
             <FadeIn timeout={1000}>
-              <Title
-                secondaryText="Seamless Job Applications, Every Time."
-                teritaryText="Upload your resume and let AI help you get your dream job!"
-              />
+              <Title variant="large" />
             </FadeIn>
           </Box>
 
