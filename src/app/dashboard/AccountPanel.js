@@ -6,7 +6,7 @@ import Panel from "../components/Panel";
 import ActionButton from "./ActionButton";
 import Image from "next/image";
 
-const AccountPanel = () => {
+const AccountPanel = ({ sx }) => {
   const [isShowingPassword, setShowPassword] = useState(false);
   const [isEditingPassword, setEditPassword] = useState(false);
 
@@ -14,7 +14,7 @@ const AccountPanel = () => {
     <Container
       title="Your Infomation"
       subtitle="Manage your password and saved resume"
-      sx={{ width: "25rem" }}>
+      sx={{ width: "25rem", ...sx }}>
       <Panel>
         <Typography variant="h5" color="title">
           Email Address:
