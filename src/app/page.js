@@ -4,7 +4,7 @@ import Background from './components/Background';
 import { useTheme } from '@mui/material';
 import { Box, Typography, Button } from '@mui/material'
 import { signOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth } from './firebase/firebaseConfig';
 import { useState, useEffect } from "react";
 
 const Home = () => {
