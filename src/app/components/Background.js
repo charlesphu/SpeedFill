@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, useTheme } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 const Background = () => {
   const theme = useTheme();
@@ -12,7 +13,7 @@ const Background = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundColor: theme.palette.primary.default,
+        backgroundColor: theme.palette.background.default,
         backgroundImage: "url(/background.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "0 0",

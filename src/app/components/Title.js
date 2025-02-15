@@ -54,7 +54,7 @@ const Title = ({ variant, sx }) => {
           </span>
         </Typography>
         <Image
-          src="/icons/Wand.svg"
+          src="/icons/wand.svg"
           width={74}
           height={72}
           alt="Wand"
