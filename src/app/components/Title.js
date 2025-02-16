@@ -34,7 +34,6 @@ const Title = ({ variant, sx }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: textAlignment,
-          minWidth: "fit-content",
         }}>
         <Typography
           variant="h1"
@@ -126,7 +125,7 @@ const Title = ({ variant, sx }) => {
             overflow: "visible",
             marginTop: "0.4rem",
             whiteSpace: variant === "large" ? "normal" : "nowrap",
-            maxWidth: variant === "large" ? "70%" : "100%",
+            maxWidth: variant === "large" ? "70%" : "auto",
           }}>
           {tertiaryText}
         </Typography>
