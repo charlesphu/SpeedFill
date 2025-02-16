@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
@@ -7,6 +7,7 @@ import Background from "../components/Background";
 import Title from "../components/Title";
 import ResumeUpload from "./ResumeUpload";
 import JobDescriptionUpload from "./JobDescriptionUpload";
+import AdditionalDetails from "./AdditionalDetails";
 
 import { auth } from "../firebase";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
@@ -14,16 +15,6 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 const Upload = () => {
     const [user, setUser] = useState(null);
     const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
-    const [isSingleView, setIsSingleView] = useState(false);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSingleView(window.innerWidth < 800);
-        };
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -57,11 +48,12 @@ const Upload = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        height: "15vh",
+                        height: "25vh",
                         minheight: "200px",
                         width: "100%",
                         alignItems: "end",
                         justifyContent: "center",
+                        marginBottom: "3rem"
                     }}
                 >
                     <Box
@@ -78,8 +70,8 @@ const Upload = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        height: "85vh",
-                        minHeight: "600px",
+                        height: "60vh",
+                        minHeight: "200px",
                         width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
@@ -87,64 +79,60 @@ const Upload = () => {
                         overflow: "hidden",
                     }}
                 >
-                    {!isSingleView && (
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                display: "flex",
-                                height: "50vh",
-                                minHeight: "580px",
-                                width: "40%",
-                                transform:
-                                    position === 0
-                                        ? "translateX(0)"
-                                        : position === 1
-                                            ? "translateX(-110%) scale(0.6)"
-                                            : "translateX(-220%) scale(0.6)",
-                                transition: "transform 1s ease-in-out, scale 0.5s ease",
-                            }}
-                        >
-                            <ResumeUpload sx={{ maxWidth: "none" }} />
-                        </Box>
-                    )}
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            display: "flex",
+                            height: "50vh",
+                            minHeight: "400px",
+                            width: "50%",
+                            transform:
+                                position === 0
+                                    ? "translateX(0)"
+                                    : position === 1
+                                        ? "translateX(-90%) scale(0.6)"
+                                        : "translateX(-180%) scale(0.6)",
+                            transition: "transform 1s ease-in-out, scale 0.5s ease",
+                        }}
+                    >
+                        <ResumeUpload />
+                    </Box>
 
                     <Box
                         sx={{
                             position: "absolute",
                             display: "flex",
                             height: "50vh",
-                            minHeight: "580px",
-                            width: "40%",
+                            minHeight: "400px",
+                            width: "50%",
                             transform:
                                 position === 0
-                                    ? "translateX(110%) scale(0.6)"
+                                    ? "translateX(90%) scale(0.6)"
                                     : position === 1
                                         ? "translateX(0) scale(1)"
-                                        : "translateX(-110%) scale(0.6)",
+                                        : "translateX(-90%) scale(0.6)",
                             transition: "transform 1s ease-in-out, width 0.5s ease, scale 0.5s ease",
                         }}
                     >
-                        <JobDescriptionUpload sx={{ maxWidth: "none" }} />
+                        <JobDescriptionUpload />
                     </Box>
 
-                    {!isSingleView && (
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                height: "50vh",
-                                width: "40%",
-                                backgroundColor: "purple",
-                                transform:
-                                    position === 0
-                                        ? "translateX(220%) scale(0.6)"
-                                        : position === 1
-                                            ? "translateX(110%) scale(0.6)"
-                                            : "translateX(0) scale(1)",
-                                transition: "transform 1s ease-in-out, scale 0.5s ease",
-                            }}
-                        />
-
-                    )}
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            height: "50vh",
+                            width: "50%",
+                            transform:
+                                position === 0
+                                    ? "translateX(180%) scale(0.6)"
+                                    : position === 1
+                                        ? "translateX(90%) scale(0.6)"
+                                        : "translateX(0) scale(1)",
+                            transition: "transform 1s ease-in-out, scale 0.5s ease",
+                        }}
+                    >
+                        <AdditionalDetails />
+                    </Box>
 
                     <Button
                         onClick={moveLeft}

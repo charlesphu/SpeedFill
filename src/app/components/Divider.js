@@ -3,8 +3,8 @@ import { Divider } from '@mui/material';
 const CustomDivider = () => {
     return (
         <Divider sx={{
-            fontSize: '1rem',
-            width: "70%",
+            fontSize: '0.7rem',
+            width: "50%",
             maxWidth: "500px",
             fontWeight: 'thin',
             color: "white",
