@@ -6,6 +6,7 @@ import Title from "../components/Title";
 import AccountPanel from "./AccountPanel";
 import ActivityPanel from "./ActivityPanel";
 import Image from "next/image";
+import { NavBar, NavBarItem } from "../components/NavBar";
 
 const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
@@ -53,6 +54,10 @@ const Dashboard = () => {
         <ActivityPanel sx={isSmallScreen ? { margin: "auto auto" } : null} />
       </Box>
 
+      <NavBar>
+        <NavBarItem text="Home" src="/" />
+        <NavBarItem text="Sign Out" src="/sign-out" />
+      </NavBar>
       <Background imageUrl="/background.jpg" />
     </>
   );
