@@ -1,12 +1,9 @@
-import { useState } from "react";
-import { Box, Typography, TextField, useTheme } from "@mui/material";
-import Divider from "../components/Divider";
+import { Box, TextField, useTheme } from "@mui/material";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
-const AdditionalDetails = ({ sx }) => {
+const AdditionalDetails = ({ additionalDetails, setAdditionalDetails, sx }) => {
     const theme = useTheme();
-    const [questions, setQuestions] = useState("");
 
     return (
         <Container title="Additional Details" subtitle="Anything else you'd like us to cover?" sx={{ maxWidth:"none", width: "40rem", borderRadius:"20px", ...sx }}>
@@ -24,8 +21,8 @@ const AdditionalDetails = ({ sx }) => {
                         rows={6}
                         fullWidth
                         variant="outlined"
-                        value={questions}
-                        onChange={(e) => setQuestions(e.target.value)}
+                        value={additionalDetails}
+                        onChange={(e) => setAdditionalDetails(e.target.value)}
                         sx={{
                             backgroundColor: theme.palette.accent.main,
                             color: "white",

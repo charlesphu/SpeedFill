@@ -5,18 +5,14 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 import Divider from "../components/Divider";
 
-const ResumeUpload = ({ sx }) => {
-    const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState("");
+const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     const [isFileUploading, setIsFileUploading] = useState(false);
-    const [textResume, setTextResume] = useState("");
 
     const theme = useTheme();
 
     const uploadResume = (file) => {
         setIsFileUploading(true);
-        setFileName(file.name);
-        setFile(file);
+        setResumeData({ ...resumeData, file });
 
         const timer = setTimeout(() => {
             setIsFileUploading(false);
@@ -27,9 +23,8 @@ const ResumeUpload = ({ sx }) => {
         if (e) {
             e.stopPropagation();
         }
-        setFileName("");
+        setResumeData({ file: null, text: "" });
         setIsFileUploading(false);
-        setFile(null);
     };
 
     const onDrop = (acceptedFiles, rejectedFiles) => {
@@ -37,7 +32,7 @@ const ResumeUpload = ({ sx }) => {
             return;
         }
 
-        if (fileName && !isFileUploading) {
+        if (resumeData.file && !isFileUploading) {
             handleClearResume();
         }
 
@@ -92,9 +87,9 @@ const ResumeUpload = ({ sx }) => {
                             </Typography>
                             <LinearProgress sx={{ width: "30%", marginTop: "10px" }} />
                         </>
-                    ) : fileName ? (
+                    ) : resumeData.file ? (
                         <>
-                            <Typography variant="body1" sx={{ color: "white" }}>{fileName}</Typography>
+                            <Typography variant="body1" sx={{ color: "white" }}>{resumeData.file.name}</Typography>
                             <Button
                                 variant="text"
                                 color="secondary"
@@ -107,7 +102,7 @@ const ResumeUpload = ({ sx }) => {
                             <Button
                                 variant="text"
                                 color="secondary"
-                                onClick={() => window.open(URL.createObjectURL(file), "_blank")}
+                                onClick={() => window.open(URL.createObjectURL(resumeData.file), "_blank")}
                                 sx={{ fontSize: "0.7rem", color: "white", padding: "1px 7px" }}
                                 disabled={isFileUploading}
                             >
@@ -139,8 +134,8 @@ const ResumeUpload = ({ sx }) => {
                     rows={6}
                     fullWidth
                     variant="outlined"
-                    value={textResume}
-                    onChange={(e) => setTextResume(e.target.value)}
+                    value={resumeData.text}
+                    onChange={(e) => setResumeData({ ...resumeData, text: e.target.value })}
                     sx={{
                         backgroundColor: theme.palette.accent.main,
                         color: "white",

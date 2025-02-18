@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Box, Typography, TextField, useTheme } from "@mui/material";
+import { Box, TextField, useTheme } from "@mui/material";
 import Divider from "../components/Divider";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
-const JobDescriptionUpload = ({ sx }) => {
+const JobDescriptionUpload = ({ jobDescriptionData, setJobDescriptionData, sx }) => {
     const theme = useTheme();
-    const [jobUrl, setJobUrl] = useState("");
-    const [jobText, setJobText] = useState("");
 
     return (
         <Container title="Job Description" subtitle="Tell us a little about the job you're applying for" sx={{ maxWidth:"none", width: "40rem", borderRadius:"20px", ...sx }}>
@@ -23,8 +21,8 @@ const JobDescriptionUpload = ({ sx }) => {
                         placeholder="Paste the job application URL here..."
                         fullWidth
                         variant="outlined"
-                        value={jobUrl}
-                        onChange={(e) => setJobUrl(e.target.value)}
+                        value={jobDescriptionData.url}
+                        onChange={(e) => setJobDescriptionData({ ...jobDescriptionData, url: e.target.value })}
                         sx={{
                             backgroundColor: theme.palette.accent.main,
                             color: "white",
@@ -82,8 +80,8 @@ const JobDescriptionUpload = ({ sx }) => {
                         rows={6}
                         fullWidth
                         variant="outlined"
-                        value={jobText}
-                        onChange={(e) => setJobText(e.target.value)}
+                        value={jobDescriptionData.text}
+                        onChange={(e) => setJobDescriptionData({ ...jobDescriptionData, text: e.target.value })}
                         sx={{
                             backgroundColor: theme.palette.accent.main,
                             color: "white",
