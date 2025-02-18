@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grow,
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -65,90 +66,109 @@ const ActivityColumns = () => {
   );
 };
 
-const ActivityRow = ({ date, time, role, resume, content, type }) => {
+const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
   const [resumeName, resumeSize, resumeSrc] = resume;
   const [contentName, contentSize, contentSrc] = content;
 
   return (
-    <TableRow
-      sx={{
-        "& > td": {
-          borderBottom: 0,
-          padding: 0,
-          paddingTop: "1rem",
-        },
+    <Grow
+      in={true}
+      timeout={500}
+      style={{
+        transitionDelay: `${index * 40}ms`,
       }}>
-      <TableCell>
-        <Typography variant="body1" color="text">
-          {date}
-        </Typography>
-        <Typography
-          fontSize="0.8rem"
-          variant="body1"
-          color="text"
-          marginTop="-0.3rem">
-          {time}
-        </Typography>
-      </TableCell>
-
-      <TableCell>
-        <Typography
-          variant="body1"
-          color="text"
-          maxWidth="5rem"
-          sx={{ lineHeight: "1.2" }}>
-          {role}
-        </Typography>
-      </TableCell>
-
-      <TableCell>
-        <Box display="flex" flexDirection="column">
+      <TableRow
+        sx={{
+          "& > td": {
+            borderBottom: 0,
+            padding: 0,
+            paddingTop: "1rem",
+          },
+        }}>
+        <TableCell>
+          <Typography variant="body1" color="text">
+            {date}
+          </Typography>
           <Typography
-            fontSize="1.2rem"
-            color="title"
-            maxWidth="8rem"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            sx={{
-              textDecoration: "underline",
-            }}>
-            {resumeName}
+            fontSize="0.8rem"
+            variant="body1"
+            color="text"
+            marginTop="-0.3rem">
+            {time}
           </Typography>
-          <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
-            {resumeSize}
-          </Typography>
-        </Box>
-      </TableCell>
+        </TableCell>
 
-      <TableCell>
-        <Typography
-          variant="body1"
-          color="text"
-          maxWidth="5rem"
-          sx={{ lineHeight: "1.2" }}>
-          {type}
-        </Typography>
-      </TableCell>
-
-      <TableCell>
-        <Box display="flex" flexDirection="column">
+        <TableCell>
           <Typography
-            fontSize="1.2rem"
-            color="title"
-            maxWidth="10rem"
-            overflow="hidden"
-            textOverflow="ellipsis"
+            variant="body1"
+            color="text"
+            maxWidth="5rem"
+            sx={{ lineHeight: "1.2" }}>
+            {role}
+          </Typography>
+        </TableCell>
+
+        <TableCell>
+          <Box
+            display="flex"
+            flexDirection="column"
             sx={{
-              textDecoration: "underline",
+              userSelect: "none",
+              cursor: "pointer",
             }}>
-            {contentName}
+            <Typography
+              fontSize="1.2rem"
+              color="title"
+              maxWidth="8rem"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              sx={{
+                textDecoration: "underline",
+              }}>
+              {resumeName}
+            </Typography>
+            <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
+              {resumeSize}
+            </Typography>
+          </Box>
+        </TableCell>
+
+        <TableCell>
+          <Typography
+            variant="body1"
+            color="text"
+            maxWidth="5rem"
+            sx={{ lineHeight: "1.2" }}>
+            {type}
           </Typography>
-          <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
-            {contentSize}
-          </Typography>
-        </Box>
-      </TableCell>
-    </TableRow>
+        </TableCell>
+
+        <TableCell>
+          <Box
+            display="flex"
+            flexDirection="column"
+            sx={{
+              userSelect: "none",
+              cursor: "pointer",
+            }}>
+            <Typography
+              fontSize="1.2rem"
+              color="title"
+              maxWidth="10rem"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              sx={{
+                textDecoration: "underline",
+              }}>
+              {contentName}
+            </Typography>
+            <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
+              {contentSize}
+            </Typography>
+          </Box>
+        </TableCell>
+      </TableRow>
+    </Grow>
   );
 };
 
@@ -160,24 +180,36 @@ const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
       justifyContent="center"
       alignItems="center"
       gap="1rem">
-      <Typography color="primary">
-        &lt;{" "}
-        <Typography
-          component="span"
-          sx={{ textDecoration: "underline", cursor: "pointer" }}
-          onClick={prevPage}>
-          Back
-        </Typography>
+      <Typography
+        color="primary"
+        sx={{
+          userSelect: "none",
+          cursor: currentPage === 1 ? "hand" : "pointer",
+          opacity: currentPage === 1 ? 0.5 : 1,
+
+          transition: "transform 0.1s ease",
+          "&:active": {
+            transform: currentPage === 1 ? "" : "translate(0, 10%)",
+          },
+        }}
+        onClick={prevPage}>
+        &lt; Back
       </Typography>
       <Typography color="text">{`${currentPage} / ${maxPages}`}</Typography>
-      <Typography color="primary">
-        <Typography
-          component="span"
-          sx={{ textDecoration: "underline", cursor: "pointer" }}
-          onClick={nextPage}>
-          Next
-        </Typography>{" "}
-        &gt;
+      <Typography
+        color="primary"
+        sx={{
+          userSelect: "none",
+          cursor: currentPage === maxPages ? "hand" : "pointer",
+          opacity: currentPage === maxPages ? 0.5 : 1,
+
+          transition: "transform 0.1s ease",
+          "&:active": {
+            transform: currentPage === maxPages ? "" : "translate(0, 10%)",
+          },
+        }}
+        onClick={nextPage}>
+        Next &gt;
       </Typography>
     </Box>
   );
@@ -318,7 +350,8 @@ const ActivityPanel = ({ sx }) => {
     const activityElements =
       activityPage?.map((activity, index) => (
         <ActivityRow
-          key={index}
+          key={Math.random()}
+          index={index}
           date={activity.date}
           time={activity.time}
           role={activity.role}
@@ -357,7 +390,13 @@ const ActivityPanel = ({ sx }) => {
       subtitle="Review your previously generated cover letters and resume feedbacks"
       sx={{ width: "45rem", maxWidth: "md", ...sx }}>
       <Panel sx={{ maxWidth: "md" }}>
-        <Box display="flex" flexDirection="column" gap="0.5rem">
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="0.5rem"
+          sx={{
+            minHeight: "17rem",
+          }}>
           <TableContainer>
             <Table>
               <TableHead>
