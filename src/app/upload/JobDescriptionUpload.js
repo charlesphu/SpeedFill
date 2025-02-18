@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Box, Typography, TextField, useTheme } from "@mui/material";
 import Divider from "../components/Divider";
+import Container from "../components/Container";
+import Panel from "../components/Panel";
 
 const JobDescriptionUpload = ({ sx }) => {
     const theme = useTheme();
@@ -8,33 +10,8 @@ const JobDescriptionUpload = ({ sx }) => {
     const [jobText, setJobText] = useState("");
 
     return (
-        <>
-            <Box sx={{
-                backgroundColor: theme.palette.menu.main,
-                width: "100%",
-                height: "100%",
-                borderRadius: "20px",
-                boxShadow: "0 0 20px 3px rgba(151, 231, 105, 0.2)",
-                display: "flex",
-                flexDirection: "column",
-            }}>
-                <Box sx={{
-                    width: "100%",
-                    height: "18%",
-                }}>
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "15px",
-                    }}>
-                        <Typography variant="h2" sx={{ color: "white" }}>
-                            Job Description
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: "white" }}>
-                            Tell us a little about the job you're applying for
-                        </Typography>
-                    </Box>
-                </Box>
+        <Container title="Job Description" subtitle="Tell us a little about the job you're applying for" sx={{ maxWidth:"none", width: "40rem", borderRadius:"20px", ...sx }}>
+            <Panel sx={{border: "none", backgroundColor: "none"}}>
                 <Box sx={{
                     width: "100%",
                     height: "20%",
@@ -54,8 +31,8 @@ const JobDescriptionUpload = ({ sx }) => {
                             border: "1px solid white",
                             borderRadius: "10px",
                             justifyContent: "center",
-                            height: "8vh",
-                            width: "80%",
+                            height: "4rem",
+                            width: "100%",
                             '& .MuiOutlinedInput-root': {
                                 fontSize: "0.9rem",
                                 '& fieldset': {
@@ -80,15 +57,18 @@ const JobDescriptionUpload = ({ sx }) => {
                         }}
                     />
                 </Box>
-                <Box sx={{
-                    width: "100%",
-                    height: "10%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                    <Divider />
-                </Box>
+            </Panel>
+
+            <Box sx={{
+                width: "100%",
+                height: "10%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}>
+                <Divider />
+            </Box>
+            <Panel sx={{border: "none", backgroundColor: "none"}}>
                 <Box sx={{
                     width: "100%",
                     height: "50%",
@@ -110,7 +90,6 @@ const JobDescriptionUpload = ({ sx }) => {
                             border: "1px solid white",
                             borderRadius: "20px",
                             height: "23vh",
-                            width: "80%",
                             '& .MuiOutlinedInput-root': {
                                 fontSize: "0.8rem",
                                 '& fieldset': {
@@ -135,9 +114,8 @@ const JobDescriptionUpload = ({ sx }) => {
                         }}
                     />
                 </Box>
-
-            </Box>
-        </>
+            </Panel>
+        </Container>
     );
 };
 

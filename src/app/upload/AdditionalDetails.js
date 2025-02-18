@@ -1,39 +1,16 @@
 import { useState } from "react";
 import { Box, Typography, TextField, useTheme } from "@mui/material";
 import Divider from "../components/Divider";
+import Container from "../components/Container";
+import Panel from "../components/Panel";
 
 const AdditionalDetails = ({ sx }) => {
     const theme = useTheme();
     const [questions, setQuestions] = useState("");
 
     return (
-        <>
-            <Box sx={{
-                backgroundColor: theme.palette.menu.main,
-                width: "100%",
-                height: "100%",
-                borderRadius: "20px",
-                boxShadow: "0 0 20px 3px rgba(151, 231, 105, 0.2)",
-                display: "flex",
-                flexDirection: "column",
-            }}>
-                <Box sx={{
-                    width: "100%",
-                    height: "18%",
-                }}>
-                    <Box sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "15px",
-                    }}>
-                        <Typography variant="h2" sx={{ color: "white" }}>
-                            Additional Details
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: "white" }}>
-                            Anything else you'd like us to cover?
-                        </Typography>
-                    </Box>
-                </Box>
+        <Container title="Additional Details" subtitle="Anything else you'd like us to cover?" sx={{ maxWidth:"none", width: "40rem", borderRadius:"20px", ...sx }}>
+            <Panel sx={{border: "none", backgroundColor: "none"}}>
                 <Box sx={{
                     width: "100%",
                     height: "82%",
@@ -55,7 +32,7 @@ const AdditionalDetails = ({ sx }) => {
                             border: "1px solid white",
                             borderRadius: "20px",
                             height: "35vh",
-                            width: "90%",
+                            width: "1000%",
                             '& .MuiOutlinedInput-root': {
                                 fontSize: "0.8rem",
                                 '& fieldset': {
@@ -80,8 +57,8 @@ const AdditionalDetails = ({ sx }) => {
                         }}
                     />
                 </Box>
-            </Box>
-        </>
+            </Panel>
+        </Container>
     );
 };
 

@@ -70,13 +70,14 @@ const Upload = () => {
                 <Box
                     sx={{
                         display: "flex",
-                        height: "60vh",
+                        height: "75vh",
                         minHeight: "200px",
                         width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
                         position: "relative",
                         overflow: "hidden",
+                        paddingBottom: "10rem"
                     }}
                 >
                     <Box
@@ -84,8 +85,8 @@ const Upload = () => {
                             position: "absolute",
                             display: "flex",
                             height: "50vh",
-                            minHeight: "400px",
                             width: "50%",
+                            justifyContent: "center",
                             transform:
                                 position === 0
                                     ? "translateX(0)"
@@ -104,6 +105,7 @@ const Upload = () => {
                             display: "flex",
                             height: "50vh",
                             minHeight: "400px",
+                            justifyContent: "center",
                             width: "50%",
                             transform:
                                 position === 0
@@ -120,7 +122,10 @@ const Upload = () => {
                     <Box
                         sx={{
                             position: "absolute",
+                            display: "flex",
                             height: "50vh",
+                            minHeight: "400px",
+                            justifyContent: "center",
                             width: "50%",
                             transform:
                                 position === 0
