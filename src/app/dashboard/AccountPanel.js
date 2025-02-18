@@ -7,6 +7,7 @@ import ActionButton from "./ActionButton";
 import Image from "next/image";
 
 const AccountPanel = ({ sx }) => {
+  // State management for password field
   const [isShowingPassword, setShowPassword] = useState(false);
   const [isEditingPassword, setEditPassword] = useState(false);
 

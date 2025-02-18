@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 
 import Container from "../components/Container";
@@ -65,7 +65,10 @@ const ActivityColumns = () => {
   );
 };
 
-const ActivityRow = ({}) => {
+const ActivityRow = ({ date, time, role, resume, content, type }) => {
+  const [resumeName, resumeSize, resumeSrc] = resume;
+  const [contentName, contentSize, contentSrc] = content;
+
   return (
     <TableRow
       sx={{
@@ -77,14 +80,14 @@ const ActivityRow = ({}) => {
       }}>
       <TableCell>
         <Typography variant="body1" color="text">
-          1-26-2005
+          {date}
         </Typography>
         <Typography
           fontSize="0.8rem"
           variant="body1"
           color="text"
           marginTop="-0.3rem">
-          1:25 PM
+          {time}
         </Typography>
       </TableCell>
 
@@ -94,7 +97,7 @@ const ActivityRow = ({}) => {
           color="text"
           maxWidth="5rem"
           sx={{ lineHeight: "1.2" }}>
-          Frontend Engineer
+          {role}
         </Typography>
       </TableCell>
 
@@ -109,10 +112,10 @@ const ActivityRow = ({}) => {
             sx={{
               textDecoration: "underline",
             }}>
-            long_ass_file.pdf
+            {resumeName}
           </Typography>
           <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
-            5.55MB
+            {resumeSize}
           </Typography>
         </Box>
       </TableCell>
@@ -123,7 +126,7 @@ const ActivityRow = ({}) => {
           color="text"
           maxWidth="5rem"
           sx={{ lineHeight: "1.2" }}>
-          Cover Letter
+          {type}
         </Typography>
       </TableCell>
 
@@ -138,10 +141,10 @@ const ActivityRow = ({}) => {
             sx={{
               textDecoration: "underline",
             }}>
-            lonnggg_ass_file_name
+            {contentName}
           </Typography>
           <Typography fontSize="0.8rem" color="title" marginTop="-0.3rem">
-            5.55MB
+            {contentSize}
           </Typography>
         </Box>
       </TableCell>
@@ -149,7 +152,7 @@ const ActivityRow = ({}) => {
   );
 };
 
-const ActivityControl = ({}) => {
+const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
   return (
     <Box
       display="flex"
@@ -159,13 +162,19 @@ const ActivityControl = ({}) => {
       gap="1rem">
       <Typography color="primary">
         &lt;{" "}
-        <Typography component="span" sx={{ textDecoration: "underline" }}>
+        <Typography
+          component="span"
+          sx={{ textDecoration: "underline", cursor: "pointer" }}
+          onClick={prevPage}>
           Back
         </Typography>
       </Typography>
-      <Typography color="text">1 / 2</Typography>
+      <Typography color="text">{`${currentPage} / ${maxPages}`}</Typography>
       <Typography color="primary">
-        <Typography component="span" sx={{ textDecoration: "underline" }}>
+        <Typography
+          component="span"
+          sx={{ textDecoration: "underline", cursor: "pointer" }}
+          onClick={nextPage}>
           Next
         </Typography>{" "}
         &gt;
@@ -175,15 +184,172 @@ const ActivityControl = ({}) => {
 };
 
 const ActivityPanel = ({ sx }) => {
-  const theme = useTheme();
+  // State management for activity panel
+  const TEST_USER_HISTORY = [
+    {
+      timestamp: new Date("1-26-2017 3:22 PM"),
+      role: "Backend Developer",
+      type: "Resume Analysis",
+      resume: "resume_final.pdf",
+      content: "final_version_name.pdf",
+    },
+    {
+      timestamp: new Date("6-15-2020 8:12 AM"),
+      role: "Full Stack Developer",
+      type: "Cover Letter",
+      resume: "portfolio.pdf",
+      content: "project_abc.pdf",
+    },
+    {
+      timestamp: new Date("12-5-2018 11:45 PM"),
+      role: "Frontend Engineer",
+      type: "Resume Analysis",
+      resume: "long_ass_file.pdf",
+      content: "portfolio_v1.pdf",
+    },
+    {
+      timestamp: new Date("2-21-2019 10:30 AM"),
+      role: "UI/UX Designer",
+      type: "Cover Letter",
+      resume: "portfolio.pdf",
+      content: "final_version_name.pdf",
+    },
+    {
+      timestamp: new Date("7-9-2015 9:00 AM"),
+      role: "Frontend Engineer",
+      type: "Cover Letter",
+      resume: "long_ass_file.pdf",
+      content: "lonnggg_ass_file_name.pdf",
+    },
+    {
+      timestamp: new Date("10-13-2021 5:10 PM"),
+      role: "Backend Developer",
+      type: "Resume Analysis",
+      resume: "long_ass_file.pdf",
+      content: "lonnggg_ass_file_name.pdf",
+    },
+    {
+      timestamp: new Date("3-11-2016 6:25 AM"),
+      role: "UI/UX Designer",
+      type: "Cover Letter",
+      resume: "resume_final.pdf",
+      content: "final_version_name.pdf",
+    },
+    {
+      timestamp: new Date("4-22-2014 2:50 PM"),
+      role: "Full Stack Developer",
+      type: "Resume Analysis",
+      resume: "long_ass_file.pdf",
+      content: "lonnggg_ass_file_name.pdf",
+    },
+    {
+      timestamp: new Date("9-10-2019 7:05 PM"),
+      role: "Frontend Engineer",
+      type: "Cover Letter",
+      resume: "resume_final.pdf",
+      content: "portfolio_v1.pdf",
+    },
+    {
+      timestamp: new Date("5-30-2022 1:20 AM"),
+      role: "Backend Developer",
+      type: "Resume Analysis",
+      resume: "long_ass_file.pdf",
+      content: "project_abc.pdf",
+    },
+  ];
 
-  const [activites, setActivities] = useState([
-    <ActivityRow />,
-    <ActivityRow />,
-    <ActivityRow />,
-    <ActivityRow />,
-    <ActivityRow />,
-  ]);
+  const userHistory = TEST_USER_HISTORY;
+  const MAX_ENTRY_PER_PAGE = 4;
+
+  const [userActivities, setUserActivities] = useState([]);
+  const [activityElements, setActivityElements] = useState([]);
+
+  const [maxPages, setMaxPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Process user history into separate pages
+  useEffect(() => {
+    const activites = [];
+
+    for (let i = 0; i < userHistory.length; i += MAX_ENTRY_PER_PAGE) {
+      const activityPage = [];
+
+      for (const entry of userHistory.slice(i, i + MAX_ENTRY_PER_PAGE)) {
+        const entryDate = new Date(entry.timestamp);
+
+        activityPage.push({
+          role: entry.role,
+          type: entry.type,
+
+          // Format timestamp
+          date: `${
+            entryDate.getMonth() + 1
+          }-${entryDate.getDate()}-${entryDate.getFullYear()}`,
+
+          time: `${entryDate.getHours() % 12 || 12}:${entryDate.getMinutes()} ${
+            entryDate.getHours() >= 12 ? "PM" : "AM"
+          }`,
+
+          // Extract file name and size
+          resume: {
+            name: entry.resume,
+            size: "1.2MB",
+            src: "/file.pdf",
+          },
+
+          content: {
+            name: entry.content,
+            size: "1.2MB",
+            src: "/file.pdf",
+          },
+        });
+      }
+
+      activites.push(activityPage);
+    }
+
+    setUserActivities(activites);
+    setMaxPages(activites.length);
+  }, []);
+
+  // Update activity elements based on current page
+  useEffect(() => {
+    const activityPage = userActivities[currentPage - 1];
+    const activityElements =
+      activityPage?.map((activity, index) => (
+        <ActivityRow
+          key={index}
+          date={activity.date}
+          time={activity.time}
+          role={activity.role}
+          resume={[
+            activity.resume.name,
+            activity.resume.size,
+            activity.resume.src,
+          ]}
+          content={[
+            activity.content.name,
+            activity.content.size,
+            activity.content.src,
+          ]}
+          type={activity.type}
+        />
+      )) || [];
+
+    setActivityElements(activityElements);
+  }, [currentPage, userActivities]);
+
+  const nextPage = () => {
+    if (currentPage < maxPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <Container
@@ -199,12 +365,19 @@ const ActivityPanel = ({ sx }) => {
               </TableHead>
 
               {/* Table Body */}
-              <TableBody>{...activites}</TableBody>
+              <TableBody>{...activityElements}</TableBody>
             </Table>
           </TableContainer>
         </Box>
       </Panel>
-      <ActivityControl />
+      {maxPages > 1 && (
+        <ActivityControl
+          currentPage={currentPage}
+          maxPages={maxPages}
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
+      )}
     </Container>
   );
 };
