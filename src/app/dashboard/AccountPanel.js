@@ -95,6 +95,10 @@ const AccountPanel = ({ sx }) => {
                     : "transparent",
                 },
               }}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </Box>
           <Box display="flex" gap="0.8rem" marginBottom="-0.8rem">
