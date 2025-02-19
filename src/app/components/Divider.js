@@ -1,26 +1,26 @@
-import { Divider, useTheme } from '@mui/material';
+import { Divider } from "@mui/material";
 
 const CustomDivider = () => {
-    const theme = useTheme();
-
-    return (
-        <Divider sx={{
-            fontSize: '0.75rem',
-            marginTop: '15px',
-            marginBottom: '0px',
-            fontWeight: 'thin',
-            color: theme.palette.primary.main,
-            '&::before, &::after': {
-                borderTopWidth: '2px',
-                borderColor: theme.palette.primary.main,
-            },
-            '& span': {
-                color: theme.palette.primary.main,
-            }
-        }}>
-            OR
-        </Divider>
-    );
+  return (
+    <Divider
+      sx={{
+        fontSize: "0.9rem",
+        width: "100%",
+        fontWeight: "thin",
+        color: "white",
+        margin: "0 auto",
+        "&::before, &::after": {
+          borderColor: "white",
+        },
+        "& span": {
+          fontWeight: "bold",
+          color: "white",
+          textAlign: "center",
+        },
+      }}>
+      OR
+    </Divider>
+  );
 };
 
 export default CustomDivider;
