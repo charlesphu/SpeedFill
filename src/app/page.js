@@ -5,7 +5,7 @@ import { Box, Button } from "@mui/material";
 import Background from "./components/Background";
 import Title from "./components/Title";
 
-import { auth } from "./firebase";
+import { auth } from "./firebase/firebaseConfig";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const Home = () => {
@@ -16,10 +16,10 @@ const Home = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSingleView(window.innerWidth < 800); 
+      setIsSingleView(window.innerWidth < 800);
     };
     window.addEventListener("resize", handleResize);
-    handleResize(); 
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
