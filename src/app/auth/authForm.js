@@ -5,7 +5,7 @@ import TextArea from "../components/TextArea";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 
-import { auth } from "../firebase";
+import { auth } from "../firebase/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
