@@ -1,16 +1,28 @@
 "use client";
 
-import Background from './components/Background';
-import { useTheme } from '@mui/material';
-import { Box, Typography, Button } from '@mui/material'
-import { signOut } from 'firebase/auth';
-import { auth } from './firebase';
 import { useState, useEffect } from "react";
+import { Box, Button } from "@mui/material";
+import Background from "./components/Background";
+import Title from "./components/Title";
+
+import { auth } from "./firebase";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const Home = () => {
-  const theme = useTheme();
-
   const [user, setUser] = useState(null);
+  // TODO: if user is logged in & has a pdf attribute, change position to 1 and autofill the pdf stuff.
+  const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
+  const [isSingleView, setIsSingleView] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSingleView(window.innerWidth < 800); 
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize(); 
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
@@ -18,85 +30,22 @@ const Home = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('User signed out');
-      })
-      .catch((error) => {
-        console.error('Error signing out:', error);
-      });
+  const moveLeft = () => {
+    if (position > 0) {
+      setPosition(position - 1);
+    }
+  };
+
+  const moveRight = () => {
+    if (position < 2) {
+      setPosition(position + 1);
+    }
   };
 
   return (
-    <Background imageUrl='/background.jpg'>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          textAlign: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.6)', // Slight dark background for readability
-            padding: '20px',
-            borderRadius: '10px',
-            width: '80%',
-            maxWidth: '400px',
-          }}
-        >
-          {user ? (
-            <>
-              <Typography
-                variant="h5"
-                sx={{
-                  color: theme.palette.text.main,
-                  fontWeight: 'bold',
-                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-                }}
-              >
-                Welcome, {user.displayName || 'User'}
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: theme.palette.text.secondary,
-                  marginTop: '10px',
-                }}
-              >
-                Email: {user.email}
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  marginTop: '20px',
-                  backgroundColor: theme.palette.primary.main,
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
-                }}
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </>
-          ) : (
-            <Typography
-              variant="h6"
-              sx={{
-                color: theme.palette.text.main,
-              }}
-            >
-              You are not logged in. Please sign in to continue.
-            </Typography>
-          )}
-        </Box>
-      </Box>
-    </Background>
+    <>
+      <Background />
+    </>
   );
 };
 
