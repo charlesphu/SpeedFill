@@ -1,8 +1,31 @@
-// File upload functions
-
-import { storage, auth } from "./firebaseConfig";
+import { auth, storage } from "./firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-export async function uploadPDF(file, type) {
+import { pdfToText } from "../hooks/pdfToText";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "./firebaseConfig";
+export async function uploadPDF(pdfUrl, type) {
+  var text = await pdfToText(pdfUrl);
+  const user = auth.currentUser;
+  const uid = user.uid;
+  try {
+    const userCollection = collection(db, "users", uid, "entries"); // Store under user's entries
+    await addDoc(userCollection, {
+      timestamp: serverTimestamp(), // Firestore's built-in timestamp
+      text: text,
+      type: type,
+    });
+    console.log("Text stored successfully!");
+  } catch (error) {
+    console.error("Error storing text:", error.message);
+  }
+}
+
+export async function uploadPDF2(file, type) {
   if (type != "resume" && type != "cover letter") {
     throw new Error("invaid file type");
   }
@@ -16,19 +39,29 @@ export async function uploadPDF(file, type) {
   console.log("File uploaded:", downloadURL);
 
   // saving metadata of file
-  const pdfRef = doc(db, `users/${user.uid}/${type}/${fileName}`);
-  await setDoc(pdfRef, {
-    name: fileName,
-    url: downloadURL,
-    uploadedAt: new Date(),
-  });
+
+  try {
+    // Upload the file
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    setMessage(`File uploaded successfully! Download URL: ${downloadURL}`);
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    setMessage("Error uploading file. Please try again.");
+  }
+  // const pdfRef = doc(db, `users/${user.uid}/${type}/${fileName}`);
+  // await setDoc(pdfRef, {
+  //   name: fileName,
+  //   url: downloadURL,
+  //   uploadedAt: new Date(),
+  // });
 
   console.log("Metadata saved in Firestore");
 
   return downloadURL;
 }
 
-export async function getPDF(type) {
+export async function getPDF2(type) {
   const user = auth.currentUser;
   if (!user) throw new Error("User not logged in");
 

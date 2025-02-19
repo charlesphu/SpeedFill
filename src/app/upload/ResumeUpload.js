@@ -12,6 +12,7 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 import Divider from "../components/Divider";
 import { uploadPDF } from "../firebase/storage";
+// import { pdfToText } from "../hooks/pdftotext";
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
 
@@ -25,9 +26,9 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
       setIsFileUploading(false);
     }, 2000);
     // console.log("uploaded");
-    console.log(file);
-    uploadPDF(file, "resume");
-    // uploadPDF()
+    uploadPDF(URL.createObjectURL(file), "resume-analysis");
+    // console.log(pdfToText(URL.createObjectURL(file)));
+    // uploadPDF(file, "resume");
   };
 
   const handleClearResume = (e) => {
