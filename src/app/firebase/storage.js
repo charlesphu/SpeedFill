@@ -2,9 +2,8 @@
 
 import { storage, auth } from "./firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
 export async function uploadPDF(file, type) {
-  if (type != "resume" || type != "cover letter") {
+  if (type != "resume" && type != "cover letter") {
     throw new Error("invaid file type");
   }
   const user = auth.currentUser;
