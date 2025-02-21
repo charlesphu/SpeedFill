@@ -3,11 +3,13 @@
 import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import Title from "../components/Title";
 import Container from "../components/Container";
-import Panel from "../components/Panel";
 import Section from "./Section";
 import { useEffect, useState } from "react";
 import { NavBar, NavBarItem } from "../components/NavBar";
 import Background from "../components/Background";
+import Button from "../components/Button";
+import { useTheme } from "@emotion/react";
+import { useRouter } from "next/navigation";
 
 const MatchSection = ({ score, evaluation }) => {
   score = Math.max(0, Math.min(100, score));
@@ -170,10 +172,20 @@ const QuestionsSection = ({ questions }) => {
             gap: "0.8rem",
             flexDirection: "column",
           }}>
-          <Typography variant="h5" color="title">
+          <Typography
+            variant="h5"
+            color="title"
+            sx={{
+              padding: "0 0.5rem",
+            }}>
             {entry.question}
           </Typography>
-          <Typography variant="body1" color="text.main">
+          <Typography
+            variant="body1"
+            color="text.main"
+            sx={{
+              padding: "0 0.5rem",
+            }}>
             {entry.answer}
           </Typography>
         </Box>
@@ -183,6 +195,9 @@ const QuestionsSection = ({ questions }) => {
 };
 
 const Result = () => {
+  const theme = useTheme();
+  const router = useRouter();
+
   const TEST_MATCH_SCORE = 23;
   const TEST_MATCH_EVALUATION = "Needs Improvement";
 
@@ -223,7 +238,7 @@ const Result = () => {
       <Box
         sx={{
           marginTop: "5rem",
-          marginBottom: "2rem",
+          marginBottom: "3rem",
 
           display: "flex",
           width: "100%",
@@ -247,6 +262,34 @@ const Result = () => {
         </Container>
       </Box>
 
+      {/* Edit Button */}
+      <Box
+        width="100%"
+        marginBottom="3rem"
+        display="flex"
+        justifyContent="center">
+        <Button
+          icon="./Icons/Edit.svg"
+          sx={{
+            width: "12rem",
+            transition: "transform 0.1s",
+            backgroundColor: theme.palette.menu.destructive.main,
+            boxShadow: `0 0 5px ${theme.palette.menu.destructive.main}`,
+            borderRadius: "15px",
+
+            "&:hover": {
+              transform: "scale(1.1)",
+              backgroundColor: theme.palette.menu.destructive.hover,
+              boxShadow: `0 0 10px ${theme.palette.menu.destructive.hover}`,
+            },
+            "&:active": {
+              transform: "scale(0.95)",
+            },
+          }}
+          onClick={() => router.push("/upload")}>
+          Edit Details
+        </Button>
+      </Box>
       <NavBar>
         <NavBarItem text="Home" src="/" />
         <NavBarItem text="Dashboard" src="/dashboard" />

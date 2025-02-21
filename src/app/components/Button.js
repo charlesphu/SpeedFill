@@ -8,6 +8,7 @@ const CustomButton = ({
   fullWidth = true,
   onClick,
   type = "button",
+  icon,
   sx = {},
 }) => {
   const theme = useTheme();
@@ -38,6 +39,15 @@ const CustomButton = ({
         ...sx,
       }}>
       {children}
+      {icon && (
+        <img
+          src={icon}
+          alt="icon"
+          width={25}
+          height={25}
+          style={{ marginLeft: "1rem" }}
+        />
+      )}
     </Button>
   );
 };
