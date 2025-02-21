@@ -5,13 +5,13 @@ import { Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/navigation";
 
-const NavBarItem = ({ text, src }) => {
+const NavBarItem = ({ text, src, onClick }) => {
   const router = useRouter();
   const theme = useTheme();
 
   return (
     <Typography
-      variant="h5"
+      variant="h3"
       color="title"
       zIndex="1"
       sx={{
@@ -19,11 +19,16 @@ const NavBarItem = ({ text, src }) => {
         cursor: "pointer",
         whiteSpace: "nowrap",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        "&:hover": {
-          transform: "scale(1.05)",
-        },
+        // "&:hover": {
+        //   transform: "scale(1.05)",
+        // },
       }}
-      onClick={() => router.push(src)}>
+      onClick={() => {
+        if (onClick) {
+          onClick();
+        }
+        router.push(src);
+      }}>
       {text}
     </Typography>
   );
@@ -63,7 +68,6 @@ const NavBar = ({ children }) => {
           alignItems: "center",
           justifyContent: "center",
           gap: "1rem",
-          width: "100%",
         }}>
         {children}
       </Box>

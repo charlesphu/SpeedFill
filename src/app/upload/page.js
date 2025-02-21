@@ -13,11 +13,15 @@ import ResumeUpload from "./ResumeUpload";
 import JobDescriptionUpload from "./JobDescriptionUpload";
 import AdditionalDetails from "./AdditionalDetails";
 
-import { auth } from "../firebase";
+import useAuth from "../hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 const Upload = () => {
   const theme = useTheme();
-  const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  const { user, logout } = useAuth();
+
   const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
 
   const [resumeData, setResumeData] = useState({ file: null, text: "" });
@@ -28,13 +32,6 @@ const Upload = () => {
   const [additionalDetails, setAdditionalDetails] = useState("");
 
   const [formsFilled, setFormsFilled] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
 
   useEffect(() => {
     const isFilled = resumeData.file || resumeData.text;
@@ -54,6 +51,8 @@ const Upload = () => {
       console.log("Analyze - Resume Data:", resumeData);
       console.log("Analyze - Job Description Data:", jobDescriptionData);
       console.log("Analyze - Additional Details:", additionalDetails);
+
+      router.push("/result?type=resume");
     }
   };
 
@@ -62,6 +61,8 @@ const Upload = () => {
       console.log("Cover Letter - Resume Data:", resumeData);
       console.log("Cover Letter - Job Description Data:", jobDescriptionData);
       console.log("Cover Letter - Additional Details:", additionalDetails);
+
+      router.push("/result?type=coverletter");
     }
   };
 
@@ -307,12 +308,12 @@ const Upload = () => {
       </Box>
       <NavBar>
         <NavBarItem text="Home" src="/" />
-        <NavBarItem text="Upload" src="/upload" />
         <NavBarItem text="Dashboard" src="/dashboard" />
         {user ? (
-          <NavBarItem text={user.email} src="#" />
+          // <NavBarItem text={user.email} src="#" />
+          <NavBarItem text="Sign Out" src="/" onClick={logout} />
         ) : (
-          <NavBarItem text="Sign Up/Login" src="/auth" />
+          <NavBarItem text="Sign In" src="/auth" />
         )}
       </NavBar>
       <Background />
