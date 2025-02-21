@@ -19,6 +19,7 @@ const theme = createTheme({
     },
     accent: {
       main: "#598F54",
+      light: "#6CB073",
     },
     title: {
       main: "#EDEFDE",

@@ -18,10 +18,7 @@ const Dashboard = () => {
           margin: "0 auto",
           paddingTop: "2rem",
         }}>
-        <Title
-          secondaryText="Seamless Job Applications, Every Time"
-          tertiaryText="Upload your resume and let AI help you land your dream job!"
-        />
+        <Title />
       </Box>
 
       <Box
