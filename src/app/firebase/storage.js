@@ -13,6 +13,7 @@ import {
   handleAnalyzeResume,
 } from "../hooks/useAIPrompt";
 
+// upload the pdf with the url and the type
 export async function uploadPDF(pdfUrl, type) {
   var text = await pdfToText(pdfUrl);
   const user = auth.currentUser;
@@ -38,6 +39,7 @@ export async function uploadPDF(pdfUrl, type) {
   }
 }
 
+// get a list of all the pdfs that have been uploaded
 export async function getPDF(uid) {
   try {
     const user = auth.currentUser;
@@ -60,59 +62,61 @@ export async function getPDF(uid) {
     return [];
   }
 }
-export async function uploadPDF2(file, type) {
-  if (type != "resume" && type != "cover letter") {
-    throw new Error("invaid file type");
-  }
-  const user = auth.currentUser;
-  if (!user) throw new Error("User not logged in");
 
-  const storageRef = ref(storage, `users/${user.uid}/${type}/${file.name}`);
-  await uploadBytes(storageRef, file);
-  const downloadURL = await getDownloadURL(storageRef);
+// old pdf upload
+// export async function uploadPDF2(file, type) {
+//   if (type != "resume" && type != "cover letter") {
+//     throw new Error("invaid file type");
+//   }
+//   const user = auth.currentUser;
+//   if (!user) throw new Error("User not logged in");
 
-  console.log("File uploaded:", downloadURL);
+//   const storageRef = ref(storage, `users/${user.uid}/${type}/${file.name}`);
+//   await uploadBytes(storageRef, file);
+//   const downloadURL = await getDownloadURL(storageRef);
 
-  // saving metadata of file
+//   console.log("File uploaded:", downloadURL);
 
-  try {
-    // Upload the file
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    setMessage(`File uploaded successfully! Download URL: ${downloadURL}`);
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    setMessage("Error uploading file. Please try again.");
-  }
-  // const pdfRef = doc(db, `users/${user.uid}/${type}/${fileName}`);
-  // await setDoc(pdfRef, {
-  //   name: fileName,
-  //   url: downloadURL,
-  //   uploadedAt: new Date(),
-  // });
+//   // saving metadata of file
 
-  console.log("Metadata saved in Firestore");
+//   try {
+//     // Upload the file
+//     await uploadBytes(storageRef, file);
+//     const downloadURL = await getDownloadURL(storageRef);
+//     setMessage(`File uploaded successfully! Download URL: ${downloadURL}`);
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//     setMessage("Error uploading file. Please try again.");
+//   }
+//   // const pdfRef = doc(db, `users/${user.uid}/${type}/${fileName}`);
+//   // await setDoc(pdfRef, {
+//   //   name: fileName,
+//   //   url: downloadURL,
+//   //   uploadedAt: new Date(),
+//   // });
 
-  return downloadURL;
-}
+//   console.log("Metadata saved in Firestore");
 
-export async function getPDF2(type) {
-  const user = auth.currentUser;
-  if (!user) throw new Error("User not logged in");
+//   return downloadURL;
+// }
 
-  const querySnapshot = await getDocs(
-    collection(db, `users/${user.uid}/${type}`)
-  );
-  return querySnapshot.docs.map((doc) => doc.data());
-}
+// export async function getPDF2(type) {
+//   const user = auth.currentUser;
+//   if (!user) throw new Error("User not logged in");
 
-export async function savePDFMetadata(fileName, downloadURL) {
-  const user = auth.currentUser;
-  if (!user) throw new Error("User not logged in");
-  const storage = getStorage();
-  const pdfRef = ref(storage, fileName);
-  // const pdfRef = addDoc(db, `users/${user.uid}/entries/4YDjQUZ2iFEH2yhvf1hZ`);
-  await uploadBytes(pdfRef, downloadURL);
+//   const querySnapshot = await getDocs(
+//     collection(db, `users/${user.uid}/${type}`)
+//   );
+//   return querySnapshot.docs.map((doc) => doc.data());
+// }
 
-  console.log("Metadata saved in Firestore");
-}
+// export async function savePDFMetadata(fileName, downloadURL) {
+//   const user = auth.currentUser;
+//   if (!user) throw new Error("User not logged in");
+//   const storage = getStorage();
+//   const pdfRef = ref(storage, fileName);
+//   // const pdfRef = addDoc(db, `users/${user.uid}/entries/4YDjQUZ2iFEH2yhvf1hZ`);
+//   await uploadBytes(pdfRef, downloadURL);
+
+//   console.log("Metadata saved in Firestore");
+// }
