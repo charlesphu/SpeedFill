@@ -307,10 +307,12 @@ const Upload = () => {
       {/* Navigation Bar */}
       <NavBar>
         <NavBarItem text="Home" src="/" />
-        <NavBarItem text="Dashboard" src="/dashboard" />
         {user ? (
           // <NavBarItem text={user.email} src="#" />
-          <NavBarItem text="Sign Out" src="/" onClick={logout} />
+          <>
+            <NavBarItem text="Dashboard" src="/dashboard" />
+            <NavBarItem text="Sign Out" src="/" onClick={logout} />
+          </>
         ) : (
           <NavBarItem text="Sign In" src="/auth" />
         )}
