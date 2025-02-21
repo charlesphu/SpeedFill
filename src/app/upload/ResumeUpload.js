@@ -67,7 +67,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     <Container
       title="Upload Your Resume"
       subtitle="Share your resume with us and let AI take a look"
-      sx={{ maxWidth: "none", width: "40rem", ...sx }}>
+      sx={{ ...sx }}>
       <Box
         display="flex"
         flexDirection="column"

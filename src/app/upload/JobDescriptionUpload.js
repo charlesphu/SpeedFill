@@ -13,7 +13,7 @@ const JobDescriptionUpload = ({
     <Container
       title="Job Description"
       subtitle="Tell us a little about the job you're applying for"
-      sx={{ maxWidth: "none", width: "40rem", ...sx }}>
+      sx={{ ...sx }}>
       <Box
         sx={{
           width: "100%",

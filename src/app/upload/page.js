@@ -70,37 +70,19 @@ const Upload = () => {
     <>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
+          height: "100%",
           width: "100%",
         }}>
-        <Box
-          sx={{
-            marginTop: "7rem",
-            display: "flex",
-            height: "10vh",
-            minheight: "200px",
-            width: "100%",
-            alignItems: "end",
-            justifyContent: "center",
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              width: "30%",
-              justifyContent: "center",
-            }}>
-            <Title variant="medium" />
-          </Box>
-        </Box>
+        {/* Title */}
+        <Title sx={{ paddingTop: "2rem" }} />
 
+        {/* Forms */}
         <Box
           sx={{
-            marginTop: "2rem",
+            marginTop: "5rem",
             display: "flex",
-            height: "55vh",
             width: "100%",
+            height: "30rem",
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
@@ -108,6 +90,7 @@ const Upload = () => {
             flexShrink: "0",
           }}>
           <Box
+            onClick={() => goToPosition(0)}
             sx={{
               position: "absolute",
               display: "flex",
@@ -119,17 +102,20 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(-40rem) scale(0.6)"
                   : "translateX(-80rem) scale(0.6)",
-              transition: "transform 1s ease-in-out, scale 0.5s ease",
-              pointerEvents: position === 0 ? "auto" : "none",
+              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
               opacity: position === 0 ? 1 : 0.5,
             }}>
             <ResumeUpload
               resumeData={resumeData}
               setResumeData={setResumeData}
+              sx={{
+                pointerEvents: position === 0 ? "auto" : "none",
+              }}
             />
           </Box>
 
           <Box
+            onClick={() => goToPosition(1)}
             sx={{
               position: "absolute",
               display: "flex",
@@ -141,18 +127,20 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(0) scale(1)"
                   : "translateX(-40rem) scale(0.6)",
-              transition:
-                "transform 1s ease-in-out, width 0.5s ease, scale 0.5s ease",
-              pointerEvents: position === 1 ? "auto" : "none",
+              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
               opacity: position === 1 ? 1 : 0.5,
             }}>
             <JobDescriptionUpload
               jobDescriptionData={jobDescriptionData}
               setJobDescriptionData={setJobDescriptionData}
+              sx={{
+                pointerEvents: position === 1 ? "auto" : "none",
+              }}
             />
           </Box>
 
           <Box
+            onClick={() => goToPosition(2)}
             sx={{
               position: "absolute",
               display: "flex",
@@ -164,20 +152,24 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(40rem) scale(0.6)"
                   : "translateX(0) scale(1)",
-              transition: "transform 1s ease-in-out, scale 0.5s ease",
-              pointerEvents: position === 2 ? "auto" : "none",
+              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
               opacity: position === 2 ? 1 : 0.5,
             }}>
             <AdditionalDetails
               additionalDetails={additionalDetails}
               setAdditionalDetails={setAdditionalDetails}
+              sx={{
+                pointerEvents: position === 2 ? "auto" : "none",
+              }}
             />
           </Box>
         </Box>
+
+        {/* Pagination Controls */}
         <Box
           sx={{
             position: "relative",
-            marginTop: "0.5rem",
+            marginTop: "2rem",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -225,6 +217,8 @@ const Upload = () => {
             <ArrowForwardIosIcon />
           </IconButton>
         </Box>
+
+        {/* Control Buttons */}
         <Fade in={formsFilled} timeout={700}>
           <Box>
             <Box
@@ -306,6 +300,8 @@ const Upload = () => {
           </Box>
         </Fade>
       </Box>
+
+      {/* Navigation Bar */}
       <NavBar>
         <NavBarItem text="Home" src="/" />
         <NavBarItem text="Dashboard" src="/dashboard" />

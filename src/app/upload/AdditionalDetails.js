@@ -8,7 +8,7 @@ const AdditionalDetails = ({ additionalDetails, setAdditionalDetails, sx }) => {
     <Container
       title="Additional Details"
       subtitle="Anything else you'd like us to cover?"
-      sx={{ maxWidth: "none", width: "40rem", ...sx }}>
+      sx={{ ...sx }}>
       <Box
         sx={{
           width: "100%",
