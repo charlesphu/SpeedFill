@@ -89,7 +89,10 @@ const StrengthsSection = ({ strengths }) => {
         sx={{
           listStyleType: "disc",
           paddingLeft: "1.5rem",
+          paddingTop: "0rem",
+          paddingBottom: "0rem",
           color: "text.main",
+          marginTop: "0.3rem",
         }}>
         {strengths.map((text, index) => (
           <ListItem
@@ -98,7 +101,14 @@ const StrengthsSection = ({ strengths }) => {
               display: "list-item",
               paddingLeft: "0",
             }}>
-            <ListItemText primary={text} />
+            <ListItemText
+              primary={text}
+              primaryTypographyProps={{ variant: "body1" }}
+              sx={{
+                marginTop: "0rem",
+                marginBottom: "0rem",
+              }}
+            />
           </ListItem>
         ))}
       </List>
@@ -106,14 +116,99 @@ const StrengthsSection = ({ strengths }) => {
   );
 };
 
+const ImprovementSection = ({ improvements }) => {
+  const title = "Areas for Improvement";
+  const subtitle =
+    "Suggests changes to increase resume clarity and maximize impact";
+
+  return (
+    <Section title={title} subtitle={subtitle} icon="./Icons/Pencil.svg">
+      <List
+        sx={{
+          listStyleType: "disc",
+          paddingLeft: "1.5rem",
+          paddingTop: "0rem",
+          paddingBottom: "0rem",
+          color: "text.main",
+          marginTop: "0.3rem",
+        }}>
+        {improvements.map((text, index) => (
+          <ListItem
+            key={index}
+            sx={{
+              display: "list-item",
+              paddingLeft: "0",
+            }}>
+            <ListItemText
+              primary={text}
+              primaryTypographyProps={{ variant: "body1" }}
+              sx={{
+                marginTop: "0rem",
+                marginBottom: "0rem",
+              }}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Section>
+  );
+};
+
+const QuestionsSection = ({ questions }) => {
+  const title = "Commonly Asked Questions";
+  const subtitle =
+    "Thoughtful responses to common interview questions, personalized to your experience";
+
+  return (
+    <Section title={title} subtitle={subtitle} icon="./Icons/Speech.svg">
+      {questions.map((entry, index) => (
+        <Box
+          key={index}
+          sx={{
+            marginTop: "1rem",
+            display: "flex",
+            gap: "0.8rem",
+            flexDirection: "column",
+          }}>
+          <Typography variant="h5" color="title">
+            {entry.question}
+          </Typography>
+          <Typography variant="body1" color="text.main">
+            {entry.answer}
+          </Typography>
+        </Box>
+      ))}
+    </Section>
+  );
+};
+
 const Result = () => {
+  const TEST_MATCH_SCORE = 23;
+  const TEST_MATCH_EVALUATION = "Needs Improvement";
+
   const TEST_STRENGTHS = [
     "Extensive experience in project management, successfully leading teams to deliver projects on time and within budget, while maintaining high standards of quality and client satisfaction.",
     "Proficient in data analysis, utilizing advanced tools like Excel and Python to extract valuable insights that inform strategic decision-making and improve business outcomes.",
     "Highly skilled in using industry-standard software and platforms, such as Salesforce, Tableau, and Microsoft Office Suite, to streamline workflows and enhance productivity.",
   ];
-  const TEST_MATCH_SCORE = 23;
-  const TEST_MATCH_EVALUATION = "Needs Improvement";
+
+  const TEST_IMPROVEMENTS = [
+    "Limited experience in certain specialized software tools or platforms commonly used in the industry; further training or certification could enhance proficiency and make your profile more competitive.",
+    "Resume could benefit from more quantifiable achievements and metrics, demonstrating the impact of your work with specific data to highlight your contributions.",
+  ];
+
+  const TEST_QUESTIONS = [
+    {
+      question: "Tell me about yourself",
+      answer:
+        "I’m a marketing professional with over 5 years of experience in digital marketing, content strategy, and data-driven campaign management. I’ve had the opportunity to lead cross-functional teams, launch successful marketing initiatives, and drive significant engagement across various platforms. I’m particularly passionate about understanding customer behavior through data and using those insights to create impactful strategies. Outside of work, I’m continuously learning about emerging trends in marketing and how they can be applied to innovative business solutions.",
+    },
+    {
+      question: "Why are you interested in this role?",
+      answer:
+        "This position caught my attention because it directly aligns with my professional background and career goals. I have a strong foundation in project management and process optimization, which I know are essential for this role. The opportunity to work with a team that values creativity and efficiency is something I’m excited about. I’ve been following your company’s growth and feel that my skill set in streamlining operations and leading diverse teams would make a meaningful impact here.",
+    },
+  ];
 
   return (
     <Box
@@ -140,13 +235,15 @@ const Result = () => {
           title="Your Resume Analysis"
           subtitle="Polish your resume with expert insights!"
           sx={{
-            maxWidth: "45rem",
+            maxWidth: "50rem",
           }}>
           <MatchSection
             score={TEST_MATCH_SCORE}
             evaluation={TEST_MATCH_EVALUATION}
           />
           <StrengthsSection strengths={TEST_STRENGTHS} />
+          <ImprovementSection improvements={TEST_IMPROVEMENTS} />
+          <QuestionsSection questions={TEST_QUESTIONS} />
         </Container>
       </Box>
 
@@ -155,6 +252,7 @@ const Result = () => {
         <NavBarItem text="Dashboard" src="/dashboard" />
         <NavBarItem text="Sign Out" src="/sign-out" />
       </NavBar>
+
       <Background imageUrl="/background.jpg" />
     </Box>
   );

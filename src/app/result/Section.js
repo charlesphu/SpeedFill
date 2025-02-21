@@ -8,11 +8,19 @@ const Section = ({ title, subtitle, icon, children }) => {
         maxWidth: null,
       }}>
       {/* Section Title */}
-      <Box display="flex" flexDirection="row" alignItems="center" gap="0.5rem">
+      <Box display="flex" flexDirection="row" alignItems="center" gap="0.55rem">
         <Typography variant="h2" color="title">
           {title}
         </Typography>
-        {icon && <img src={icon} alt="icon" width={20} height={20} />}
+        {icon && (
+          <img
+            src={icon}
+            alt="icon"
+            width={20}
+            height={20}
+            style={{ marginBottom: "0.1rem" }}
+          />
+        )}
       </Box>
       <Typography
         variant="subtitle1"
