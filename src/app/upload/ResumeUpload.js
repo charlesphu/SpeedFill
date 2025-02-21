@@ -9,7 +9,6 @@ import {
   Button,
 } from "@mui/material";
 import Container from "../components/Container";
-import Panel from "../components/Panel";
 import Divider from "../components/Divider";
 
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
@@ -68,133 +67,127 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     <Container
       title="Upload Your Resume"
       subtitle="Share your resume with us and let AI take a look"
-      sx={{ maxWidth: "none", width: "40rem", borderRadius: "20px", ...sx }}>
-      <Panel sx={{ border: "none", backgroundColor: "none" }}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            border: "2px dashed white",
-            borderRadius: "20px",
-            padding: "1rem",
-            backgroundColor: theme.palette.accent.main,
-            cursor: "pointer",
-          }}
-          onClick={handleClick}>
-          <Box {...getRootProps()}>
-            <input {...getInputProps()} disabled={isFileUploading} />
-          </Box>
-          {isFileUploading ? (
-            <>
-              <Typography
-                variant="body1"
-                sx={{ color: "white" }}
-                marginTop="10px">
-                Uploading...
-              </Typography>
-              <LinearProgress sx={{ width: "30%", marginTop: "10px" }} />
-            </>
-          ) : resumeData.file ? (
-            <>
-              <Typography variant="body1" sx={{ color: "white" }}>
-                {resumeData.file.name}
-              </Typography>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={handleClearResume}
-                sx={{
-                  fontSize: "0.7rem",
-                  color: "white",
-                  padding: "1px 7px",
-                  marginTop: "5px",
-                }}
-                disabled={isFileUploading}>
-                Clear File
-              </Button>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() =>
-                  window.open(URL.createObjectURL(resumeData.file), "_blank")
-                }
-                sx={{ fontSize: "0.7rem", color: "white", padding: "1px 7px" }}
-                disabled={isFileUploading}>
-                Preview Document
-              </Button>
-            </>
-          ) : (
-            <>
-              <img
-                src="/icons/download.svg"
-                alt="icon"
-                width={30}
-                height={30}
-                sx={{ color: "white" }}
-              />
-              <Typography
-                variant="body1"
-                sx={{ fontSize: "0.6rem", color: "white" }}
-                marginBottom="5px">
-                Drag and drop or <strong>Click to upload</strong>
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontSize: "0.5rem", color: "white" }}
-                color="textTertiary">
-                PDF, DOC, or DOCX (MAX. 5MB)
-              </Typography>
-            </>
-          )}
+      sx={{ maxWidth: "none", width: "40rem", ...sx }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        gap="0.3rem"
+        minHeight="9rem"
+        sx={{
+          border: "2px dashed white",
+          borderRadius: "5px",
+          padding: "1rem",
+          backgroundColor: theme.palette.accent.main,
+          cursor: "pointer",
+        }}
+        onClick={handleClick}>
+        <Box {...getRootProps()}>
+          <input {...getInputProps()} disabled={isFileUploading} />
         </Box>
-      </Panel>
-
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Divider />
+        {isFileUploading ? (
+          <>
+            <Typography
+              variant="body1"
+              sx={{ color: "white" }}
+              marginTop="10px">
+              Uploading...
+            </Typography>
+            <LinearProgress sx={{ width: "30%", marginTop: "10px" }} />
+          </>
+        ) : resumeData.file ? (
+          <>
+            <Typography variant="body1" sx={{ color: "white" }}>
+              {resumeData.file.name}
+            </Typography>
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={handleClearResume}
+              sx={{
+                fontSize: "0.7rem",
+                color: "white",
+                padding: "1px 7px",
+                marginTop: "5px",
+              }}
+              disabled={isFileUploading}>
+              Clear File
+            </Button>
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={() =>
+                window.open(URL.createObjectURL(resumeData.file), "_blank")
+              }
+              sx={{ fontSize: "0.7rem", color: "white", padding: "1px 7px" }}
+              disabled={isFileUploading}>
+              Preview Document
+            </Button>
+          </>
+        ) : (
+          <>
+            <img
+              src="/icons/download.svg"
+              alt="icon"
+              width={45}
+              height={45}
+              sx={{ color: "white" }}
+            />
+            <Typography variant="body1" color="title">
+              Drag and drop or <strong>Click to upload</strong>
+            </Typography>
+            <Typography variant="body2" color="title">
+              PDF, DOC, or DOCX (MAX. 5MB)
+            </Typography>
+          </>
+        )}
       </Box>
 
-      <Panel sx={{ border: "none", backgroundColor: "none" }}>
-        <TextField
-          placeholder="Or type your resume here..."
-          multiline
-          rows={6}
-          fullWidth
-          variant="outlined"
-          value={resumeData.text}
-          onChange={(e) =>
-            setResumeData({ ...resumeData, text: e.target.value })
-          }
-          sx={{
-            backgroundColor: theme.palette.accent.main,
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <Divider width="60%" verticalMargin="-0.3rem" />
+      </Box>
+
+      <TextField
+        placeholder="Or paste your resume here..."
+        multiline
+        rows={5}
+        fullWidth
+        variant="outlined"
+        value={resumeData.text}
+        onChange={(e) => setResumeData({ ...resumeData, text: e.target.value })}
+        sx={{
+          backgroundColor: theme.palette.accent.main,
+          color: "white",
+          border: "1px solid white",
+          borderRadius: "5px",
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "transparent",
+            },
+            "&:hover fieldset": {
+              borderColor: "transparent",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "transparent",
+            },
+          },
+          "& .MuiInputBase-input": {
             color: "white",
-            border: "1px solid white",
-            borderRadius: "20px",
-            "& .MuiOutlinedInput-root": {
-              fontSize: "0.7rem",
-              "& fieldset": {
-                borderColor: "transparent",
-              },
-              "&:hover fieldset": {
-                borderColor: "transparent",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "transparent",
-              },
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiInputBase-input::placeholder": {
-              color: "white",
-            },
-          }}
-        />
-      </Panel>
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+          },
+          "& .MuiInputBase-input::placeholder": {
+            color: "white",
+          },
+        }}
+      />
     </Container>
   );
 };
