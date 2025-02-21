@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Background from "../components/Background";
 import Title from "../components/Title";
 import CustomButton from "../components/Button";
+import { NavBar, NavBarItem } from "../components/NavBar";
 import ResumeUpload from "./ResumeUpload";
 import JobDescriptionUpload from "./JobDescriptionUpload";
 import AdditionalDetails from "./AdditionalDetails";
@@ -287,6 +288,17 @@ const Upload = () => {
           </Box>
         </Fade>
       </Box>
+      <NavBar>
+        <NavBarItem text="Home" src="/" />
+        <NavBarItem text="Upload" src="/upload" />
+        <NavBarItem text="Dashboard" src="/dashboard" />
+        {user ? (
+          <NavBarItem text={user.email} src="#" />
+        ) : (
+          <NavBarItem text="Sign Up/Login" src="/auth" />
+        )}
+      </NavBar>
+      <Background />
       <Background />
     </>
   );
