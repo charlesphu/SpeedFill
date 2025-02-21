@@ -233,41 +233,58 @@ const Upload = () => {
                 gap: "2rem",
                 alignItems: "center",
                 marginTop: "1rem",
+                marginBottom: "3rem",
+                position: "relative",
               }}>
-              <CustomButton
-                sx={{
-                  width: "15rem",
-                  backgroundColor: theme.palette.menu.submit_button,
-                  boxShadow: `0 0 5px ${theme.palette.menu.submit_button}`,
-                  borderRadius: "15px",
-                  "&:hover": {
-                    backgroundColor: theme.palette.menu.submit_button_hover,
+              <Box sx={{ position: "relative", display: "inline-block" }}>
+                <CustomButton
+                  icon="./Icons/File.svg"
+                  sx={{
+                    width: "15rem",
+                    backgroundColor: theme.palette.menu.submit_button,
                     boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
-                  },
-                }}
-                onClick={AnalyzeResume}>
-                Analyze Resume
+                    borderRadius: "15px",
+
+                    transition: "transform 0.1s",
+                    "&:hover": {
+                      transform: "scale(1.1)",
+                      backgroundColor: theme.palette.menu.submit.hover,
+                      boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
+                    },
+                    "&:active": {
+                      transform: "scale(0.95)",
+                    },
+                  }}
+                  onClick={AnalyzeResume}>
+                  Analyze Resume
+                </CustomButton>
                 <img
                   src="icons/scribbles/right.svg"
                   alt="scribbles"
                   style={{
                     position: "absolute",
-                    top: "-2px",
                     right: "110%",
-                    marginLeft: "5px",
+                    marginRight: "5px",
                   }}
                 />
-              </CustomButton>
+              </Box>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
+                  icon="./Icons/Search.svg"
                   sx={{
-                    width: "15rem",
+                    width: "18rem",
                     backgroundColor: theme.palette.menu.submit_button,
-                    boxShadow: `0 0 5px ${theme.palette.menu.submit_button}`,
+                    boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
                     borderRadius: "15px",
+
+                    transition: "transform 0.1s",
                     "&:hover": {
-                      backgroundColor: theme.palette.menu.submit_button_hover,
-                      boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
+                      transform: "scale(1.1)",
+                      backgroundColor: theme.palette.menu.submit.hover,
+                      boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
+                    },
+                    "&:active": {
+                      transform: "scale(0.95)",
                     },
                   }}
                   onClick={GenerateCL}>

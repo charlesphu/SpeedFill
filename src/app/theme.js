@@ -34,6 +34,16 @@ const theme = createTheme({
       submit_button_hover: "#569db8",
       google_hover: "#e3e3e3",
       google_border: "#8a8a8a",
+
+      submit: {
+        main: "#3A768C",
+        hover: "#569DB8",
+      },
+
+      destructive: {
+        main: "#882424",
+        hover: "#8C3A3A",
+      },
     },
     action: {
       main: "#41693D",
