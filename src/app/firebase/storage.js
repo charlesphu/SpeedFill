@@ -8,10 +8,10 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-import {
-  handleGenerateCoverLetter,
-  handleAnalyzeResume,
-} from "../hooks/useAIPrompt";
+// import {
+//   handleGenerateCoverLetter,
+//   handleAnalyzeResume,
+// } from "../hooks/useAIPrompt";
 
 // upload the pdf with the url and the type
 export async function uploadPDF(pdfUrl, type) {
