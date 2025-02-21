@@ -48,7 +48,13 @@ const Dashboard = () => {
             />
           </Box>
         )}
-        <ActivityPanel sx={isSmallScreen ? { margin: "auto auto" } : null} />
+        <ActivityPanel
+          sx={
+            isSmallScreen
+              ? { margin: "auto auto", marginBottom: "2rem" }
+              : { marginBottom: "2rem" }
+          }
+        />
       </Box>
 
       <NavBar>
