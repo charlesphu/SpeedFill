@@ -17,7 +17,7 @@ export async function pdfToText(pdfUrl) {
     const pageText = textContent.items.map((item) => item.str).join(" ");
     fullText += pageText + "\n";
   }
-  console.log(fullText);
+  // console.log(fullText);
   return fullText;
 }
 

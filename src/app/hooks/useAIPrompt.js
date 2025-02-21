@@ -5,19 +5,25 @@ export default function useAIPrompt() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const sendPrompt = async (resumeText, isPDF, jobDescription, isURL, applicationQuestion) => {
+  const sendPrompt = async (
+    resumeText,
+    isPDF,
+    jobDescription,
+    isURL,
+    applicationQuestion
+  ) => {
     setLoading(true);
 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          resume: resumeText, 
+        body: JSON.stringify({
+          resume: resumeText,
           isPDF: isPDF,
           jobDesc: jobDescription,
           isURL: isURL,
-          appQuestion: applicationQuestion
+          appQuestion: applicationQuestion,
         }),
       });
 
