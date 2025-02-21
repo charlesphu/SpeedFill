@@ -102,7 +102,8 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(-40rem) scale(0.6)"
                   : "translateX(-80rem) scale(0.6)",
-              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
+              transition:
+                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 0 ? 1 : 0.5,
             }}>
             <ResumeUpload
@@ -127,7 +128,8 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(0) scale(1)"
                   : "translateX(-40rem) scale(0.6)",
-              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
+              transition:
+                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 1 ? 1 : 0.5,
             }}>
             <JobDescriptionUpload
@@ -152,7 +154,8 @@ const Upload = () => {
                   : position === 1
                   ? "translateX(40rem) scale(0.6)"
                   : "translateX(0) scale(1)",
-              transition: "transform 0.8s ease-in-out, scale 0.2s ease",
+              transition:
+                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 2 ? 1 : 0.5,
             }}>
             <AdditionalDetails
