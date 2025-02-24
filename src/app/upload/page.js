@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box, Button, useTheme, Fade } from "@mui/material";
+import { Box, Button, useTheme, Fade, Typography } from "@mui/material";
+import useAIPrompt from "../hooks/useAIPrompt";
 
 import Background from "../components/Background";
 import Title from "../components/Title";
@@ -27,6 +28,8 @@ const Upload = () => {
 
   const [formsFilled, setFormsFilled] = useState(false);
 
+  const { response, error, loading, cooldownMessage, handleGenerateCoverLetter, handleAnalyzeResume } = useAIPrompt();
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
@@ -38,8 +41,9 @@ const Upload = () => {
     const isFilled = resumeData.file || resumeData.text;
     const isJobDescriptionFilled =
       jobDescriptionData.url || jobDescriptionData.text;
-    setFormsFilled(isFilled && isJobDescriptionFilled);
-  }, [resumeData, jobDescriptionData]);
+    const isAdditionalDetailsFilled = additionalDetails.trim() !== "";
+    setFormsFilled(isFilled && isJobDescriptionFilled && isAdditionalDetailsFilled);
+  }, [resumeData, jobDescriptionData, additionalDetails]);
 
   const moveLeft = () => {
     if (position > 0) {
@@ -55,17 +59,13 @@ const Upload = () => {
 
   const AnalyzeResume = () => {
     if (formsFilled) {
-      console.log("Analyze - Resume Data:", resumeData);
-      console.log("Analyze - Job Description Data:", jobDescriptionData);
-      console.log("Analyze - Additional Details:", additionalDetails);
+      handleAnalyzeResume(resumeData.text, jobDescriptionData.text || jobDescriptionData.url);
     }
   };
 
   const GenerateCL = () => {
     if (formsFilled) {
-      console.log("Cover Letter - Resume Data:", resumeData);
-      console.log("Cover Letter - Job Description Data:", jobDescriptionData);
-      console.log("Cover Letter - Additional Details:", additionalDetails);
+      handleGenerateCoverLetter(resumeData.text, jobDescriptionData.text || jobDescriptionData.url, additionalDetails)
     }
   };
 
@@ -242,7 +242,8 @@ const Upload = () => {
                   boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
                 },
               }}
-              onClick={AnalyzeResume}>
+              onClick={AnalyzeResume}
+                disabled={loading}>
               Analyze Resume
             </CustomButton>
             <CustomButton
@@ -255,11 +256,32 @@ const Upload = () => {
                   boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
                 },
               }}
-              onClick={GenerateCL}>
+              onClick={GenerateCL}
+                disabled={loading}>
               Generate Cover Letter
             </CustomButton>
           </Box>
         </Fade>
+
+        {cooldownMessage && cooldownMessage !== "" && (
+          <Typography color="error" style={{ textAlign: "center", marginTop: "10px" }}>
+            {cooldownMessage}
+          </Typography>
+        )}
+
+        {loading && <Typography style={{ textAlign: "center", marginTop: "10px" }}>Loading AI Response...</Typography>}
+
+        {response && (
+          <pre style={{ backgroundColor: "#f4f4f4", padding: "10px", marginTop: "10px" }}>
+            {JSON.stringify(response, null, 2)}
+          </pre>
+        )}
+
+        {error && (
+          <Typography color="error" style={{ textAlign: "center", marginTop: "10px" }}>
+            Error: {error}
+          </Typography>
+        )}
       </Box>
       <Background />
     </>
