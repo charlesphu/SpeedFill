@@ -5,8 +5,20 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 import ActionButton from "./ActionButton";
 import Image from "next/image";
+// import { getUser } from "../hooks/firebase/dashboardFunctions";
+import { getUser } from "../hooks/supabase/auth";
 
 const AccountPanel = ({ sx }) => {
+  const [userEmail, setUserEmail] = useState("Loading...");
+  useEffect(() => {
+    const fetchEmail = async () => {
+      const email = await getUser();
+      setUserEmail(email || "No user data");
+    };
+
+    fetchEmail();
+  }, [userEmail]);
+
   // State management for password field
   const [isShowingPassword, setShowPassword] = useState(false);
   const [isEditingPassword, setEditPassword] = useState(false);
@@ -50,7 +62,7 @@ const AccountPanel = ({ sx }) => {
           color="title"
           overflow="hidden"
           textOverflow="ellipsis">
-          email@domain.com
+          {userEmail}
         </Typography>
         <Box
           display="flex"

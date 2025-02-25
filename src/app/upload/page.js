@@ -318,7 +318,6 @@ const Upload = () => {
         )}
       </NavBar>
       <Background />
-      <Background />
     </>
   );
 };

@@ -5,12 +5,19 @@ import TextArea from "../components/TextArea";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 
-import { auth } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../hooks/firebase/firebaseConfig";
+// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+// import { signUpWithGoogle } from "../hooks/supabase/auth";
+// import {
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+// } from "firebase/auth";
+
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+  signUpNewUser,
+  loginUser,
+  signUpWithGoogle,
+} from "../hooks/supabase/auth";
 
 import { useRouter } from "next/navigation";
 
@@ -29,9 +36,11 @@ const AuthForm = () => {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        await loginUser(email, password);
+        // await signInWithEmailAndPassword(auth, email, password);
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await signUpNewUser(email, password);
+        // await createUserWithEmailAndPassword(auth, email, password);
       }
       router.push("/");
     } catch (error) {
@@ -43,15 +52,15 @@ const AuthForm = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error(error.message);
-    }
-    router.push("/");
-  };
+  // const handleGoogleSignIn = async () => {
+  //   const provider = new GoogleAuthProvider();
+  //   try {
+  //     await signInWithPopup(auth, provider);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  //   router.push("/");
+  // };
 
   const handleToggleAuth = () => {
     setFade(false);
@@ -161,7 +170,7 @@ const AuthForm = () => {
               <Divider />
               <Button
                 variant="outlined"
-                onClick={handleGoogleSignIn}
+                onClick={signUpWithGoogle}
                 sx={{
                   margin: "1rem 0",
                   borderRadius: "5px",

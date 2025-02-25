@@ -16,7 +16,7 @@ export async function POST(request) {
       );
     }
 
-    var actualJD = jobDesc
+    var actualJD = jobDesc;
     // webscraping
     if (isURL) {
       // webscrape the URL
@@ -29,7 +29,7 @@ export async function POST(request) {
     var prompt = `Given my resume: ${resume}, 
             answer this ${appQuestion}, 
             in a way that it fits ${actualJD}`;
-    
+
     console.log("Prompt: ", prompt);
 
     const result = await model.generateContent(prompt);
@@ -44,6 +44,7 @@ export async function POST(request) {
     );
   }
 }
+
 // export async function POST(request) {
 //     const apiKey = process.env.GEMINI_API_KEY; // Securely accessed on the server
 
