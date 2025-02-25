@@ -1,6 +1,6 @@
 import { auth, storage } from "./firebaseConfig";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { pdfToText } from "../hooks/pdfToText";
+import { pdfToText } from "../pdfToText";
 import {
   collection,
   addDoc,

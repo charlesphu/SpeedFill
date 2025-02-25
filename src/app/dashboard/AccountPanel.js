@@ -5,7 +5,8 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 import ActionButton from "./ActionButton";
 import Image from "next/image";
-import { getUser } from "../firebase/dashboardFunctions";
+// import { getUser } from "../hooks/firebase/dashboardFunctions";
+import { getUser } from "../hooks/supabase/auth";
 
 const AccountPanel = ({ sx }) => {
   const [userEmail, setUserEmail] = useState("Loading...");

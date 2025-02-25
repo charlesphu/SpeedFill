@@ -5,7 +5,7 @@ import { Box, Button } from "@mui/material";
 import Background from "./components/Background";
 import Title from "./components/Title";
 
-import { auth } from "./firebase/firebaseConfig";
+import { auth } from "./hooks/firebase/firebaseConfig";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const Home = () => {

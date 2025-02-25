@@ -10,7 +10,7 @@ import ResumeUpload from "./ResumeUpload";
 import JobDescriptionUpload from "./JobDescriptionUpload";
 import AdditionalDetails from "./AdditionalDetails";
 
-import { auth } from "../firebase/firebaseConfig";
+import { auth } from "../hooks/firebase/firebaseConfig";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const Upload = () => {
