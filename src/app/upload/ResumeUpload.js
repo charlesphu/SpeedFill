@@ -12,6 +12,7 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 import Divider from "../components/Divider";
 import { uploadPDF, getPDF, savePDFMetadata } from "../firebase/storage";
+import { uploadFile, getFile, uploadEntry } from "../hooks/supabase/uploadfile";
 // import { pdfToText } from "../hooks/pdftotext";
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
@@ -27,7 +28,8 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     }, 2000);
     // console.log("uploaded");
     // savePDFMetadata("test", URL.createObjectURL(file));
-    uploadPDF(URL.createObjectURL(file), "resume-analysis");
+    // uploadEntry(file);
+    // uploadPDF(URL.createObjectURL(file), "resume-analysis");
     // getPDF();
     // console.log(pdfToText(URL.createObjectURL(file)));
     // uploadPDF(file, "resume");
