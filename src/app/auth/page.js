@@ -12,7 +12,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Auth = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery("(max-width: 1100px)");
+  const isSmallScreen = useMediaQuery("(max-width: 1300px)");
 
   const [loading, setLoading] = useState(true);
 

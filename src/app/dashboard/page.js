@@ -7,9 +7,12 @@ import AccountPanel from "./AccountPanel";
 import ActivityPanel from "./ActivityPanel";
 import Image from "next/image";
 import { NavBar, NavBarItem } from "../components/NavBar";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
+  const { user, logout } = useAuth();
+
   return (
     <>
       <Box
@@ -18,10 +21,7 @@ const Dashboard = () => {
           margin: "0 auto",
           paddingTop: "2rem",
         }}>
-        <Title
-          secondaryText="Seamless Job Applications, Every Time"
-          tertiaryText="Upload your resume and let AI help you land your dream job!"
-        />
+        <Title />
       </Box>
 
       <Box
@@ -51,12 +51,19 @@ const Dashboard = () => {
             />
           </Box>
         )}
-        <ActivityPanel sx={isSmallScreen ? { margin: "auto auto" } : null} />
+        <ActivityPanel
+          sx={
+            isSmallScreen
+              ? { margin: "auto auto", marginBottom: "2rem" }
+              : { marginBottom: "2rem" }
+          }
+        />
       </Box>
 
       <NavBar>
         <NavBarItem text="Home" src="/" />
-        <NavBarItem text="Sign Out" src="/sign-out" />
+        <NavBarItem text="Upload" src="/upload" />
+        <NavBarItem text="Sign Out" src="/" onClick={logout} />
       </NavBar>
       <Background imageUrl="/background.jpg" />
     </>

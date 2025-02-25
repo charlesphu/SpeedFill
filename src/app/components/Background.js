@@ -7,12 +7,13 @@ const Background = () => {
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundImage: "linear-gradient(rgba(47, 59, 34, 0.5), rgba(4, 11, 1, 0.5)), url(/background.jpg)",
+        backgroundImage:
+          "linear-gradient(rgba(47, 59, 34, 0.5), rgba(4, 11, 1, 0.5)), url(/background.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "0 0",
         backgroundRepeat: "repeat-x",
@@ -32,7 +33,6 @@ const Background = () => {
     `}
       </style>
     </Box>
-
   );
 };
 

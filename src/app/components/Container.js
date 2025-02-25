@@ -7,7 +7,7 @@ const Container = ({ title, subtitle, sx, children }) => {
       sx={{
         backgroundColor: "secondary.main",
         boxShadow: "0px 4px 20px rgba(77, 121, 64, 0.4)",
-        padding: "1rem",
+        padding: "1.5rem",
         borderRadius: "5px",
 
         maxWidth: "sm",
