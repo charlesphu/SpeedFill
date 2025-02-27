@@ -87,6 +87,19 @@ export async function getFile(file) {
   console.log(data);
 }
 
+export async function getUserHistory() {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) {
+    return { userError };
+  }
+  const userId = userData.user.id;
+  const { data, error } = await supabase
+    .from("userData") // Replace with your actual table name
+    .select("*")
+    .eq("user_id", userId);
+  console.log(userId);
+  console.log(data);
+}
 // export async function downloadFile(file) {
 //   const { data, error } = await supabase.storage
 //     .from("filesStorage")

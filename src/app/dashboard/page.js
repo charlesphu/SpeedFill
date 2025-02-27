@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, useMediaQuery } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
 import AccountPanel from "./AccountPanel";
@@ -8,6 +8,7 @@ import ActivityPanel from "./ActivityPanel";
 import Image from "next/image";
 import { NavBar, NavBarItem } from "../components/NavBar";
 import useAuth from "../hooks/useAuth";
+import { getUserHistory } from "../hooks/supabase/uploadfile";
 
 const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
@@ -23,7 +24,9 @@ const Dashboard = () => {
         }}>
         <Title />
       </Box>
-
+      {/* <Box>
+        <Button onClick={getUserHistory}> TEST BUTTON </Button>
+      </Box> */}
       <Box
         display="flex"
         justifyContent="center"

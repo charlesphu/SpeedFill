@@ -8,11 +8,12 @@ import {
   TableRow,
   Typography,
   Grow,
+  Button,
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
-
+import { getUserHistory } from "../hooks/supabase/uploadfile";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
@@ -59,7 +60,7 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell>
         <Typography variant="body1" color="primary">
-          CONTENT
+          RESPONSE
         </Typography>
       </TableCell>
     </TableRow>
