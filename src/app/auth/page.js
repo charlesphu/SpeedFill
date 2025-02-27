@@ -9,7 +9,6 @@ import AuthForm from "./authForm";
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { getUser } from "../hooks/supabase/auth";
-import { supabase } from "../hooks/supabase/auth";
 
 const Auth = () => {
   const theme = useTheme();

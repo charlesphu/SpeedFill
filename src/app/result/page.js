@@ -1,17 +1,27 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-
+import { Suspense } from "react";
 import ResumeAnalysis from "./ResumeAnalysis";
 import CoverLetter from "./CoverLetter";
 
 const Result = ({ ...props }) => {
   const searchParams = useSearchParams();
-  return searchParams.get("type") === "resume" ? (
+  const type = searchParams.get("type");
+
+  return type === "resume" ? (
     <ResumeAnalysis {...props} />
   ) : (
     <CoverLetter {...props} />
   );
 };
 
-export default Result;
+export default function ParentComponent() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Result />
+    </Suspense>
+  );
+}
+
+// export ParentComponent;

@@ -16,7 +16,7 @@ export async function createSupabaseClient() {
 
   return supabase;
 }
-export const supabase = await createSupabaseClient();
+export const supabase = createSupabaseClient();
 
 export async function signUpNewUser(email, password) {
   const { data, error } = await supabase.auth.signUp({
