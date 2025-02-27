@@ -5,14 +5,6 @@ import TextArea from "../components/TextArea";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
 
-import { auth } from "../hooks/firebase/firebaseConfig";
-// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-// import { signUpWithGoogle } from "../hooks/supabase/auth";
-// import {
-//   createUserWithEmailAndPassword,
-//   signInWithEmailAndPassword,
-// } from "firebase/auth";
-
 import {
   signUpNewUser,
   loginUser,
@@ -37,10 +29,8 @@ const AuthForm = () => {
     try {
       if (isLogin) {
         await loginUser(email, password);
-        // await signInWithEmailAndPassword(auth, email, password);
       } else {
         await signUpNewUser(email, password);
-        // await createUserWithEmailAndPassword(auth, email, password);
       }
       router.push("/");
     } catch (error) {
