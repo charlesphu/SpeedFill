@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 // import { createClient } from "@supabase/supabase-js";
 import { supabase, getUser, logout } from "./supabase/auth";
-// import { auth } from "../firebase";
-// import { signOut } from "firebase/auth";
 
 // export default async function useAuth() {
 //   // const [user, setUser] = useState(null);

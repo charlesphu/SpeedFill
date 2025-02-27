@@ -10,9 +10,7 @@ import {
 } from "@mui/material";
 import Container from "../components/Container";
 import Divider from "../components/Divider";
-// import { uploadPDF, getPDF, savePDFMetadata } from "../hooks/firebase/storage";
 import { uploadFile, getFile, uploadEntry } from "../hooks/supabase/uploadfile";
-// import { pdfToText } from "../hooks/pdftotext";
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
 
