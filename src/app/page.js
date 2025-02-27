@@ -1,49 +1,81 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Box, Button } from "@mui/material";
+import { useTheme, Box, Button, useMediaQuery } from "@mui/material";
 import Background from "./components/Background";
 import Title from "./components/Title";
+import { NavBar, NavBarItem } from "./components/NavBar";
 
-import { auth } from "./firebase/firebaseConfig";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import useAuth from "./hooks/useAuth";
 
 const Home = () => {
-  const [user, setUser] = useState(null);
-  // TODO: if user is logged in & has a pdf attribute, change position to 1 and autofill the pdf stuff.
-  const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
-  const [isSingleView, setIsSingleView] = useState(false);
+  const router = useRouter();
+  const theme = useTheme();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSingleView(window.innerWidth < 800);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const moveLeft = () => {
-    if (position > 0) {
-      setPosition(position - 1);
-    }
-  };
-
-  const moveRight = () => {
-    if (position < 2) {
-      setPosition(position + 1);
-    }
-  };
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { user, logout } = useAuth();
 
   return (
     <>
+      <NavBar>
+        {user ? (
+          <>
+            {/* <NavBarItem text={user.email} src="#" /> */}
+            <NavBarItem text="Upload" src="/upload" />
+            <NavBarItem text="Dashboard" src="/dashboard" />
+            <Button
+              onClick={logout}
+              sx={{
+                borderRadius: "10px",
+                backgroundColor: theme.palette.menu.textarea,
+                color: "white",
+                height: "3rem",
+                border: "1px solid white",
+                boxShadow: `0 0 10px ${theme.palette.menu.textarea}`,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: `0 0 20px ${theme.palette.menu.main}`,
+                },
+              }}>
+              Sign Out
+            </Button>
+          </>
+        ) : (
+          <>
+            <NavBarItem text="Demo" src="/upload" />
+            <Button
+              onClick={() => router.push("/auth")}
+              sx={{
+                borderRadius: "10px",
+                backgroundColor: theme.palette.menu.textarea,
+                color: "white",
+                height: "3rem",
+                border: "1px solid white",
+                boxShadow: `0 0 10px ${theme.palette.menu.textarea}`,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: `0 0 20px ${theme.palette.menu.main}`,
+                },
+              }}>
+              Sign In
+            </Button>
+          </>
+        )}
+      </NavBar>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "90vh",
+          textAlign: "center",
+          padding: "2rem",
+        }}>
+        <Title variant={isSmallScreen ? "small" : "large"} />
+      </Box>
       <Background />
     </>
   );

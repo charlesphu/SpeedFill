@@ -101,7 +101,6 @@ export default function useAIPrompt() {
 
       const data = await response.json();
       console.log("AI Response:", data);
-
       setResponse(typeof data === "string" ? data : JSON.stringify(data, null, 2));
 
     } catch (error) {

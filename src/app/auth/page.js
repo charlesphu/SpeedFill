@@ -8,27 +8,26 @@ import AuthForm from "./authForm";
 
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUser } from "../hooks/supabase/auth";
 
 const Auth = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery("(max-width: 1100px)");
+  const isSmallScreen = useMediaQuery("(max-width: 1300px)");
 
   const [loading, setLoading] = useState(true);
 
   // redirect if user is already logged in.
   // copy/paste this logic and inverse it to  make page that redirects if user isnt logged in!
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+    const checkIsLogin = async () => {
+      const user = await getUser();
+      if (user != null) {
         redirect("/");
       } else {
         setLoading(false);
       }
-    });
-
-    return () => unsubscribe();
+    };
+    return () => checkIsLogin();
   }, []);
 
   if (loading) {

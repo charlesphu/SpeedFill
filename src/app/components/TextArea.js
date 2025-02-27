@@ -15,7 +15,7 @@ const TextArea = ({ label, type, value, onChange, required = false, sx }) => {
       variant="filled"
       fullWidth
       sx={{
-        fontSize: "2rem",
+        fontSize: "10rem",
         fontWeight: "thin",
 
         backgroundColor: theme.palette.menu.textarea,
@@ -23,15 +23,15 @@ const TextArea = ({ label, type, value, onChange, required = false, sx }) => {
         border: `2px solid ${theme.palette.text.secondary}`,
         borderRadius: "5px",
 
-        marginTop: ".5vw",
-        marginBottom: ".5vw",
+        marginTop: "0rem",
+        marginBottom: "0.8rem",
         input: {
           color: theme.palette.primary.main,
         },
 
         "& .MuiInputLabel-root": {
           color: theme.palette.primary.main,
-          fontSize: "1vw",
+          // fontSize: "1vw",
         },
         "& .MuiInputLabel-root > .MuiInputLabel-asterisk": {
           display: "none",
@@ -42,7 +42,7 @@ const TextArea = ({ label, type, value, onChange, required = false, sx }) => {
 
         "& .MuiInputBase-input::placeholder": {
           color: theme.palette.primary.main,
-          fontSize: "1vw",
+          // fontSize: "1vw",
         },
 
         "& .MuiFilledInput-root": {
