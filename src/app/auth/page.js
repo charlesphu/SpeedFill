@@ -27,7 +27,8 @@ const Auth = () => {
         setLoading(false);
       }
     };
-    return () => checkIsLogin();
+    checkIsLogin();
+    // return () => checkIsLogin();
   }, []);
 
   if (loading) {
