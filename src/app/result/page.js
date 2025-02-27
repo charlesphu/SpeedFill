@@ -23,6 +23,3 @@ export default function ParentComponent() {
     </Suspense>
   );
 }
-
-//test
-// export ParentComponent;

@@ -18,11 +18,21 @@ export default function useAuth() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    if (!supabase || !supabase.auth) {
+      console.error("Supabase is not initialized properly.");
+      return;
+    }
+
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error) throw error;
+        setUser(data.user);
+      } catch (error) {
+        // console.error("Error fetching user:", error.message);
+        setUser(null);
+        return;
+      }
     };
 
     getUser();
