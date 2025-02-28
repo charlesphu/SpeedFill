@@ -1,21 +1,13 @@
 {
-    "manifest_version": 3,
-    "name": "Speedfill",
-    "version": "1.0",
-    "description": "Seamless Job Application Filler",
-    // "icons": {
-    //   "16": "icons/icon16.png",
-    //   "48": "icons/icon48.png",
-    //   "128": "icons/icon128.png"
-    // },
-    "action": {
-      "default_popup": "popup.html"
-    //   "default_icon": "icons/icon48.png"
-    },
-    "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["extractText.js", "popup.js"]
-    }
-  ]
-  }
+  "manifest_version": 3,
+  "name": "SpeedFill",
+  "version": "1.0",
+  "description": "Seamless Job Application Filler",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "permissions": ["activeTab", "scripting", "storage", "tabs"]
+}
