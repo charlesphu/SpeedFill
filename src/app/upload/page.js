@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box, Button, useTheme, Fade, Typography } from "@mui/material";
+import { Box, Button, useTheme, Fade, Typography, IconButton } from "@mui/material";
 import useAIPrompt from "../hooks/useAIPrompt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -20,16 +20,11 @@ import { useRouter } from "next/navigation";
 const Upload = () => {
   const theme = useTheme();
   const router = useRouter();
-
   const { user, logout } = useAuth();
 
-  const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
-
+  const [position, setPosition] = useState(0);
   const [resumeData, setResumeData] = useState({ file: null, text: "" });
-  const [jobDescriptionData, setJobDescriptionData] = useState({
-    url: "",
-    text: "",
-  });
+  const [jobDescriptionData, setJobDescriptionData] = useState({ url: "", text: "" });
   const [additionalDetails, setAdditionalDetails] = useState("");
 
   const [formsFilled, setFormsFilled] = useState(false);
@@ -38,9 +33,9 @@ const Upload = () => {
 
   useEffect(() => {
     const isFilled = resumeData.file || resumeData.text;
-    const isJobDescriptionFilled =
-      jobDescriptionData.url || jobDescriptionData.text;
+    const isJobDescriptionFilled = jobDescriptionData.url || jobDescriptionData.text;
     const isAdditionalDetailsFilled = additionalDetails.trim() !== "";
+
     setFormsFilled(isFilled && isJobDescriptionFilled && isAdditionalDetailsFilled);
   }, [resumeData, jobDescriptionData, additionalDetails]);
 
@@ -51,30 +46,23 @@ const Upload = () => {
   };
 
   const AnalyzeResume = () => {
-    if (formsFilled) {
-      handleAnalyzeResume(resumeData.text, jobDescriptionData.text || jobDescriptionData.url);
-    }
+    if (!formsFilled || loading) return; // Prevent API spam
+    handleAnalyzeResume(resumeData.text, jobDescriptionData.text || jobDescriptionData.url);
   };
 
   const GenerateCL = () => {
-    if (formsFilled) {
-      handleGenerateCoverLetter(resumeData.text, jobDescriptionData.text || jobDescriptionData.url, additionalDetails)
-    }
+    if (!formsFilled || loading) return; // Prevent API spam
+    handleGenerateCoverLetter(resumeData.text, jobDescriptionData.text || jobDescriptionData.url, additionalDetails);
   };
 
   return (
     <>
-      <Box
-        sx={{
-          height: "100%",
-          width: "100%",
-        }}>
+      <Box sx={{ height: "100%", width: "100%" }}>
         {/* Title */}
         <Title sx={{ paddingTop: "2rem" }} />
 
         {/* Forms */}
-        <Box
-          sx={{
+        <Box sx={{
             marginTop: "5rem",
             display: "flex",
             width: "100%",
@@ -84,80 +72,60 @@ const Upload = () => {
             position: "relative",
             overflow: "hidden",
             flexShrink: "0",
-          }}>
-          <Box
-            onClick={() => goToPosition(0)}
-            sx={{
+          }}
+        >
+          {/* Resume Upload Section */}
+          <Box onClick={() => goToPosition(0)} sx={{
               position: "absolute",
               display: "flex",
               width: "50%",
               justifyContent: "center",
-              transform:
-                position === 0
-                  ? "translateX(0)"
-                  : position === 1
-                  ? "translateX(-40rem) scale(0.6)"
-                  : "translateX(-80rem) scale(0.6)",
-              transition:
-                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
+              transform: position === 0 ? "translateX(0)" :
+                        position === 1 ? "translateX(-40rem) scale(0.6)" :
+                        "translateX(-80rem) scale(0.6)",
+              transition: "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 0 ? 1 : 0.5,
-            }}>
-            <ResumeUpload
-              resumeData={resumeData}
-              setResumeData={setResumeData}
-              sx={{
+            }}
+          >
+            <ResumeUpload resumeData={resumeData} setResumeData={setResumeData} sx={{
                 pointerEvents: position === 0 ? "auto" : "none",
               }}
             />
           </Box>
 
-          <Box
-            onClick={() => goToPosition(1)}
-            sx={{
+          {/* Job Description Upload Section */}
+          <Box onClick={() => goToPosition(1)} sx={{
               position: "absolute",
               display: "flex",
               justifyContent: "center",
               width: "50%",
-              transform:
-                position === 0
-                  ? "translateX(40rem) scale(0.6)"
-                  : position === 1
-                  ? "translateX(0) scale(1)"
-                  : "translateX(-40rem) scale(0.6)",
-              transition:
-                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
+              transform: position === 0 ? "translateX(40rem) scale(0.6)" :
+                        position === 1 ? "translateX(0) scale(1)" :
+                        "translateX(-40rem) scale(0.6)",
+              transition: "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 1 ? 1 : 0.5,
-            }}>
-            <JobDescriptionUpload
-              jobDescriptionData={jobDescriptionData}
-              setJobDescriptionData={setJobDescriptionData}
-              sx={{
+            }}
+          >
+            <JobDescriptionUpload jobDescriptionData={jobDescriptionData} setJobDescriptionData={setJobDescriptionData} sx={{
                 pointerEvents: position === 1 ? "auto" : "none",
               }}
             />
           </Box>
 
-          <Box
-            onClick={() => goToPosition(2)}
-            sx={{
+          {/* Additional Details Section */}
+          <Box onClick={() => goToPosition(2)} sx={{
               position: "absolute",
               display: "flex",
               justifyContent: "center",
               width: "50%",
-              transform:
-                position === 0
-                  ? "translateX(80rem) scale(0.6)"
-                  : position === 1
-                  ? "translateX(40rem) scale(0.6)"
-                  : "translateX(0) scale(1)",
-              transition:
-                "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
+              transform: position === 0 ? "translateX(80rem) scale(0.6)" :
+                        position === 1 ? "translateX(40rem) scale(0.6)" :
+                        "translateX(0) scale(1)",
+              transition: "transform 0.7s ease-in-out, scale 0.2s ease, opacity 0.2s ease",
               opacity: position === 2 ? 1 : 0.5,
-            }}>
-            <AdditionalDetails
-              additionalDetails={additionalDetails}
-              setAdditionalDetails={setAdditionalDetails}
-              sx={{
+            }}
+          >
+            <AdditionalDetails additionalDetails={additionalDetails} setAdditionalDetails={setAdditionalDetails} sx={{
                 pointerEvents: position === 2 ? "auto" : "none",
               }}
             />
@@ -165,172 +133,28 @@ const Upload = () => {
         </Box>
 
         {/* Pagination Controls */}
-        <Box
-          sx={{
-            position: "relative",
-            marginTop: "2rem",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-          }}>
-          <IconButton
-            onClick={() => goToPosition(position - 1)}
-            disabled={position === 0}
-            sx={{ color: "white" }}>
+        <Box sx={{ position: "relative", marginTop: "2rem", display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
+          <IconButton onClick={() => goToPosition(position - 1)} disabled={position === 0} sx={{ color: "white" }}>
             <ArrowBackIosIcon />
           </IconButton>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "10rem",
-              height: "16px",
-              borderRadius: "25px",
-              backgroundColor: "rgba(45, 45, 45, 0.5)",
-              padding: "0.3rem",
-              gap: "5px",
-            }}>
-// <<<<<<< chan
-//             <CustomButton
-//               sx={{
-//                 width: "15rem",
-//                 backgroundColor: theme.palette.menu.submit_button,
-//                 boxShadow: `0 0 5px ${theme.palette.menu.submit_button}`,
-//                 "&:hover": {
-//                   backgroundColor: theme.palette.menu.submit_button_hover,
-//                   boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
-//                 },
-//               }}
-//               onClick={AnalyzeResume}
-//                 disabled={loading}>
-//               Analyze Resume
-//             </CustomButton>
-//             <CustomButton
-//               sx={{
-//                 width: "15rem",
-//                 backgroundColor: theme.palette.menu.submit_button,
-//                 boxShadow: `0 0 5px ${theme.palette.menu.submit_button}`,
-//                 "&:hover": {
-//                   backgroundColor: theme.palette.menu.submit_button_hover,
-//                   boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
-//                 },
-//               }}
-//               onClick={GenerateCL}
-//                 disabled={loading}>
-//               Generate Cover Letter
-//             </CustomButton>
-// =======
-            {[0, 1, 2].map((index) => (
-              <Box
-                key={index}
-                onClick={() => goToPosition(index)}
-                sx={{
-                  width: "33%",
-                  height: "5px",
-                  borderRadius: "10px",
-                  backgroundColor:
-                    position === index ? "white" : "rgba(149, 145, 145, 0.84)",
-                  boxShadow: position === index ? `0 0 5px white` : "none",
-                  transition: "background-color 0.5s ease",
-                  cursor: "pointer",
-                }}
-              />
-            ))}
-          </Box>
-          <IconButton
-            onClick={() => goToPosition(position + 1)}
-            disabled={position === 2}
-            sx={{ color: "white" }}>
+          <IconButton onClick={() => goToPosition(position + 1)} disabled={position === 2} sx={{ color: "white" }}>
             <ArrowForwardIosIcon />
           </IconButton>
         </Box>
 
         {/* Control Buttons */}
         <Fade in={formsFilled} timeout={700}>
-          <Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "2rem",
-                alignItems: "center",
-                marginTop: "1rem",
-                marginBottom: "3rem",
-                position: "relative",
-              }}>
-              <Box sx={{ position: "relative", display: "inline-block" }}>
-                <CustomButton
-                  icon="./Icons/File.svg"
-                  sx={{
-                    width: "15rem",
-                    backgroundColor: theme.palette.menu.submit_button,
-                    boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
-                    borderRadius: "15px",
-
-                    transition: "transform 0.1s",
-                    "&:hover": {
-                      transform: "scale(1.1)",
-                      backgroundColor: theme.palette.menu.submit.hover,
-                      boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
-                    },
-                    "&:active": {
-                      transform: "scale(0.95)",
-                    },
-                  }}
-                  onClick={AnalyzeResume}>
-                  Analyze Resume
-                </CustomButton>
-                <img
-                  src="icons/scribbles/right.svg"
-                  alt="scribbles"
-                  style={{
-                    position: "absolute",
-                    right: "110%",
-                    marginRight: "5px",
-                  }}
-                />
-              </Box>
-              <Box sx={{ position: "relative", display: "inline-block" }}>
-                <CustomButton
-                  icon="./Icons/Search.svg"
-                  sx={{
-                    width: "18rem",
-                    backgroundColor: theme.palette.menu.submit_button,
-                    boxShadow: `0 0 10px ${theme.palette.menu.submit_button}`,
-                    borderRadius: "15px",
-
-                    transition: "transform 0.1s",
-                    "&:hover": {
-                      transform: "scale(1.1)",
-                      backgroundColor: theme.palette.menu.submit.hover,
-                      boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
-                    },
-                    "&:active": {
-                      transform: "scale(0.95)",
-                    },
-                  }}
-                  onClick={GenerateCL}>
-                  Generate Cover Letter
-                </CustomButton>
-                <img
-                  src="icons/scribbles/left.svg"
-                  alt="scribbles"
-                  style={{
-                    position: "absolute",
-                    top: "-20px",
-                    left: "110%",
-                    marginLeft: "5px",
-                  }}
-                />
-              </Box>
-            </Box>
-// >>>>>>> main
+          <Box sx={{ display: "flex", justifyContent: "center", gap: "2rem", alignItems: "center", marginTop: "1rem", marginBottom: "3rem" }}>
+            <CustomButton onClick={AnalyzeResume} disabled={loading}>
+              Analyze Resume
+            </CustomButton>
+            <CustomButton onClick={GenerateCL} disabled={loading}>
+              Generate Cover Letter
+            </CustomButton>
           </Box>
         </Fade>
 
-        {cooldownMessage && cooldownMessage !== "" && (
+        {cooldownMessage && (
           <Typography color="error" style={{ textAlign: "center", marginTop: "10px" }}>
             {cooldownMessage}
           </Typography>
@@ -355,7 +179,6 @@ const Upload = () => {
       <NavBar>
         <NavBarItem text="Home" src="/" />
         {user ? (
-          // <NavBarItem text={user.email} src="#" />
           <>
             <NavBarItem text="Dashboard" src="/dashboard" />
             <NavBarItem text="Sign Out" src="/" onClick={logout} />

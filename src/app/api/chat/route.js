@@ -7,6 +7,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 export async function POST(request) {
   try {
     const body = await request.json(); // Parse the JSON body
+    console.log("Received API Request Data:", body);
     const { type, resume, isPDF, jobDesc, isURL, appQuestion } = body;
     // console.log(`${resume},${jobDesc},${isURL},${appQuestion}`)
     if (!resume || !jobDesc) {
@@ -17,14 +18,8 @@ export async function POST(request) {
     }
 
     var actualJD = jobDesc;
-    // webscraping
-    if (isURL) {
-      // webscrape the URL
-    }
 
-    if (isPDF) {
-      // extract content from pdf
-    }
+    console.log("Processing ${type} request...");
 
     let prompt = "";
 
@@ -64,12 +59,13 @@ export async function POST(request) {
 
     let aiResponse;
     try {
-      const rawText = result.response.text();
+      let rawText = await result.response.text();
       console.log("Raw AI Response:", rawText);
+      rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
       aiResponse = JSON.parse(rawText);
     } catch (error) {
       console.error("AI Response JSON Parse Error:", error);
-      aiResponse = { raw_response: result.response.text() };
+      aiResponse = { raw_response: await result.response.text() };
     }
 
     return NextResponse.json(aiResponse);
