@@ -10,7 +10,12 @@ import {
 } from "@mui/material";
 import Container from "../components/Container";
 import Divider from "../components/Divider";
-import { uploadFile, getFile, uploadEntry } from "../hooks/supabase/uploadfile";
+import {
+  uploadFile,
+  getFile,
+  uploadEntry,
+  setCurrentResume,
+} from "../hooks/supabase/uploadfile";
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
 
@@ -19,6 +24,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const uploadResume = (file) => {
     setIsFileUploading(true);
     setResumeData({ ...resumeData, file });
+    setCurrentResume(file);
 
     const timer = setTimeout(() => {
       setIsFileUploading(false);

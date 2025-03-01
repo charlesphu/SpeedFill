@@ -6,6 +6,11 @@ import Panel from "../components/Panel";
 import ActionButton from "./ActionButton";
 import Image from "next/image";
 import { getUser } from "../hooks/supabase/auth";
+import {
+  deleteCurrentResume,
+  getCurrentResume,
+  openCurrentResume,
+} from "../hooks/supabase/uploadfile";
 
 const AccountPanel = ({ sx }) => {
   const [userEmail, setUserEmail] = useState("Loading...");
@@ -154,8 +159,14 @@ const AccountPanel = ({ sx }) => {
             </Box>
           </Box>
           <Box display="flex" gap="0.8rem">
-            <ActionButton icon="/icons/Eye.svg" />
-            <ActionButton icon="/icons/Trash.svg" />
+            <ActionButton
+              icon="/icons/Eye.svg"
+              onClick={() => openCurrentResume()}
+            />
+            <ActionButton
+              icon="/icons/Trash.svg"
+              onClick={() => deleteCurrentResume()}
+            />
           </Box>
         </Box>
       </Panel>
