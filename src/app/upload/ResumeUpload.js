@@ -15,6 +15,7 @@ import {
   getFile,
   uploadEntry,
   setCurrentResume,
+  getCurrentResume,
 } from "../hooks/supabase/uploadfile";
 const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
@@ -24,7 +25,6 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const uploadResume = (file) => {
     setIsFileUploading(true);
     setResumeData({ ...resumeData, file });
-    setCurrentResume(file);
 
     const timer = setTimeout(() => {
       setIsFileUploading(false);

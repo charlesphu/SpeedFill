@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { getUserID } from "./auth";
 // import { handleGenerateCoverLetter, handleAnalyzeResume } from "../useAIPrompt";
 export const supabase = createClient(
   "https://nrkwgjlgdudnkyqxoglt.supabase.co",
@@ -16,16 +17,6 @@ export const supabase = createClient(
 // } else {
 //   console.log("user is logged in");
 // }
-
-async function getUserID() {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData?.user) {
-    console.error(userError?.message || "User not found");
-    return null;
-  }
-  const userId = userData.user.id;
-  return userId;
-}
 
 export async function uploadEntry(file, type) {
   // get user data

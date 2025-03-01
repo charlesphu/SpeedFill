@@ -93,6 +93,16 @@ export async function loginUser(email, password) {
   return data.user;
 }
 
+export async function getUserID() {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData?.user) {
+    console.error(userError?.message || "User not found");
+    return null;
+  }
+  const userId = userData.user.id;
+  return userId;
+}
+
 export async function getUser() {
   // updateClient();
   const { data, error } = await supabase.auth.refreshSession();
