@@ -100,8 +100,6 @@ export async function getUser() {
     // console.error("update session error: ", error.message);
     return null;
   } else {
-    console.log(data);
-    console.log(data.user.email);
     return data.user.email;
   }
   // const { data: userData, error: userError } = await supabase.auth.getUser();
