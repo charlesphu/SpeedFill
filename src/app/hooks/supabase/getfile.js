@@ -23,6 +23,7 @@ export async function getUserHistory() {
   const { data, error } = await supabase
     .from("userData")
     .select("*")
-    .eq("user_id", userId);
-  console.log(data);
+    .eq("user_id", userId)
+    .order("time", { ascending: false });
+  return data;
 }

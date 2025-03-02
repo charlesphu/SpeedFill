@@ -54,12 +54,16 @@ const Upload = () => {
     }
   };
 
-  const AnalyzeResume = () => {
+  const AnalyzeResume = async () => {
     if (formsFilled) {
       console.log("Analyze - Resume Data:", resumeData);
       // console.log("Analyze - Job Description Data:", jobDescriptionData);
       // console.log("Analyze - Additional Details:", additionalDetails);
-      handleAnalyzeResume(resumeData, jobDescriptionData, additionalDetails);
+      await handleAnalyzeResume(
+        resumeData,
+        jobDescriptionData,
+        additionalDetails
+      );
       router.push("/result?type=resume");
     }
   };
@@ -69,7 +73,7 @@ const Upload = () => {
       console.log("Cover Letter - Resume Data:", resumeData);
       // console.log("Cover Letter - Job Description Data:", jobDescriptionData);
       // console.log("Cover Letter - Additional Details:", additionalDetails);
-      handleGenerateCoverLetter(
+      await handleGenerateCoverLetter(
         resumeData,
         jobDescriptionData,
         additionalDetails
