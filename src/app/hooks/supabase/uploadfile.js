@@ -1,13 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
-import { getUserID } from "./auth";
+import { getUserID, supabase } from "./auth";
 // import { handleGenerateCoverLetter, handleAnalyzeResume } from "../useAIPrompt";
-export const supabase = createClient(
-  "https://nrkwgjlgdudnkyqxoglt.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ya3dnamxnZHVkbmt5cXhvZ2x0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNTk1MTYsImV4cCI6MjA1NTkzNTUxNn0.EWMcHnA4aiAAmv5y4IIz3xEuSr6zgg5XN3P5tWLc2PQ",
-  {
-    auth: { persistSession: true },
-  }
-);
 
 // loginUser("charlesphu18@gmail.com", "test123");
 // const { data: user } = await supabase.auth.getUser();
@@ -18,15 +10,10 @@ export const supabase = createClient(
 //   console.log("user is logged in");
 // }
 
-export async function uploadEntry(file, type) {
+export async function uploadEntry(file, type, response) {
   // get user data
-  const userId = getUserID();
-
-  // if (type == "resume-analysis") {
-  //   response = handleAnalyzeResume(text);
-  // } else if (type == "cover-letter") {
-  //   response = handleGenerateCoverLetter(text);
-  // }
+  const userId = await getUserID();
+  console.log(userId);
 
   const timeStamp = new Date().toISOString();
   await uploadFile(file, timeStamp);
@@ -35,7 +22,7 @@ export async function uploadEntry(file, type) {
       user_id: userId,
       type: type,
       filepath: `${timeStamp}-${file.name}`,
-      response: "example response",
+      response: response,
       time: timeStamp,
     },
   ]);
@@ -49,7 +36,7 @@ export async function uploadEntry(file, type) {
 
 // Upload file using standard upload
 export async function uploadFile(file, time) {
-  const userId = getUserID();
+  const userId = await getUserID();
 
   const { data, databaseError } = await supabase.storage
     .from("filesStorage")
@@ -73,7 +60,7 @@ export async function setCurrentResume(file) {
   }
 
   // Get user
-  const userId = getUserID();
+  const userId = await getUserID();
 
   // delete everything under the folder
   deleteCurrentResume();
@@ -95,7 +82,7 @@ export async function setCurrentResume(file) {
 }
 
 export async function getCurrentResume() {
-  const userId = getUserID();
+  const userId = await getUserID();
   console.log("test", userId);
   var bucketName = "currentResume";
   var folderPath = userId;
@@ -132,7 +119,7 @@ export async function openCurrentResume() {
 }
 
 export async function deleteCurrentResume() {
-  const userId = getUserID();
+  const userId = await getUserID();
 
   var bucketName = "currentResume";
   var folderPath = userId;
@@ -165,20 +152,10 @@ export async function deleteCurrentResume() {
 }
 
 export async function getFile(file) {
-  const userId = getUserID();
+  const userId = await getUserID();
   const { data } = supabase.storage.from("filesStorage").getPublicUrl(file); // change to createSignedUrl
-  console.log(data);
 }
 
-export async function getUserHistory() {
-  const userId = getUserID();
-  const { data, error } = await supabase
-    .from("userData") // Replace with your actual table name
-    .select("*")
-    .eq("user_id", userId);
-  console.log(userId);
-  console.log(data);
-}
 // export async function downloadFile(file) {
 //   const { data, error } = await supabase.storage
 //     .from("filesStorage")

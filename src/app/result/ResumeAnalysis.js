@@ -10,11 +10,20 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import { useTheme } from "@emotion/react";
 import { useRouter } from "next/navigation";
-
-const MatchSection = ({ score, evaluation }) => {
+import { getMostRecentResponse } from "../hooks/supabase/getfile";
+const MatchSection = ({ score }) => {
+  score = parseFloat(score);
   score = Math.max(0, Math.min(100, score));
 
-  const title = `Match Score - ${score}% (${evaluation})`;
+  const getRating = (score) => {
+    if (score >= 90) return "Excellent";
+    if (score >= 75) return "Great";
+    if (score >= 50) return "Average";
+    if (score >= 25) return "Bad";
+    return "Poor";
+  };
+
+  const title = `Match Score - ${score}% (${getRating(score)})`;
   const subtitle =
     "Evaluates how well your resume aligns with the job description and its overall quality";
 
@@ -197,20 +206,20 @@ const QuestionsSection = ({ questions }) => {
 const ResumeAnalysis = () => {
   const theme = useTheme();
   const router = useRouter();
+  const [Match_Score, setMatchScore] = useState(null);
+  const [Strengths, setStrengths] = useState(["Loading.."]);
+  const [Improvements, setImprovements] = useState(["Loading.."]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMostRecentResponse("Resume Analysis");
+      setStrengths(response.strengths);
+      setMatchScore(response.match_percentage);
+      setImprovements(response.areas_for_improvement);
+      // console.log(response);
+    };
 
-  const TEST_MATCH_SCORE = 23;
-  const TEST_MATCH_EVALUATION = "Needs Improvement";
-
-  const TEST_STRENGTHS = [
-    "Extensive experience in project management, successfully leading teams to deliver projects on time and within budget, while maintaining high standards of quality and client satisfaction.",
-    "Proficient in data analysis, utilizing advanced tools like Excel and Python to extract valuable insights that inform strategic decision-making and improve business outcomes.",
-    "Highly skilled in using industry-standard software and platforms, such as Salesforce, Tableau, and Microsoft Office Suite, to streamline workflows and enhance productivity.",
-  ];
-
-  const TEST_IMPROVEMENTS = [
-    "Limited experience in certain specialized software tools or platforms commonly used in the industry; further training or certification could enhance proficiency and make your profile more competitive.",
-    "Resume could benefit from more quantifiable achievements and metrics, demonstrating the impact of your work with specific data to highlight your contributions.",
-  ];
+    fetchData();
+  }, []);
 
   const TEST_QUESTIONS = [
     {
@@ -252,12 +261,9 @@ const ResumeAnalysis = () => {
           sx={{
             maxWidth: "50rem",
           }}>
-          <MatchSection
-            score={TEST_MATCH_SCORE}
-            evaluation={TEST_MATCH_EVALUATION}
-          />
-          <StrengthsSection strengths={TEST_STRENGTHS} />
-          <ImprovementSection improvements={TEST_IMPROVEMENTS} />
+          <MatchSection score={Match_Score} />
+          <StrengthsSection strengths={Strengths} />
+          <ImprovementSection improvements={Improvements} />
           <QuestionsSection questions={TEST_QUESTIONS} />
         </Container>
       </Box>

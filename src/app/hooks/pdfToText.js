@@ -2,12 +2,20 @@
 import * as pdfjsLib from "pdfjs-dist";
 import { getDocument } from "pdfjs-dist/build/pdf";
 import "pdfjs-dist/build/pdf.worker";
-// import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
-// pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+import { jsPDF } from "jspdf";
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+export const generatePDF = (text) => {
+  const doc = new jsPDF();
+
+  // Add text to PDF
+  doc.text(text, 10, 10);
+  const pdfBlob = doc.output("blob");
+
+  return pdfBlob;
+};
 
 export async function pdfToText(pdfUrl) {
-  //   console.log("pdf parse");
-  //   return;
   const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
   let fullText = "";
 

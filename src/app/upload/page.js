@@ -15,8 +15,16 @@ import AdditionalDetails from "./AdditionalDetails";
 
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
-
+import useAIPrompt from "../hooks/useAIPrompt";
 const Upload = () => {
+  const {
+    response,
+    error,
+    loading,
+    cooldownMessage,
+    handleGenerateCoverLetter,
+    handleAnalyzeResume,
+  } = useAIPrompt();
   const theme = useTheme();
   const router = useRouter();
 
@@ -49,19 +57,23 @@ const Upload = () => {
   const AnalyzeResume = () => {
     if (formsFilled) {
       console.log("Analyze - Resume Data:", resumeData);
-      console.log("Analyze - Job Description Data:", jobDescriptionData);
-      console.log("Analyze - Additional Details:", additionalDetails);
-
+      // console.log("Analyze - Job Description Data:", jobDescriptionData);
+      // console.log("Analyze - Additional Details:", additionalDetails);
+      handleAnalyzeResume(resumeData, jobDescriptionData, additionalDetails);
       router.push("/result?type=resume");
     }
   };
 
-  const GenerateCL = () => {
+  const GenerateCL = async () => {
     if (formsFilled) {
       console.log("Cover Letter - Resume Data:", resumeData);
-      console.log("Cover Letter - Job Description Data:", jobDescriptionData);
-      console.log("Cover Letter - Additional Details:", additionalDetails);
-
+      // console.log("Cover Letter - Job Description Data:", jobDescriptionData);
+      // console.log("Cover Letter - Additional Details:", additionalDetails);
+      handleGenerateCoverLetter(
+        resumeData,
+        jobDescriptionData,
+        additionalDetails
+      );
       router.push("/result?type=coverletter");
     }
   };

@@ -2,7 +2,7 @@
 
 import { useTheme } from "@emotion/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Box, Typography } from "@mui/material";
 import Button from "../components/Button";
@@ -12,17 +12,25 @@ import Background from "../components/Background";
 import Title from "../components/Title";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
-
+import { getMostRecentResponse } from "../hooks/supabase/getfile";
 const CoverLetter = () => {
   const theme = useTheme();
   const router = useRouter();
+  const [CoverLetter, setCoverLetter] = useState("Loading...");
 
-  const TEST_COVER_LETTER = `[First and last name]\n[Date]\n[Name of employer]\n[Organization name]\nDear [Hiring manager's name],\n\n[Greet the hiring manager and state your name as well as the position you're applying for. These second and third sentences can mention how you found the position and express enthusiasm for the job. You can also mention if you heard about the position from a friend or if a colleague referred you.]\n\n[This first sentence in your second paragraph can introduce the skills you've gained from educational courses, volunteer experience or extracurricular activities. You can feature examples of these specific skills and tie together how you can apply them to this job position during these next few sentences. Mention any other related achievements or awards and how they may benefit the company.]\n\n[Your next paragraph can explain why you're the best candidate for the role. Mention any details you noticed on their website that you believe reflect your passion or motivations. You can also explain your dedication to learning more about the role and you're willingness to develop new skills in the position.]\n\n[In your closing paragraph, explain your excitement for the role one last time. Thank the employer for their time and request an interview. Mention that you look forward to hearing from them soon.]\n\nSincerely,\n[Your full name]`;
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMostRecentResponse("Cover Letter");
+      setCoverLetter(response.cover_letter);
+    };
+
+    fetchData();
+  }, []);
 
   const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
   const copyCoverLetter = () => {
     if (copyButtonText === "Copied!") return;
-    navigator.clipboard.writeText(TEST_COVER_LETTER);
+    navigator.clipboard.writeText(CoverLetter);
 
     setCopyButtonText("Copied!");
     setTimeout(() => {
@@ -65,7 +73,7 @@ const CoverLetter = () => {
               variant="body1"
               color="text"
               sx={{ whiteSpace: "pre-line" }}>
-              {TEST_COVER_LETTER}
+              {CoverLetter}
             </Typography>
           </Panel>
         </Container>
