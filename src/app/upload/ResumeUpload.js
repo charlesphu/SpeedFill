@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Box,
@@ -22,9 +22,33 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
 
   const theme = useTheme();
 
+  useEffect(() => {
+    // Load default resume when the component mounts
+    const loadDefaultResume = async () => {
+      const storedResumeURL = await getCurrentResume(); // Fetch from Supabase
+      if (storedResumeURL) {
+        setIsFileUploading(true);
+        const resumeFetch = await fetch(storedResumeURL);
+        const resumeBlob = await resumeFetch.blob();
+        const resume = new File([resumeBlob], "currentResume.pdf", {
+          type: resumeBlob.type,
+        });
+        console.log(resume);
+        uploadResume(resume);
+        // setResumeData({ file: resume, text: "" });
+        // setResumeData({ ...(resumeData ?? {}), resume });
+        // setCurrentResume(resume);
+        setIsFileUploading(false);
+      }
+    };
+
+    loadDefaultResume();
+  }, [setResumeData]);
+
   const uploadResume = (file) => {
     setIsFileUploading(true);
     setResumeData({ ...resumeData, file });
+    // setCurrentResume(file); // //--> needs to only set if the user wants it to be set
 
     const timer = setTimeout(() => {
       setIsFileUploading(false);

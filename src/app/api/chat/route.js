@@ -52,7 +52,7 @@ export async function POST(request) {
       );
     }
 
-    console.log("Prompt Sent to AI:", prompt);
+    // console.log("Prompt Sent to AI:", prompt);
 
     const result = await model.generateContent(prompt);
 
@@ -66,7 +66,7 @@ export async function POST(request) {
     let aiResponse;
     try {
       let rawText = await result.response.text();
-      console.log("Raw AI Response:", rawText);
+      // console.log("Raw AI Response:", rawText);
       rawText = rawText
         .replace(/```json/g, "")
         .replace(/```/g, "")

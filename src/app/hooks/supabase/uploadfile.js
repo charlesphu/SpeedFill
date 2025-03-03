@@ -47,7 +47,7 @@ export async function uploadFile(file, time) {
     return { databaseError };
   } else {
     // Handle success
-    console.log("file uploaded succesfully");
+    // console.log("file uploaded succesfully");
     return 0;
   }
 }
@@ -77,13 +77,12 @@ export async function setCurrentResume(file) {
     return { error };
   }
 
-  console.log("File uploaded successfully:", data);
+  // console.log("File uploaded successfully:", data);
   getCurrentResume();
 }
 
 export async function getCurrentResume() {
   const userId = await getUserID();
-  console.log("test", userId);
   var bucketName = "currentResume";
   var folderPath = userId;
   const { data, error } = await supabase.storage
@@ -91,7 +90,7 @@ export async function getCurrentResume() {
     .list(folderPath);
 
   if (!data || data.length === 0) {
-    console.log("No files found in the folder.");
+    // console.log("No files found in the folder.");
     return null;
   }
   if (error) {
@@ -106,7 +105,7 @@ export async function getCurrentResume() {
   const publicUrl = supabase.storage.from(bucketName).getPublicUrl(filePath)
     .data.publicUrl;
 
-  console.log("First file public URL:", publicUrl);
+  // console.log("First file public URL:", publicUrl);
   return publicUrl;
 }
 
@@ -133,13 +132,13 @@ export async function deleteCurrentResume() {
   }
 
   if (!data || data.length === 0) {
-    console.log("No files found in the folder.");
+    // console.log("No files found in the folder.");
     return;
   }
 
   // Create an array of file paths to delete
   const filePaths = data.map((file) => `${folderPath}/${file.name}`);
-  console.log(filePaths);
+  // console.log(filePaths);
   const { error: deleteError } = await supabase.storage
     .from(bucketName)
     .remove(filePaths);
@@ -147,7 +146,7 @@ export async function deleteCurrentResume() {
   if (deleteError) {
     console.error("Error deleting files:", deleteError);
   } else {
-    console.log("All files deleted successfully.");
+    // console.log("All files deleted successfully.");
   }
 }
 

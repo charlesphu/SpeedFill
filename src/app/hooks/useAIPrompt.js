@@ -106,7 +106,7 @@ export default function useAIPrompt() {
         body: JSON.stringify({
           type: "analyzeResume",
           resume: resumeText,
-          jobDesc: jobDescription,
+          jobDesc: jobDescription.text,
           appQuestion: applicationQuestion,
         }),
       });
