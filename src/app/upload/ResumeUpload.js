@@ -33,12 +33,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
         const resume = new File([resumeBlob], "currentResume.pdf", {
           type: resumeBlob.type,
         });
-        console.log(resume);
         uploadResume(resume);
-        // setResumeData({ file: resume, text: "" });
-        // setResumeData({ ...(resumeData ?? {}), resume });
-        // setCurrentResume(resume);
-        setIsFileUploading(false);
       }
     };
 

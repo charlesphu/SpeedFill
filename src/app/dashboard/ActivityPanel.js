@@ -324,20 +324,19 @@ const ActivityPanel = ({ sx }) => {
       const activityPage = [];
 
       for (const entry of userHistory.slice(i, i + MAX_ENTRY_PER_PAGE)) {
-        const entryDate = entry.time;
+        const entryDate = new Date(entry.time);
 
         activityPage.push({
           type: entry.type,
 
           // Format timestamp
-          // date: `${
-          //   entryDate.getMonth() + 1
-          // }-${entryDate.getDate()}-${entryDate.getFullYear()}`,
+          date: `${
+            entryDate.getMonth() + 1
+          }-${entryDate.getDate()}-${entryDate.getFullYear()}`,
 
-          // time: `${entryDate.getHours() % 12 || 12}:${entryDate.getMinutes()} ${
-          //   entryDate.getHours() >= 12 ? "PM" : "AM"
-          // }`,
-          time: entryDate,
+          time: `${entryDate.getHours() % 12 || 12}:${entryDate.getMinutes()} ${
+            entryDate.getHours() >= 12 ? "PM" : "AM"
+          }`,
 
           // Extract file name and size
           resume: {
