@@ -1,10 +1,10 @@
-# SpeedFill ✨
+# SpeedFill
 
 SpeedFill is a powerful web application designed to streamline the job application process. By leveraging AI technology, SpeedFill helps users generate tailored cover letters and receive detailed resume analysis based on specific job descriptions. The platform saves time and improves application quality, increasing the chances of securing interviews and job offers.
 
 With SpeedFill, users can upload their resumes, input job descriptions, and get instant, personalized feedback along with generated documents. The intuitive interface guides users through every step of the process, making job applications faster and more effective.
 
-## Core Features 🚀
+## ⚡ Core Features
 
 - **Resume Analysis**
 
@@ -61,7 +61,7 @@ With SpeedFill, users can upload their resumes, input job descriptions, and get 
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## 🛠️ Technologies Used
+## 🛠️ Technology Stack
 
 - **Frontend:** React.js, Next.js, Material UI
 - **AI Integration:** Google Gemini AI API
