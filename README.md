@@ -22,10 +22,10 @@ With SpeedFill, users can upload their resumes, input job descriptions, and get 
 ## 📸 Screenshots
 
 ![Upload Interface](public/screenshots/upload.png)
-_Friendly interface for uploading resumes and specifycing job details._
+_Friendly interface for uploading resumes and specifying job details_
 
 ![Dashboard](public/screenshots/dashboard.png)
-_Track your application history and access past documents._
+_User dashboard to track application history and access past documents_
 
 ## 🚀 Getting Started
 
