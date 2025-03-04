@@ -23,35 +23,6 @@ const AccountPanel = ({ sx }) => {
     fetchEmail();
   }, [userEmail]);
 
-  // State management for password field
-  const [isShowingPassword, setShowPassword] = useState(false);
-  const [isEditingPassword, setEditPassword] = useState(false);
-
-  const [password, setPassword] = useState("your_very_long_password");
-  const [shownPassword, setShownPassword] = useState("");
-
-  const passwordFieldRef = useRef();
-
-  useEffect(() => {
-    if (isShowingPassword) {
-      setShownPassword(password);
-    } else {
-      setShownPassword(password.replace(/./g, "•"));
-    }
-  }, [isShowingPassword, password]);
-
-  const captureEditPassword = () => {
-    passwordFieldRef.current.focus();
-    setShowPassword(true);
-    setEditPassword(true);
-  };
-
-  const releaseEditPassword = () => {
-    console.log("Updating password to", passwordFieldRef.current.value);
-    setEditPassword(false);
-    setShowPassword(false);
-  };
-
   return (
     <Container
       title="Your Infomation"
@@ -68,72 +39,7 @@ const AccountPanel = ({ sx }) => {
           textOverflow="ellipsis">
           {userEmail}
         </Typography>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          marginTop="0.8rem"
-          marginBottom="-0.2rem">
-          <Box>
-            <Typography variant="h5" color="title">
-              Password:
-            </Typography>
-            <TextField
-              inputRef={passwordFieldRef}
-              variant="standard"
-              value={shownPassword}
-              onChange={(e) => {
-                if (isEditingPassword) setPassword(e.target.value);
-              }}
-              onBlur={releaseEditPassword}
-              sx={{
-                maxWidth: "16rem",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                fontSize: "1rem",
-
-                "& .MuiInputBase-root": {
-                  color: "text.main",
-                },
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: isEditingPassword
-                    ? "text.main"
-                    : "transparent",
-                },
-                "& .MuiInput-underline:before": {
-                  borderBottomColor: isEditingPassword
-                    ? "accent.main"
-                    : "transparent",
-                },
-                "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
-                  borderBottomColor: isEditingPassword
-                    ? "accent.main"
-                    : "transparent",
-                },
-              }}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
-            />
-          </Box>
-          <Box display="flex" gap="0.8rem" marginBottom="-0.8rem">
-            <ActionButton
-              icon={
-                isShowingPassword ? "/icons/Striked_Eye.svg" : "/icons/Eye.svg"
-              }
-              onClick={() => setShowPassword(!isShowingPassword)}
-            />
-            <ActionButton
-              icon="/icons/Edit.svg"
-              onClick={captureEditPassword}
-            />
-          </Box>
-        </Box>
-      </Panel>
-
-      <Panel>
-        <Typography variant="h5" color="title">
+        <Typography variant="h5" color="title" sx={{ marginTop: "1rem" }}>
           Resume:
         </Typography>
         <Box

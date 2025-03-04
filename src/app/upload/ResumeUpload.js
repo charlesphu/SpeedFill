@@ -43,7 +43,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const uploadResume = (file) => {
     setIsFileUploading(true);
     setResumeData({ ...resumeData, file });
-    // setCurrentResume(file); // //--> needs to only set if the user wants it to be set
+    setCurrentResume(file); // //--> needs to only set if the user wants it to be set
 
     const timer = setTimeout(() => {
       setIsFileUploading(false);
