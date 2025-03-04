@@ -1,24 +1,8 @@
 # SpeedFill ✨
 
-SpeedFill is a powerful web application designed to simplify and enhance the job application process. By leveraging advanced AI, it provides a detailed analysis of your resume and generates personalized cover letters tailored to specific job descriptions. With features like match scoring, strengths identification, and improvement recommendations, SpeedFill aims to empower job seekers to present their best selves in every application.
+SpeedFill is a powerful web application designed to streamline the job application process. By leveraging AI technology, SpeedFill helps users generate tailored cover letters and receive detailed resume analysis based on specific job descriptions. The platform saves time and improves application quality, increasing the chances of securing interviews and job offers.
 
-## Table of Contents 📑
-
-- [Project Overview 📝](#project-overview-)
-- [Core Features 🚀](#core-features-)
-- [Usage Guide ▶️](#usage-guide-)
-- [Project Structure 📂](#project-structure-)
-- [Contributing 🤝](#contributing-)
-- [License 📄](#license-)
-
-## Project Overview 📝
-
-SpeedFill streamlines the job application process by providing two main functionalities:
-
-- **Resume Analysis**: Evaluates your resume against a given job description, calculates a match percentage, highlights your key strengths, and suggests areas for improvement.
-- **Cover Letter Generation**: Crafts professional cover letters that are context-aware, ensuring that each letter is tailored to the job you're applying for.
-
-This project is built using modern web technologies, including Next.js for frontend and Supabase for backend functionalities. It follows a component-driven development approach to ensure scalability and ease of maintenance.
+With SpeedFill, users can upload their resumes, input job descriptions, and get instant, personalized feedback along with generated documents. The intuitive interface guides users through every step of the process, making job applications faster and more effective.
 
 ## Core Features 🚀
 
@@ -35,21 +19,56 @@ This project is built using modern web technologies, including Next.js for front
   - Job-specific customization
   - One-click copy functionality
 
-## Usage Guide ▶️
+## 🚀 Getting Started
 
-- **Resume Analysis:**
+### Prerequisites
 
-  - Upload your resume (PDF or DOC/DOCX) or paste your resume text.
-  - Enter the job description or URL for the job posting.
-  - Click on "Analyze Resume" to receive a detailed analysis report.
+- Node.js (v15.1.5 or higher)
+- npm or yarn
 
-- **Cover Letter Generation:**
-  - Upload your resume or provide your resume text.
-  - Enter the job description or URL.
-  - Click on "Generate Cover Letter" to produce a personalized cover letter.
-  - You can easily copy the generated letter with one click.
+### Installation
 
-## Project Structure 📂
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/speedfill.git
+   cd speedfill
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Create a [\\.env\\.local](.env.local) file in the root directory and add your API keys:
+
+   ```
+   GEMINI_API_KEY=your_gemini_api_key
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+## 🛠️ Technologies Used
+
+- **Frontend:** React.js, Next.js, Material UI
+- **AI Integration:** Google Gemini AI API
+- **Authentication & Storage:** Supabase
+- **PDF Processing:** PDF.js, jsPDF
+
+## 📊 Project Structure
 
 The project is organized as follows:
 
@@ -63,25 +82,29 @@ The project is organized as follows:
   - **upload/**: Handles resume and job description upload forms.
 - **temp/**: Contains temporary files, like CORS configuration and middleware examples.
 
-## Contributing 🤝
+## 🔒 Authentication
 
-Contributions are welcome! Follow these steps to contribute:
+SpeedFill offers both email/password and Google sign-in options. User data is securely managed through Supabase, ensuring robust data protection practices.
+
+## 🌐 Deployment
+
+Deploy the application on Vercel for optimal performance with Next.js:
+
+```bash
+npm run build
+vercel --prod
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
 
 1. Fork the repository.
-2. Create your feature branch:
-   ```sh
-   git checkout -b feature/AmazingFeature
-   ```
-3. Commit your changes:
-   ```sh
-   git commit -m 'Add some AmazingFeature'
-   ```
-4. Push to the branch:
-   ```sh
-   git push origin feature/AmazingFeature
-   ```
+2. Create your feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m 'Add some amazing feature'`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
 5. Open a Pull Request.
 
-## License 📄
+## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [`LICENSE`](LICENSE) file for details.
