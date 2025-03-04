@@ -1,4 +1,6 @@
+"use client"; 
 import { useState, useEffect } from "react";
+
 
 export default function useAIPrompt() {
   const [response, setResponse] = useState(null);
