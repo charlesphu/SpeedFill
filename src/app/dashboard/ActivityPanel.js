@@ -370,7 +370,7 @@ const ActivityPanel = ({ sx }) => {
           index={index}
           date={activity.date}
           time={activity.time}
-          role={activity.role}
+          role={activity.role ?? "N / A"}
           resume={[
             activity.resume.name,
             activity.resume.size,
