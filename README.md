@@ -21,12 +21,8 @@ With SpeedFill, users can upload their resumes, input job descriptions, and get 
 
 ## 📸 Screenshots
 
-### Upload Interface
-
 ![Upload Interface](public/screenshots/upload.png)
 _Friendly interface for uploading resumes and specifycing job details._
-
-### Dashboard
 
 ![Dashboard](public/screenshots/dashboard.png)
 _Track your application history and access past documents._
