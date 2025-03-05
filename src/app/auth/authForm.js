@@ -27,12 +27,18 @@ const AuthForm = () => {
     e.preventDefault();
 
     try {
+      let result;
       if (isLogin) {
-        await loginUser(email, password);
+        result = await loginUser(email, password);
       } else {
-        await signUpNewUser(email, password);
+        result = await signUpNewUser(email, password);
       }
-      router.push("/");
+
+      if (result) {
+        router.push("/");
+      } else {
+        throw new Error(result?.error?.message || "Authentication failed");
+      }
     } catch (error) {
       setError(
         `${isLogin ? "Login" : "Signup"} failed. Email: ${email} - Error: ${
@@ -83,7 +89,7 @@ const AuthForm = () => {
               top: "10px",
               left: "50%",
               transform: "translateX(-50%)",
-              backgroundColor: "red",
+              backgroundColor: theme.palette.error.main,
               color: "white",
               padding: "10px",
               borderRadius: "5px",
