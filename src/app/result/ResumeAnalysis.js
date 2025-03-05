@@ -95,7 +95,7 @@ const StrengthsSection = ({ strengths }) => {
     "Showcases your resume's standout skills and experiences for this role";
 
   return (
-    <Section title={title} subtitle={subtitle} icon="./Icons/Star.svg">
+    <Section title={title} subtitle={subtitle} icon="./icons/Star.svg">
       <List
         sx={{
           listStyleType: "disc",
@@ -133,7 +133,7 @@ const ImprovementSection = ({ improvements }) => {
     "Suggests changes to increase resume clarity and maximize impact";
 
   return (
-    <Section title={title} subtitle={subtitle} icon="./Icons/Pencil.svg">
+    <Section title={title} subtitle={subtitle} icon="./icons/Pencil.svg">
       <List
         sx={{
           listStyleType: "disc",
@@ -171,7 +171,7 @@ const QuestionsSection = ({ questions }) => {
     "Thoughtful responses to common interview questions, personalized to your experience";
 
   return (
-    <Section title={title} subtitle={subtitle} icon="./Icons/Speech.svg">
+    <Section title={title} subtitle={subtitle} icon="./icons/Speech.svg">
       {questions.map((entry, index) => (
         <Box
           key={index}
@@ -275,7 +275,7 @@ const ResumeAnalysis = () => {
         display="flex"
         justifyContent="center">
         <Button
-          icon="./Icons/Edit.svg"
+          icon="./icons/Edit.svg"
           sx={{
             width: "12rem",
             transition: "transform 0.1s",

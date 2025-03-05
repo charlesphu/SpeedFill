@@ -87,7 +87,7 @@ const CoverLetter = () => {
         justifyContent="center"
         gap="2rem">
         <Button
-          icon="./Icons/Edit.svg"
+          icon="./icons/Edit.svg"
           sx={{
             width: "12rem",
             transition: "transform 0.1s",
@@ -108,7 +108,7 @@ const CoverLetter = () => {
           Edit Details
         </Button>
         <Button
-          icon="./Icons/Reset.svg"
+          icon="./icons/Reset.svg"
           sx={{
             width: "12rem",
             transition: "transform 0.1s",
@@ -129,7 +129,7 @@ const CoverLetter = () => {
           Regenerate
         </Button>
         <Button
-          icon="./Icons/Copy.svg"
+          icon="./icons/Copy.svg"
           sx={{
             width: "12rem",
             transition: "transform 0.1s",
