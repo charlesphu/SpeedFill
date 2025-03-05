@@ -62,6 +62,17 @@ const NavBar = ({ children }) => {
           top: "0rem",
         }}
       />
+      <img
+        src="/icons/scribbles/highlight.svg"
+        alt="Highlight"
+        style={{
+          height: "4rem",
+          width: "4rem",
+          position: "absolute",
+          right: "1rem",
+          top: "100%",
+        }}
+      />
       <Box
         sx={{
           display: "flex",
