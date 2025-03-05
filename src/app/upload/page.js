@@ -16,6 +16,7 @@ import AdditionalDetails from "./AdditionalDetails";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import useAIPrompt from "../hooks/useAIPrompt";
+
 const Upload = () => {
   const {
     response,
@@ -25,10 +26,18 @@ const Upload = () => {
     handleGenerateCoverLetter,
     handleAnalyzeResume,
   } = useAIPrompt();
+
   const theme = useTheme();
   const router = useRouter();
 
   const { user, logout } = useAuth();
+
+  // Redirect to auth page if user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth");
+    }
+  }, [user]);
 
   const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
 

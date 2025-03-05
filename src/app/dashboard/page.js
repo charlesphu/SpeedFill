@@ -1,18 +1,32 @@
 "use client";
 
-import { Box, Button, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
+
 import AccountPanel from "./AccountPanel";
 import ActivityPanel from "./ActivityPanel";
+
 import Image from "next/image";
 import { NavBar, NavBarItem } from "../components/NavBar";
+
 import useAuth from "../hooks/useAuth";
 import { getUserHistory } from "../hooks/supabase/uploadfile";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
+  const router = useRouter();
+
   const { user, logout } = useAuth();
+
+  // Redirect to auth page if user is not logged in
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth");
+    }
+  }, [user]);
 
   return (
     <>
