@@ -130,6 +130,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
               maxWidth="8rem"
               overflow="hidden"
               textOverflow="ellipsis"
+              whiteSpace="nowrap"
               sx={{
                 textDecoration: "underline",
               }}>
