@@ -30,14 +30,14 @@ const Upload = () => {
   const theme = useTheme();
   const router = useRouter();
 
-  const { user, logout } = useAuth();
+  const { user, logout, isLoadingUser } = useAuth();
 
   // Redirect to auth page if user is not logged in
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoadingUser) {
       router.push("/auth");
     }
-  }, [user]);
+  }, [user, isLoadingUser]);
 
   const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
 
@@ -332,15 +332,8 @@ const Upload = () => {
       {/* Navigation Bar */}
       <NavBar>
         <NavBarItem text="Home" src="/" />
-        {user ? (
-          // <NavBarItem text={user.email} src="#" />
-          <>
-            <NavBarItem text="Dashboard" src="/dashboard" />
-            <NavBarItem text="Sign Out" src="/" onClick={logout} />
-          </>
-        ) : (
-          <NavBarItem text="Sign In" src="/auth" />
-        )}
+        <NavBarItem text="Dashboard" src="/dashboard" />
+        <NavBarItem text="Sign Out" src="/" onClick={logout} />
       </NavBar>
       <Background />
     </>

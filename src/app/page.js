@@ -11,7 +11,7 @@ const Home = () => {
   const theme = useTheme();
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { user, logout } = useAuth();
+  const { user, logout, isLoadingUser } = useAuth();
 
   return (
     <>

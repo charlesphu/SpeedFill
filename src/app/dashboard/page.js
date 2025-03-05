@@ -19,14 +19,14 @@ const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
   const router = useRouter();
 
-  const { user, logout } = useAuth();
+  const { user, logout, isLoadingUser } = useAuth();
 
   // Redirect to auth page if user is not logged in
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoadingUser) {
       router.push("/auth");
     }
-  }, [user]);
+  }, [user, isLoadingUser]);
 
   return (
     <>
