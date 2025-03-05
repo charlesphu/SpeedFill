@@ -296,7 +296,7 @@ const ActivityPanel = ({ sx }) => {
     const fetchData = async () => {
       const response = await getUserHistory();
       setUserHistory(response);
-      console.log(response);
+      // console.log(response);
     };
     fetchData();
     setJS(jsdooodooo + 1);
@@ -311,7 +311,7 @@ const ActivityPanel = ({ sx }) => {
 
   useEffect(() => {
     // Effect runs when myVariable changes
-    console.log("myVariable changed:", userHistory);
+    // console.log("myVariable changed:", userHistory);
     setJS(jsdooodooo + 1);
   }, [userHistory]); // Ensure the dependency array is consistent
 
@@ -342,7 +342,7 @@ const ActivityPanel = ({ sx }) => {
           resume: {
             name: entry.filepath.split("Z-")[1],
             size: "1.2MB",
-            src: "/file.pdf",
+            src: "google.com", // entry.resumeFileSrc.publicUrl,
           },
 
           content: {

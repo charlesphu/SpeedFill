@@ -1,4 +1,5 @@
 import { supabase, getUserID } from "./auth";
+// import { getFile } from "./uploadfile";
 
 export async function getMostRecentResponse(type) {
   const userid = await getUserID();
@@ -18,6 +19,12 @@ export async function getMostRecentResponse(type) {
   return data.length ? JSON.parse(data[0].response) : null;
 }
 
+export async function getFile(file) {
+  const userId = await getUserID();
+  const { data } = supabase.storage.from("filesStorage").getPublicUrl(file); // change to createSignedUrl
+  return data;
+}
+
 export async function getUserHistory() {
   const userId = await getUserID();
   const { data, error } = await supabase
@@ -25,5 +32,22 @@ export async function getUserHistory() {
     .select("*")
     .eq("user_id", userId)
     .order("time", { ascending: false });
-  return data;
+
+  // jsonArray = jsonArray.map(person => ({
+  //   ...person,
+  //   age: person.age + 1
+  // }));
+  console.log("test", data);
+  var results = await Promise.all(
+    data.map(async (item) => ({
+      ...item,
+      resumeFileSrc: item.filepath
+        ? await getFile(`${userId}/${item.filepath}`)
+        : null,
+    }))
+  );
+
+  // results =
+
+  return results;
 }

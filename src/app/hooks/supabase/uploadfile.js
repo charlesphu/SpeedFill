@@ -27,7 +27,7 @@ export async function uploadEntry(file, type, response) {
     },
   ]);
 
-  getFile(`${userId}/${timeStamp}-${file.name}`);
+  // getFile(`${userId}/${timeStamp}-${file.name}`);
   if (error) {
     console.error("Error inserting data:", error.message);
     return { error };
@@ -148,11 +148,6 @@ export async function deleteCurrentResume() {
   } else {
     // console.log("All files deleted successfully.");
   }
-}
-
-export async function getFile(file) {
-  const userId = await getUserID();
-  const { data } = supabase.storage.from("filesStorage").getPublicUrl(file); // change to createSignedUrl
 }
 
 // export async function downloadFile(file) {
