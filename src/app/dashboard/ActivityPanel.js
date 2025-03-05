@@ -352,13 +352,13 @@ const ActivityPanel = ({ sx }) => {
           resume: {
             name: entry.filepath.split("Z-")[1],
             size: "1.2MB",
-            src: "google.com", // entry.resumeFileSrc.publicUrl,
+            src: entry.resumeFileSrc.publicUrl,
           },
 
           content: {
-            name: entry.content,
-            size: "1.2MB",
-            src: "/file.pdf",
+            name: "Response.txt",
+            size: entry.responseSize,
+            src: entry.responseURL,
           },
         });
       }

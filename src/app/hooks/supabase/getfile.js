@@ -42,14 +42,13 @@ export async function getUserHistory() {
   var results = await Promise.all(
     data.map(async (item) => ({
       ...item,
-      resumeFileSrc: item.filepath
-        ? await getFile(`${userId}/${item.filepath}`)
-        : null,
+      resumeFileSrc: await getFile(`${userId}/${item.filepath}`),
     }))
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   var results = await Promise.all(
-    data.map(async (item) => {
+    results.map(async (item) => {
       const responseBlob = await generatePDF(`${item.response}`); // Await the PDF generation
       const pdfUrl = URL.createObjectURL(responseBlob); // Create a URL from the blob
       const responseSize = `${(responseBlob.size / 1024 / 1024).toFixed(2)} MB`; // Get the size in bytes
