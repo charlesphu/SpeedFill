@@ -14,6 +14,8 @@ import {
 
 const AccountPanel = ({ sx }) => {
   const [userEmail, setUserEmail] = useState("Loading...");
+  const [hasResume, setHasResume] = useState(false);
+
   useEffect(() => {
     const fetchEmail = async () => {
       const email = await getUser();
@@ -22,6 +24,17 @@ const AccountPanel = ({ sx }) => {
 
     fetchEmail();
   }, [userEmail]);
+
+  useEffect(() => {
+    const checkResume = async () => {
+      const hasDefaultResume = await getCurrentResume();
+      if (hasDefaultResume) {
+        setHasResume(true);
+      }
+    };
+
+    checkResume();
+  }, []);
 
   return (
     <Container
@@ -42,39 +55,46 @@ const AccountPanel = ({ sx }) => {
         <Typography variant="h5" color="title" sx={{ marginTop: "1rem" }}>
           Resume:
         </Typography>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          marginTop="0.2rem"
-          marginBottom="-0.2rem">
-          <Box display="flex" alignItems="center">
-            <Image src="/icons/File.svg" alt="icon" width={30} height={35} />
-            <Box display="flex" flexDirection="column" marginLeft="0.5rem">
-              <Typography
-                fontSize="1.2rem"
-                color="title"
-                maxWidth="12rem"
-                overflow="hidden"
-                textOverflow="ellipsis">
-                lonnggg_ass_file_name
-              </Typography>
-              <Typography fontSize="0.7rem" color="title" marginTop="-0.2rem">
-                5.55MB
-              </Typography>
+        {hasResume ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            marginTop="0.2rem"
+            marginBottom="-0.2rem">
+            <Box display="flex" alignItems="center">
+              <Image src="/icons/File.svg" alt="icon" width={30} height={35} />
+              <Box display="flex" flexDirection="column" marginLeft="0.5rem">
+                <Typography
+                  fontSize="1.2rem"
+                  color="title"
+                  maxWidth="12rem"
+                  overflow="hidden"
+                  textOverflow="ellipsis">
+                  resume.pdf
+                </Typography>
+                <Typography fontSize="0.7rem" color="title" marginTop="-0.2rem">
+                  5.55MB
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" gap="0.8rem">
+              <ActionButton
+                icon="/icons/Eye.svg"
+                onClick={() => openCurrentResume()}
+              />
+              <ActionButton
+                icon="/icons/Trash.svg"
+                onClick={() => {
+                  setHasResume(false);
+                  deleteCurrentResume();
+                }}
+              />
             </Box>
           </Box>
-          <Box display="flex" gap="0.8rem">
-            <ActionButton
-              icon="/icons/Eye.svg"
-              onClick={() => openCurrentResume()}
-            />
-            <ActionButton
-              icon="/icons/Trash.svg"
-              onClick={() => deleteCurrentResume()}
-            />
-          </Box>
-        </Box>
+        ) : (
+          <Typography color="text">No File Uploaded</Typography>
+        )}
       </Panel>
     </Container>
   );
