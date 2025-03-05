@@ -5,11 +5,16 @@ import "pdfjs-dist/build/pdf.worker";
 import { jsPDF } from "jspdf";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-export const generatePDF = (text) => {
+export const generatePDF = async (text) => {
   const doc = new jsPDF();
 
-  // Add text to PDF
-  doc.text(text, 10, 10);
+  // Set the maximum width for text
+  const maxWidth = 190; // Adjust as needed based on margins
+
+  // Add text to PDF with wrapping
+  const textLines = doc.splitTextToSize(text, maxWidth);
+  doc.text(textLines, 10, 10); // Starting at x=10, y=10
+
   const pdfBlob = doc.output("blob");
 
   return pdfBlob;
