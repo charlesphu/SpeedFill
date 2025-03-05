@@ -14,6 +14,8 @@ import {
 import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { getUserHistory } from "../hooks/supabase/getfile";
+import { useRouter } from "next/navigation";
+
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
@@ -71,6 +73,8 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
   const [resumeName, resumeSize, resumeSrc] = resume;
   const [contentName, contentSize, contentSrc] = content;
 
+  const router = useRouter();
+
   return (
     <Grow
       in={true}
@@ -116,6 +120,9 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
             sx={{
               userSelect: "none",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(resumeSrc);
             }}>
             <Typography
               fontSize="1.2rem"
@@ -151,6 +158,9 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
             sx={{
               userSelect: "none",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(resumeSrc);
             }}>
             <Typography
               fontSize="1.2rem"
