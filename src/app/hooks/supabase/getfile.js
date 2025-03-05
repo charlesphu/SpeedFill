@@ -46,7 +46,6 @@ export async function getUserHistory() {
     }))
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   var results = await Promise.all(
     results.map(async (item) => {
       const responseBlob = await generatePDF(`${item.response}`); // Await the PDF generation
