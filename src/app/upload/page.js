@@ -261,7 +261,7 @@ const Upload = () => {
               }}>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
-                  icon="./icons/File.svg"
+                  icon="./icons/Search.svg"
                   sx={{
                     width: "15rem",
                     backgroundColor: theme.palette.menu.submit_button,
@@ -293,7 +293,7 @@ const Upload = () => {
               </Box>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
-                  icon="./icons/Search.svg"
+                  icon="./icons/File.svg"
                   sx={{
                     width: "18rem",
                     backgroundColor: theme.palette.menu.submit_button,
