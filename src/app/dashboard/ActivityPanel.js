@@ -160,7 +160,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              router.push(resumeSrc);
+              router.push(contentSrc);
             }}>
             <Typography
               fontSize="1.2rem"
@@ -356,7 +356,7 @@ const ActivityPanel = ({ sx }) => {
           },
 
           content: {
-            name: "Response.txt",
+            name: `response${i}.txt`,
             size: entry.responseSize,
             src: entry.responseURL,
           },
