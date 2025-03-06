@@ -63,3 +63,21 @@ export async function getUserHistory() {
 
   return results;
 }
+
+export async function getResponseByTime(time) {
+  const userid = await getUserID();
+  const { data, error } = await supabase
+    .from("userData")
+    .select("*")
+    .eq("user_id", userid)
+    .eq("type", type) // Filter by type
+    .eq("time", time)
+    .not("response", "is", null) // Ensure content is not NULL (if needed)
+    .order("time", { ascending: false }); // Sort by timestamp descending
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+  return data.length ? JSON.parse(data[0].response) : null;
+}

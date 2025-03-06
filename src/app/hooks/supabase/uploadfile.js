@@ -1,4 +1,5 @@
 import { getUserID, supabase } from "./auth";
+import { getFile } from "./getfile";
 // import { handleGenerateCoverLetter, handleAnalyzeResume } from "../useAIPrompt";
 
 // loginUser("charlesphu18@gmail.com", "test123");
@@ -27,11 +28,11 @@ export async function uploadEntry(file, type, response) {
     },
   ]);
 
-  // getFile(`${userId}/${timeStamp}-${file.name}`);
   if (error) {
     console.error("Error inserting data:", error.message);
     return { error };
   }
+  await getFile(`${userId}/${timeStamp}-${file.name}`);
 }
 
 // Upload file using standard upload
