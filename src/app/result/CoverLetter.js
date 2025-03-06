@@ -14,6 +14,7 @@ import Container from "../components/Container";
 import Panel from "../components/Panel";
 
 import { getMostRecentResponse } from "../hooks/supabase/getfile";
+import { generatePDF } from "../hooks/pdfToText";
 
 const CoverLetter = () => {
   const theme = useTheme();
@@ -45,13 +46,13 @@ const CoverLetter = () => {
   };
 
   // Generate and trigger download of cover letter as text file
-  const downloadCoverLetter = () => {
-    const blob = new Blob([coverLetterContent], { type: "text/plain" });
+  const downloadCoverLetter = async () => {
+    const blob = await generatePDF(coverLetterContent);
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "cover_letter.txt"; // Default filename
+    link.download = "cover_letter.pdf"; // Default filename
 
     document.body.appendChild(link);
     link.click();
