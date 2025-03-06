@@ -64,14 +64,13 @@ export async function getUserHistory() {
   return results;
 }
 
-export async function getResponseByTime(time) {
+export async function getResponseById(id) {
   const userid = await getUserID();
   const { data, error } = await supabase
     .from("userData")
     .select("*")
     .eq("user_id", userid)
-    .eq("type", type) // Filter by type
-    .eq("time", time)
+    .eq("uniqueID", id)
     .not("response", "is", null) // Ensure content is not NULL (if needed)
     .order("time", { ascending: false }); // Sort by timestamp descending
 

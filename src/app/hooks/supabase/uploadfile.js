@@ -1,5 +1,7 @@
 import { getUserID, supabase } from "./auth";
 import { getFile } from "./getfile";
+import { v4 } from "uuid";
+
 // import { handleGenerateCoverLetter, handleAnalyzeResume } from "../useAIPrompt";
 
 // loginUser("charlesphu18@gmail.com", "test123");
@@ -25,6 +27,7 @@ export async function uploadEntry(file, type, response) {
       filepath: `${timeStamp}-${file.name}`,
       response: response,
       time: timeStamp,
+      uniqueID: v4(),
     },
   ]);
 

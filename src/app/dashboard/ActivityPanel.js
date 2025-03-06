@@ -71,7 +71,13 @@ const ActivityColumns = () => {
 
 const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
   const [resumeName, resumeSize, resumeSrc] = resume;
-  const [contentName, contentSize, contentSrc] = content;
+  const [contentName, contentSize, contentSrc, uniqueID] = content;
+  var routePath;
+  if (type == "Resume Analysis") {
+    routePath = "/result?type=resume";
+  } else if ((type = "Cover Letter")) {
+    routePath = "/result?type=coverletter";
+  }
 
   const router = useRouter();
 
@@ -161,7 +167,9 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              router.push(contentSrc);
+              // router.push(contentSrc);
+              console.log("test");
+              router.push(`${routePath}&id=${uniqueID}`);
             }}>
             <Typography
               fontSize="1.2rem"
@@ -361,6 +369,7 @@ const ActivityPanel = ({ sx }) => {
             name: `response${uniqueNum}.txt`,
             size: entry.responseSize,
             src: entry.responseURL,
+            uniqueID: entry.uniqueID,
           },
         });
       }
@@ -392,6 +401,7 @@ const ActivityPanel = ({ sx }) => {
             activity.content.name,
             activity.content.size,
             activity.content.src,
+            activity.content.uniqueID,
           ]}
           type={activity.type}
         />

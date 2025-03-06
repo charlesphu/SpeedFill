@@ -10,7 +10,11 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import { useTheme } from "@emotion/react";
 import { useRouter } from "next/navigation";
-import { getMostRecentResponse } from "../hooks/supabase/getfile";
+import {
+  getMostRecentResponse,
+  getResponseById,
+} from "../hooks/supabase/getfile";
+import { useSearchParams } from "next/navigation";
 const MatchSection = ({ score }) => {
   score = parseFloat(score);
   score = Math.max(0, Math.min(100, score));
@@ -209,9 +213,19 @@ const ResumeAnalysis = () => {
   const [Match_Score, setMatchScore] = useState(null);
   const [Strengths, setStrengths] = useState(["Loading.."]);
   const [Improvements, setImprovements] = useState(["Loading.."]);
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getMostRecentResponse("Resume Analysis");
+      var response;
+      if (id != null) {
+        response = await getResponseById(id);
+        console.log("was from id");
+      } else {
+        response = await getMostRecentResponse("Resume Analysis");
+      }
       setStrengths(response.strengths);
       setMatchScore(response.match_percentage);
       setImprovements(response.areas_for_improvement);
