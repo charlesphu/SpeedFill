@@ -12,30 +12,53 @@ import Background from "../components/Background";
 import Title from "../components/Title";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
+
 import { getMostRecentResponse } from "../hooks/supabase/getfile";
+
 const CoverLetter = () => {
   const theme = useTheme();
   const router = useRouter();
-  const [CoverLetter, setCoverLetter] = useState("Loading...");
 
+  // State for storing cover letter content and copy button text
+  const [coverLetterContent, setCoverLetterContent] = useState("Loading...");
+  const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
+
+  // Fetch cover letter content when component mounts
   useEffect(() => {
     const fetchData = async () => {
       const response = await getMostRecentResponse("Cover Letter");
-      setCoverLetter(response.cover_letter);
+      setCoverLetterContent(response.cover_letter);
     };
 
     fetchData();
   }, []);
 
-  const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
+  // Handle copy to clipboard functionality with feedback
   const copyCoverLetter = () => {
     if (copyButtonText === "Copied!") return;
-    navigator.clipboard.writeText(CoverLetter);
+    navigator.clipboard.writeText(coverLetterContent);
 
     setCopyButtonText("Copied!");
     setTimeout(() => {
       setCopyButtonText("Copy Letter");
     }, 1000);
+  };
+
+  // Generate and trigger download of cover letter as text file
+  const downloadCoverLetter = () => {
+    const blob = new Blob([coverLetterContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cover_letter.txt"; // Default filename
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -47,15 +70,13 @@ const CoverLetter = () => {
       {/* Title Component */}
       <Title sx={{ paddingTop: "2rem" }} />
 
-      {/* Result Component */}
+      {/* Result Component - Displays the generated cover letter */}
       <Box
         sx={{
           marginTop: "5rem",
           marginBottom: "3rem",
-
           display: "flex",
           width: "100%",
-
           justifyContent: "center",
           alignContent: "center",
         }}>
@@ -73,13 +94,13 @@ const CoverLetter = () => {
               variant="body1"
               color="text"
               sx={{ whiteSpace: "pre-line" }}>
-              {CoverLetter}
+              {coverLetterContent}
             </Typography>
           </Panel>
         </Container>
       </Box>
 
-      {/* Control Buttons */}
+      {/* Control Buttons - Actions for editing, copying and downloading the letter */}
       <Box
         width="100%"
         marginBottom="3rem"
@@ -108,27 +129,6 @@ const CoverLetter = () => {
           Edit Details
         </Button>
         <Button
-          icon="./icons/Reset.svg"
-          sx={{
-            width: "12rem",
-            transition: "transform 0.1s",
-            backgroundColor: theme.palette.menu.submit.main,
-            boxShadow: `0 0 10px ${theme.palette.menu.submit.main}`,
-            borderRadius: "15px",
-
-            "&:hover": {
-              transform: "scale(1.1)",
-              backgroundColor: theme.palette.menu.submit.hover,
-              boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
-            },
-            "&:active": {
-              transform: "scale(0.95)",
-            },
-          }}
-          onClick={() => router.push("")}>
-          Regenerate
-        </Button>
-        <Button
           icon="./icons/Copy.svg"
           sx={{
             width: "12rem",
@@ -149,15 +149,37 @@ const CoverLetter = () => {
           onClick={copyCoverLetter}>
           {copyButtonText}
         </Button>
+        <Button
+          icon="./icons/file.svg"
+          sx={{
+            width: "12rem",
+            transition: "transform 0.1s",
+            backgroundColor: theme.palette.menu.submit.main,
+            boxShadow: `0 0 10px ${theme.palette.menu.submit.main}`,
+            borderRadius: "15px",
+
+            "&:hover": {
+              transform: "scale(1.1)",
+              backgroundColor: theme.palette.menu.submit.hover,
+              boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
+            },
+            "&:active": {
+              transform: "scale(0.95)",
+            },
+          }}
+          onClick={downloadCoverLetter}>
+          Download
+        </Button>
       </Box>
 
-      {/* Navigation Bar */}
+      {/* Navigation Bar - App navigation links */}
       <NavBar>
         <NavBarItem text="Home" src="/" />
         <NavBarItem text="Dashboard" src="/dashboard" />
         <NavBarItem text="Sign Out" src="/sign-out" />
       </NavBar>
 
+      {/* Background image for the page */}
       <Background imageUrl="/background.jpg" />
     </Box>
   );

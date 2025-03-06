@@ -25,6 +25,7 @@ const JobDescriptionUpload = ({
         <TextField
           placeholder="Paste the job application URL here..."
           fullWidth
+          disabled
           variant="outlined"
           value={jobDescriptionData.url}
           onChange={(e) =>
@@ -34,16 +35,18 @@ const JobDescriptionUpload = ({
             })
           }
           sx={{
-            backgroundColor: theme.palette.accent.main,
-            color: "white",
-            border: "1px solid white",
+            backgroundColor: "rgba(101, 142, 90)",
+            color: "rgba(101, 142, 90)",
+            border: "1px solid rgba(101, 142, 90)",
             borderRadius: "5px",
             justifyContent: "center",
             height: "4rem",
             width: "100%",
+            cursor: "not-allowed",
             "& .MuiOutlinedInput-root": {
+              cursor: "not-allowed",
               "& fieldset": {
-                borderColor: "transparent",
+                borderColor: "transparent !important",
               },
               "&:hover fieldset": {
                 borderColor: "transparent",
@@ -51,15 +54,9 @@ const JobDescriptionUpload = ({
               "&.Mui-focused fieldset": {
                 borderColor: "transparent",
               },
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiInputBase-input::placeholder": {
-              color: "white",
+              "& .MuiInputBase-input": {
+                cursor: "not-allowed",
+              },
             },
           }}
         />

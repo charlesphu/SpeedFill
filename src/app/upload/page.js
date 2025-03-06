@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box, useTheme, Fade, IconButton } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  Fade,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
@@ -49,6 +55,12 @@ const Upload = () => {
   const [additionalDetails, setAdditionalDetails] = useState("");
 
   const [formsFilled, setFormsFilled] = useState(false);
+
+  // Loading States
+  const [isAnalyizingResume, setIsAnalyzingResume] = useState(false);
+  const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);
+
+  const isGeneratingResult = isAnalyizingResume || isGeneratingLetter;
 
   useEffect(() => {
     const isFilled = resumeData.file || resumeData.text;
@@ -261,7 +273,7 @@ const Upload = () => {
               }}>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
-                  icon="./icons/Search.svg"
+                  icon={!isAnalyizingResume ? "./icons/Search.svg" : ""}
                   sx={{
                     width: "15rem",
                     backgroundColor: theme.palette.menu.submit_button,
@@ -278,8 +290,17 @@ const Upload = () => {
                       transform: "scale(0.95)",
                     },
                   }}
-                  onClick={AnalyzeResume}>
-                  Analyze Resume
+                  onClick={() => {
+                    if (!isGeneratingResult) {
+                      setIsAnalyzingResume(true);
+                      AnalyzeResume();
+                    }
+                  }}>
+                  {!isAnalyizingResume ? (
+                    "Analyze Resume"
+                  ) : (
+                    <CircularProgress size={30} thickness="5" />
+                  )}
                 </CustomButton>
                 <img
                   src="icons/scribbles/right.svg"
@@ -293,7 +314,7 @@ const Upload = () => {
               </Box>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
-                  icon="./icons/File.svg"
+                  icon={!isGeneratingLetter ? "./icons/file.svg" : ""}
                   sx={{
                     width: "18rem",
                     backgroundColor: theme.palette.menu.submit_button,
@@ -310,8 +331,18 @@ const Upload = () => {
                       transform: "scale(0.95)",
                     },
                   }}
-                  onClick={GenerateCL}>
-                  Generate Cover Letter
+                  // onClick={GenerateCL}>
+                  onClick={() => {
+                    if (!isGeneratingResult) {
+                      setIsGeneratingLetter(true);
+                      GenerateCL();
+                    }
+                  }}>
+                  {!isGeneratingLetter ? (
+                    "Generate Cover Letter"
+                  ) : (
+                    <CircularProgress size={30} thickness="5" />
+                  )}
                 </CustomButton>
                 <img
                   src="icons/scribbles/left.svg"

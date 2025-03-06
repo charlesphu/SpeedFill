@@ -42,7 +42,7 @@ export default function useAIPrompt() {
   const handleGenerateCoverLetter = async (
     resumeData,
     jobDescription,
-    applicationQuestion
+    additionalDetails
   ) => {
     if (!checkCooldown()) return;
     setLoading(true);
@@ -63,8 +63,8 @@ export default function useAIPrompt() {
         body: JSON.stringify({
           type: "coverLetter",
           resume: resumeText,
-          jobDesc: jobDescription,
-          appQuestion: applicationQuestion,
+          jobDesc: jobDescription.text,
+          additionalDetails: additionalDetails,
         }),
       });
 
@@ -85,7 +85,7 @@ export default function useAIPrompt() {
   const handleAnalyzeResume = async (
     resumeData,
     jobDescription,
-    applicationQuestion
+    additionalDetails
   ) => {
     if (!checkCooldown()) return;
     setLoading(true);
@@ -107,7 +107,7 @@ export default function useAIPrompt() {
           type: "analyzeResume",
           resume: resumeText,
           jobDesc: jobDescription.text,
-          appQuestion: applicationQuestion,
+          additionalDetails: additionalDetails,
         }),
       });
 
