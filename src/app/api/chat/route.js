@@ -6,10 +6,9 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function POST(request) {
   try {
-    const body = await request.json(); // Parse the JSON body
-    // console.log("Received API Request Data:", body);
-    const { type, resume, isPDF, jobDesc, isURL, appQuestion } = body;
-    // console.log(`${resume},${jobDesc},${isURL},${appQuestion}`)
+    const { type, resume, isPDF, jobDesc, isURL, additionalDetails } =
+      await request.json(); // Parse the JSON body
+
     if (!resume || !jobDesc) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -17,17 +16,13 @@ export async function POST(request) {
       );
     }
 
-    var actualJD = jobDesc;
-
-    console.log("Processing ${type} request...");
-
     let prompt = "";
 
     if (type == "coverLetter") {
       prompt = `Generate a professional cover letter based on the following details:
       Resume: ${resume}
       Job Description: ${jobDesc}
-      Application Question: ${appQuestion || "N/A"}
+      Additional Details: ${additionalDetails || "N/A"}
 
       Respond in JSON format:
       {
@@ -37,6 +32,7 @@ export async function POST(request) {
       prompt = `Analyze the resume for this job and provide a structured JSON response:
       Resume: ${resume}
       Job Description: ${jobDesc}
+      Additional Details: ${additionalDetails || "N/A"}
 
       Respond in JSON format:
       {
@@ -52,8 +48,6 @@ export async function POST(request) {
       );
     }
 
-    // console.log("Prompt Sent to AI:", prompt);
-
     const result = await model.generateContent(prompt);
 
     if (!result || !result.response) {
@@ -66,7 +60,6 @@ export async function POST(request) {
     let aiResponse;
     try {
       let rawText = await result.response.text();
-      console.log("Raw AI Response:", rawText);
       rawText = rawText
         .replace(/```json/g, "")
         .replace(/```/g, "")
