@@ -38,6 +38,22 @@ const CoverLetter = () => {
     }, 1000);
   };
 
+  const downloadCoverLetter = () => {
+    const blob = new Blob([CoverLetter], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cover_letter.txt"; // Default filename
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <Box
       sx={{
@@ -108,27 +124,6 @@ const CoverLetter = () => {
           Edit Details
         </Button>
         <Button
-          icon="./icons/Reset.svg"
-          sx={{
-            width: "12rem",
-            transition: "transform 0.1s",
-            backgroundColor: theme.palette.menu.submit.main,
-            boxShadow: `0 0 10px ${theme.palette.menu.submit.main}`,
-            borderRadius: "15px",
-
-            "&:hover": {
-              transform: "scale(1.1)",
-              backgroundColor: theme.palette.menu.submit.hover,
-              boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
-            },
-            "&:active": {
-              transform: "scale(0.95)",
-            },
-          }}
-          onClick={() => router.push("")}>
-          Regenerate
-        </Button>
-        <Button
           icon="./icons/Copy.svg"
           sx={{
             width: "12rem",
@@ -148,6 +143,27 @@ const CoverLetter = () => {
           }}
           onClick={copyCoverLetter}>
           {copyButtonText}
+        </Button>
+        <Button
+          icon="./icons/file.svg"
+          sx={{
+            width: "12rem",
+            transition: "transform 0.1s",
+            backgroundColor: theme.palette.menu.submit.main,
+            boxShadow: `0 0 10px ${theme.palette.menu.submit.main}`,
+            borderRadius: "15px",
+
+            "&:hover": {
+              transform: "scale(1.1)",
+              backgroundColor: theme.palette.menu.submit.hover,
+              boxShadow: `0 0 15px ${theme.palette.menu.submit.hover}`,
+            },
+            "&:active": {
+              transform: "scale(0.95)",
+            },
+          }}
+          onClick={downloadCoverLetter}>
+          Download
         </Button>
       </Box>
 
