@@ -12,7 +12,11 @@ import { NavBar, NavBarItem } from "../components/NavBar";
 import { useTheme } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getMostRecentResponse } from "../hooks/supabase/getfile";
+import {
+  getMostRecentResponse,
+  getResponseById,
+} from "../hooks/supabase/getfile";
+import { useSearchParams } from "next/navigation";
 
 // Component that displays the match score with a visual progress bar
 const MatchSection = ({ score }) => {
@@ -209,6 +213,8 @@ const QuestionsSection = ({ questions }) => {
 const ResumeAnalysis = () => {
   const theme = useTheme();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
   // State for storing resume analysis data
   const [matchScore, setMatchScore] = useState(null);
@@ -218,7 +224,13 @@ const ResumeAnalysis = () => {
   // Fetch resume analysis data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getMostRecentResponse("Resume Analysis");
+      var response;
+      if (id != null) {
+        response = await getResponseById(id);
+        console.log("was from id");
+      } else {
+        response = await getMostRecentResponse("Resume Analysis");
+      }
       setStrengths(response.strengths);
       setMatchScore(response.match_percentage);
       setImprovements(response.areas_for_improvement);
