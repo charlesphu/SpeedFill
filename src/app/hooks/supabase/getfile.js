@@ -39,19 +39,19 @@ export async function getUserHistory() {
   //   age: person.age + 1
   // }));
   console.log("test", data);
-  const responseBlob = await generatePDF(`${item.response}`); // Await the PDF generation
-  const pdfUrl = URL.createObjectURL(responseBlob); // Create a URL from the blob
-  const responseSize = `${(responseBlob.size / 1024 / 1024).toFixed(2)} MB`; // Get the size in bytes
   var results = await Promise.all(
-    data.map(async (item) => ({
-      ...item,
-      resumeFileSrc: await getFile(`${userId}/${item.filepath}`),
-      responseURL: pdfUrl, // Add the URL
-      responseSize: responseSize,
-    }))
+    data.map(async (item) => {
+      const responseBlob = await generatePDF(`${item.response}`); // Await the PDF generation
+      const pdfUrl = URL.createObjectURL(responseBlob); // Create a URL from the blob
+      const responseSize = `${(responseBlob.size / 1024 / 1024).toFixed(2)} MB`; // Get the size in bytes
+      return {
+        ...item,
+        resumeFileSrc: await getFile(`${userId}/${item.filepath}`),
+        responseURL: pdfUrl, // Add the URL
+        responseSize: responseSize,
+      };
+    })
   );
-
-  // results =
 
   return results;
 }

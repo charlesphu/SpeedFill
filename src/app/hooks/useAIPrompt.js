@@ -50,7 +50,12 @@ export default function useAIPrompt() {
     var resumeText;
     if (resumeData.file == null) {
       resumeText = resumeData.text;
-      resumeData = generatePDF(resumeData.text);
+      const resumeBlob = await generatePDF(resumeData.text);
+      const pdfFile = new File([resumeBlob], "copy-paste-resume.pdf", {
+        type: "application/pdf",
+      });
+      resumeData = { ...resumeData, file: pdfFile };
+      resumeData = resumeData.file;
     } else {
       resumeText = await pdfToText(URL.createObjectURL(resumeData.file));
       resumeData = resumeData.file;
@@ -93,7 +98,12 @@ export default function useAIPrompt() {
     var resumeText;
     if (resumeData.file == null) {
       resumeText = resumeData.text;
-      resumeData = generatePDF(resumeData.text);
+      const resumeBlob = await generatePDF(resumeData.text);
+      const pdfFile = new File([resumeBlob], "copy-paste-resume.pdf", {
+        type: "application/pdf",
+      });
+      resumeData = { ...resumeData, file: pdfFile };
+      resumeData = resumeData.file;
     } else {
       resumeText = await pdfToText(URL.createObjectURL(resumeData.file));
       resumeData = resumeData.file;
