@@ -227,7 +227,6 @@ const ResumeAnalysis = () => {
       var response;
       if (id != null) {
         response = await getResponseById(id);
-        console.log("was from id");
       } else {
         response = await getMostRecentResponse("Resume Analysis");
       }
