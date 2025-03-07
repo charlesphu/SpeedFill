@@ -21,13 +21,14 @@ import { getResponseById } from "../hooks/supabase/getfile";
 const CoverLetter = () => {
   const theme = useTheme();
   const router = useRouter();
+
+  // Get search parameters from the URL
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+
   // State for storing cover letter content and copy button text
   const [coverLetterContent, setCoverLetterContent] = useState("Loading...");
   const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
-
-  // Fetch cover letter content when component mounts
 
   // Fetch resume analysis data on component mount
   useEffect(() => {
