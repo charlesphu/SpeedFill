@@ -69,6 +69,7 @@ export default function useAIPrompt() {
           type: "coverLetter",
           resume: resumeText,
           jobDesc: jobDescription.text,
+          jobURL: jobDescription.url,
           additionalDetails: additionalDetails,
         }),
       });
@@ -117,6 +118,7 @@ export default function useAIPrompt() {
           type: "analyzeResume",
           resume: resumeText,
           jobDesc: jobDescription.text,
+          jobURL: jobDescription.url,
           additionalDetails: additionalDetails,
         }),
       });
