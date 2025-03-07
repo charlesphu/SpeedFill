@@ -16,6 +16,7 @@ import Panel from "../components/Panel";
 import { getMostRecentResponse } from "../hooks/supabase/getfile";
 import { generatePDF } from "../hooks/pdfToText";
 import { useSearchParams } from "next/navigation";
+import { getResponseById } from "../hooks/supabase/getfile";
 
 const CoverLetter = () => {
   const theme = useTheme();
