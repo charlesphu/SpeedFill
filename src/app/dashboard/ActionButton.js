@@ -1,9 +1,12 @@
-import { useTheme } from "@emotion/react";
 import { Button } from "@mui/material";
 import Image from "next/image";
 
+import { useTheme } from "@emotion/react";
+
+// This component renders an action button with an icon and a click handler
 const ActionButton = ({ icon, onClick }) => {
   const theme = useTheme();
+
   return (
     <Button
       disableRipple
