@@ -232,10 +232,11 @@ const ResumeAnalysis = () => {
       }
       if (response == null) {
         router.push("/upload");
+      } else {
+        setStrengths(response.strengths);
+        setMatchScore(response.match_percentage);
+        setImprovements(response.areas_for_improvement);
       }
-      setStrengths(response.strengths);
-      setMatchScore(response.match_percentage);
-      setImprovements(response.areas_for_improvement);
       // console.log(response);
     };
 
