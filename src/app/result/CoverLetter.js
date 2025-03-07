@@ -35,15 +35,13 @@ const CoverLetter = () => {
       var response;
       if (id != null) {
         response = await getResponseById(id);
+        setCoverLetterContent(response.cover_letter);
       } else {
         response = await getMostRecentResponse("Cover Letter");
+        setCoverLetterContent(response.cover_letter);
       }
       if (response == null) {
         router.push("/upload");
-      } else {
-        setStrengths(response.strengths);
-        setMatchScore(response.match_percentage);
-        setImprovements(response.areas_for_improvement);
       }
       // console.log(response);
     };
