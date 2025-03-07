@@ -15,11 +15,13 @@ import Panel from "../components/Panel";
 
 import { getMostRecentResponse } from "../hooks/supabase/getfile";
 import { generatePDF } from "../hooks/pdfToText";
+import { useSearchParams } from "next/navigation";
 
 const CoverLetter = () => {
   const theme = useTheme();
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   // State for storing cover letter content and copy button text
   const [coverLetterContent, setCoverLetterContent] = useState("Loading...");
   const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
@@ -34,6 +36,9 @@ const CoverLetter = () => {
         response = await getResponseById(id);
       } else {
         response = await getMostRecentResponse("Cover Letter");
+      }
+      if (response == null) {
+        router.push("/upload");
       }
       setStrengths(response.strengths);
       setMatchScore(response.match_percentage);
