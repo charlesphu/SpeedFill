@@ -316,7 +316,6 @@ const ResumeAnalysis = () => {
 
       {/* Navigation bar */}
       <NavBar>
-        <NavBarItem text="Home" src="/" />
         <NavBarItem text="Dashboard" src="/dashboard" />
         <NavBarItem text="Sign Out" src="/sign-out" />
       </NavBar>

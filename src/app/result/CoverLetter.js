@@ -185,7 +185,6 @@ const CoverLetter = () => {
 
       {/* Navigation Bar - App navigation links */}
       <NavBar>
-        <NavBarItem text="Home" src="/" />
         <NavBarItem text="Dashboard" src="/dashboard" />
         <NavBarItem text="Sign Out" src="/sign-out" />
       </NavBar>
