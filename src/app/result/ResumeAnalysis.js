@@ -230,6 +230,9 @@ const ResumeAnalysis = () => {
       } else {
         response = await getMostRecentResponse("Resume Analysis");
       }
+      if (response == null) {
+        router.push("/upload");
+      }
       setStrengths(response.strengths);
       setMatchScore(response.match_percentage);
       setImprovements(response.areas_for_improvement);
