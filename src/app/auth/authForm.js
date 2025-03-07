@@ -1,6 +1,4 @@
-import React, { useState } from "react";
 import { Box, Typography, useTheme, Fade } from "@mui/material";
-
 import TextArea from "../components/TextArea";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
@@ -11,21 +9,30 @@ import {
   signUpWithGoogle,
 } from "../hooks/supabase/auth";
 
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Component to handle authentication form
 const AuthForm = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fade, setFade] = useState(true);
-  const [error, setError] = useState("");
-
   const theme = useTheme();
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  // State to manage login/signup toggle
+  const [isLogin, setIsLogin] = useState(true);
+
+  // State to manage form inputs and error messages
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [fade, setFade] = useState(true);
+  const [error, setError] = useState("");
+
+  // Function to handle form submission
+  const onAuthFormSubmit = async (e) => {
     e.preventDefault();
 
+    // Try to authenticate the user
+    // If isLogin is true, call loginUser, otherwise call signUpNewUser
     try {
       let result;
       if (isLogin) {
@@ -48,16 +55,7 @@ const AuthForm = () => {
     }
   };
 
-  // const handleGoogleSignIn = async () => {
-  //   const provider = new GoogleAuthProvider();
-  //   try {
-  //     await signInWithPopup(auth, provider);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  //   router.push("/");
-  // };
-
+  // Function to handle Google sign-in
   const handleToggleAuth = () => {
     setFade(false);
     setTimeout(() => {
@@ -82,6 +80,7 @@ const AuthForm = () => {
           padding: "20px",
           borderRadius: "5px",
         }}>
+        {/* Error message display */}
         {error && (
           <Box
             sx={{
@@ -100,6 +99,8 @@ const AuthForm = () => {
             <Typography>{error}</Typography>
           </Box>
         )}
+
+        {/* Form title and description */}
         <Fade in={fade} timeout={500}>
           <Typography
             variant="h2"
@@ -112,6 +113,7 @@ const AuthForm = () => {
           </Typography>
         </Fade>
 
+        {/* Description text */}
         <Fade in={fade} timeout={500}>
           <Typography
             variant="body1"
@@ -124,9 +126,10 @@ const AuthForm = () => {
           </Typography>
         </Fade>
 
+        {/* Authentication form */}
         <Fade in={fade} timeout={500}>
           <Box position="relative">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={onAuthFormSubmit}>
               <TextArea
                 label="Email"
                 type="email"
@@ -141,6 +144,8 @@ const AuthForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
+              {/* Conditional rendering for "Forgot Password?" link */}
               {isLogin && (
                 <Box sx={{ width: "100%", textAlign: "right" }}>
                   <Typography
@@ -160,10 +165,15 @@ const AuthForm = () => {
                   </Typography>
                 </Box>
               )}
+
+              {/* Submit button */}
               <Button variant="h2" type="submit" sx={{ margin: "1rem 0" }}>
                 {isLogin ? "Sign In" : "Sign Up"}
               </Button>
+
               <Divider />
+
+              {/* Google sign-in button */}
               <Button
                 variant="outlined"
                 onClick={signUpWithGoogle}
@@ -212,6 +222,7 @@ const AuthForm = () => {
         </Fade>
       </Box>
 
+      {/* Toggle between login and signup */}
       <Typography
         variant="body1"
         align="center"

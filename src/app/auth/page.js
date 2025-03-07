@@ -4,7 +4,7 @@ import { Box, useTheme, useMediaQuery } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
 import FadeIn from "../components/utils/FadeIn";
-import AuthForm from "./authForm";
+import AuthForm from "./AuthForm";
 
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
@@ -14,9 +14,10 @@ const Auth = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery("(max-width: 1300px)");
 
+  // State to manage loading status
   const [loading, setLoading] = useState(true);
 
-  // redirect if user is already logged in.
+  // Redirect if user is already logged in.
   // copy/paste this logic and inverse it to  make page that redirects if user isnt logged in!
   useEffect(() => {
     const checkIsLogin = async () => {
@@ -27,16 +28,20 @@ const Auth = () => {
         setLoading(false);
       }
     };
+
     checkIsLogin();
-    // return () => checkIsLogin();
   }, []);
 
+  // Loading state to prevent flickering
   if (loading) {
     return null;
   }
 
   return (
     <>
+      {/* Conditional rendering based on screen size */}
+      {/* For small screens, display the AuthForm component in full screen */}
+      {/* For larger screens, display the Title component and AuthForm side by side */}
       {isSmallScreen ? (
         <Box
           sx={{
@@ -75,6 +80,7 @@ const Auth = () => {
             </FadeIn>
           </Box>
 
+          {/* AuthForm component for login/signup */}
           <Box
             sx={{
               width: "40vw",
@@ -93,6 +99,7 @@ const Auth = () => {
         </Box>
       )}
 
+      {/* Background component for the gradient effect */}
       <Background />
     </>
   );
