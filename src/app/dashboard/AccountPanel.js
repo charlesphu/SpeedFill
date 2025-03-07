@@ -1,21 +1,25 @@
-import { Box, Typography, TextField } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-
+import { Box, Typography } from "@mui/material";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 import ActionButton from "./ActionButton";
 import Image from "next/image";
+
 import { getUser } from "../hooks/supabase/auth";
+import { useEffect, useState } from "react";
+
 import {
   deleteCurrentResume,
   getCurrentResume,
   openCurrentResume,
 } from "../hooks/supabase/uploadfile";
 
+// This component displays the user's account information, including their email address and resume status.
 const AccountPanel = ({ sx }) => {
+  // State variables to manage user email and resume status
   const [userEmail, setUserEmail] = useState("Loading...");
   const [hasResume, setHasResume] = useState(false);
 
+  // Effect to fetch the user's email address when the component mounts
   useEffect(() => {
     const fetchEmail = async () => {
       const email = await getUser();
@@ -25,6 +29,7 @@ const AccountPanel = ({ sx }) => {
     fetchEmail();
   }, [userEmail]);
 
+  // Effect to check if the user has a resume when the component mounts
   useEffect(() => {
     const checkResume = async () => {
       const hasDefaultResume = await getCurrentResume();
@@ -42,6 +47,7 @@ const AccountPanel = ({ sx }) => {
       subtitle="Manage your password and saved resume"
       sx={{ width: "25rem", ...sx }}>
       <Panel>
+        {/* Email Field */}
         <Typography variant="h5" color="title">
           Email Address:
         </Typography>
@@ -52,6 +58,8 @@ const AccountPanel = ({ sx }) => {
           textOverflow="ellipsis">
           {userEmail}
         </Typography>
+
+        {/* Resume Field */}
         <Typography variant="h5" color="title" sx={{ marginTop: "1rem" }}>
           Resume:
         </Typography>
