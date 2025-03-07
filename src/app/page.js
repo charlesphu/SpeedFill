@@ -1,20 +1,23 @@
 "use client";
 
-import { useTheme, Box, useMediaQuery } from "@mui/material";
 import Background from "./components/Background";
 import Title from "./components/Title";
 import { NavBar, NavBarItem } from "./components/NavBar";
 
+import { useTheme, Box, useMediaQuery } from "@mui/material";
 import useAuth from "./hooks/useAuth";
 
+// Home component serves as the main entry point of the application
 const Home = () => {
   const theme = useTheme();
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { user, logout, isLoadingUser } = useAuth();
+
+  // Authentication context to manage user state
+  const { user, logout } = useAuth();
 
   return (
     <>
+      {/* Navigation bar with links based on user authentication state */}
       <NavBar>
         {user ? (
           <>
@@ -26,6 +29,8 @@ const Home = () => {
           <NavBarItem text="Sign In" src="/auth" />
         )}
       </NavBar>
+
+      {/* Main content area with title and background */}
       <Box
         sx={{
           display: "flex",
