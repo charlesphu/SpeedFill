@@ -213,6 +213,8 @@ const QuestionsSection = ({ questions }) => {
 const ResumeAnalysis = () => {
   const theme = useTheme();
   const router = useRouter();
+
+  // Get the 'id' parameter from the URL query string
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -224,12 +226,10 @@ const ResumeAnalysis = () => {
   // Fetch resume analysis data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      var response;
-      if (id != null) {
-        response = await getResponseById(id);
-      } else {
-        response = await getMostRecentResponse("Resume Analysis");
-      }
+      const response = await (id != null
+        ? getResponseById(id)
+        : getMostRecentResponse("Resume Analysis"));
+
       if (response == null) {
         router.push("/upload");
       } else {
@@ -237,7 +237,6 @@ const ResumeAnalysis = () => {
         setMatchScore(response.match_percentage);
         setImprovements(response.areas_for_improvement);
       }
-      // console.log(response);
     };
 
     fetchData();
