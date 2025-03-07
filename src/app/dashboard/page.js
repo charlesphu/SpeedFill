@@ -78,7 +78,6 @@ const Dashboard = () => {
       </Box>
 
       <NavBar>
-        <NavBarItem text="Home" src="/" />
         <NavBarItem text="Upload" src="/upload" />
         <NavBarItem text="Sign Out" src="/" onClick={logout} />
       </NavBar>
