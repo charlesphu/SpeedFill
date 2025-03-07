@@ -78,8 +78,6 @@ const Upload = () => {
   const AnalyzeResume = async () => {
     if (formsFilled) {
       console.log("Analyze - Resume Data:", resumeData);
-      // console.log("Analyze - Job Description Data:", jobDescriptionData);
-      // console.log("Analyze - Additional Details:", additionalDetails);
       await handleAnalyzeResume(
         resumeData,
         jobDescriptionData,
@@ -92,8 +90,6 @@ const Upload = () => {
   const GenerateCL = async () => {
     if (formsFilled) {
       console.log("Cover Letter - Resume Data:", resumeData);
-      // console.log("Cover Letter - Job Description Data:", jobDescriptionData);
-      // console.log("Cover Letter - Additional Details:", additionalDetails);
       await handleGenerateCoverLetter(
         resumeData,
         jobDescriptionData,
