@@ -338,12 +338,12 @@ const ActivityPanel = ({ sx }) => {
   useEffect(() => {
     console.log("called", userHistory, jsdooodooo);
     const activites = [];
-    let uniqueNum = 0;
+    let uniqueNum = userHistory.length + 1;
     for (let i = 0; i < userHistory.length; i += MAX_ENTRY_PER_PAGE) {
       const activityPage = [];
 
       for (const entry of userHistory.slice(i, i + MAX_ENTRY_PER_PAGE)) {
-        uniqueNum += 1;
+        uniqueNum -= 1;
         const entryDate = new Date(entry.time);
 
         activityPage.push({
