@@ -18,6 +18,9 @@ import { useRouter } from "next/navigation";
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
+const MAX_ENTRY_PER_PAGE = 4;
+
+// ActivityPanel component to display user activity history
 const ActivityColumns = () => {
   const theme = useTheme();
   return (
@@ -60,17 +63,18 @@ const ActivityColumns = () => {
   );
 };
 
+// ActivityRow component to display individual activity entry
 const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
+  // Destructure resume and content data
   const [resumeName, resumeSize, resumeSrc] = resume;
-  const [contentName, contentSize, contentSrc, uniqueID] = content;
-  var routePath;
-  if (type == "Resume Analysis") {
-    routePath = "/result?type=resume";
-  } else if ((type = "Cover Letter")) {
-    routePath = "/result?type=coverletter";
-  }
+  const [contentName, contentSize, _, uniqueID] = content;
 
+  // Determine the route path based on type
   const router = useRouter();
+  const routePath =
+    type == "Resume Analysis"
+      ? "/result?type=resume"
+      : "/result?type=coverletter";
 
   return (
     <Grow
@@ -79,6 +83,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
       style={{
         transitionDelay: `${index * 40}ms`,
       }}>
+      {/* Table Row for each activity entry */}
       <TableRow
         sx={{
           "& > td": {
@@ -100,6 +105,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Typography>
         </TableCell>
 
+        {/* Resume Column */}
         <TableCell>
           <Box
             display="flex"
@@ -129,6 +135,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Box>
         </TableCell>
 
+        {/* Type Column */}
         <TableCell>
           <Typography
             variant="body1"
@@ -139,6 +146,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Typography>
         </TableCell>
 
+        {/* Response Column */}
         <TableCell>
           <Box
             display="flex"
@@ -148,8 +156,6 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
               cursor: "pointer",
             }}
             onClick={() => {
-              // router.push(contentSrc);
-              console.log("test");
               router.push(`${routePath}&id=${uniqueID}`);
             }}>
             <Typography
@@ -173,6 +179,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
   );
 };
 
+// ActivityControl component for pagination control
 const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
   return (
     <Box
@@ -219,89 +226,6 @@ const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
 const ActivityPanel = ({ sx }) => {
   // State management for activity panel
   const [userHistory, setUserHistory] = useState([]);
-  const [jsdooodooo, setJS] = useState(0);
-  // const TEST_USER_HISTORY = [
-  //   {
-  //     timestamp: new Date("1-26-2017 3:22 PM"),
-  //     role: "Backend Developer",
-  //     type: "Resume Analysis",
-  //     resume: "resume_final.pdf",
-  //     content: "final_version_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("6-15-2020 8:12 AM"),
-  //     role: "Full Stack Developer",
-  //     type: "Cover Letter",
-  //     resume: "portfolio.pdf",
-  //     content: "project_abc.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("12-5-2018 11:45 PM"),
-  //     role: "Frontend Engineer",
-  //     type: "Resume Analysis",
-  //     resume: "long_ass_file.pdf",
-  //     content: "portfolio_v1.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("2-21-2019 10:30 AM"),
-  //     role: "UI/UX Designer",
-  //     type: "Cover Letter",
-  //     resume: "portfolio.pdf",
-  //     content: "final_version_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("7-9-2015 9:00 AM"),
-  //     role: "Frontend Engineer",
-  //     type: "Cover Letter",
-  //     resume: "long_ass_file.pdf",
-  //     content: "lonnggg_ass_file_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("10-13-2021 5:10 PM"),
-  //     role: "Backend Developer",
-  //     type: "Resume Analysis",
-  //     resume: "long_ass_file.pdf",
-  //     content: "lonnggg_ass_file_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("3-11-2016 6:25 AM"),
-  //     role: "UI/UX Designer",
-  //     type: "Cover Letter",
-  //     resume: "resume_final.pdf",
-  //     content: "final_version_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("4-22-2014 2:50 PM"),
-  //     role: "Full Stack Developer",
-  //     type: "Resume Analysis",
-  //     resume: "long_ass_file.pdf",
-  //     content: "lonnggg_ass_file_name.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("9-10-2019 7:05 PM"),
-  //     role: "Frontend Engineer",
-  //     type: "Cover Letter",
-  //     resume: "resume_final.pdf",
-  //     content: "portfolio_v1.pdf",
-  //   },
-  //   {
-  //     timestamp: new Date("5-30-2022 1:20 AM"),
-  //     role: "Backend Developer",
-  //     type: "Resume Analysis",
-  //     resume: "long_ass_file.pdf",
-  //     content: "project_abc.pdf",
-  //   },
-  // ];
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getUserHistory();
-      setUserHistory(response);
-      // console.log(response);
-    };
-    fetchData();
-    setJS(jsdooodooo + 1);
-  }, []);
-  const MAX_ENTRY_PER_PAGE = 4;
 
   const [userActivities, setUserActivities] = useState([]);
   const [activityElements, setActivityElements] = useState([]);
@@ -309,23 +233,28 @@ const ActivityPanel = ({ sx }) => {
   const [maxPages, setMaxPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Fetch user history from server
   useEffect(() => {
-    // Effect runs when myVariable changes
-    // console.log("myVariable changed:", userHistory);
-    setJS(jsdooodooo + 1);
-  }, [userHistory]); // Ensure the dependency array is consistent
+    const fetchData = async () => {
+      const response = await getUserHistory();
+      setUserHistory(response);
+    };
+
+    fetchData();
+  }, []);
 
   // Process user history into separate pages
   useEffect(() => {
-    console.log("called", userHistory, jsdooodooo);
     const activites = [];
     let uniqueNum = userHistory.length + 1;
+
+    // Iterate through user history and create entries
     for (let i = 0; i < userHistory.length; i += MAX_ENTRY_PER_PAGE) {
       const activityPage = [];
 
       for (const entry of userHistory.slice(i, i + MAX_ENTRY_PER_PAGE)) {
-        uniqueNum -= 1;
         const entryDate = new Date(entry.time);
+        uniqueNum -= 1;
 
         activityPage.push({
           type: entry.type,
@@ -360,7 +289,7 @@ const ActivityPanel = ({ sx }) => {
 
     setUserActivities(activites);
     setMaxPages(activites.length);
-  }, [jsdooodooo]);
+  }, [userHistory]);
 
   // Update activity elements based on current page
   useEffect(() => {
@@ -390,6 +319,7 @@ const ActivityPanel = ({ sx }) => {
     setActivityElements(activityElements);
   }, [currentPage, userActivities]);
 
+  // State management for pagination
   const nextPage = () => {
     if (currentPage < maxPages) {
       setCurrentPage(currentPage + 1);
@@ -427,6 +357,8 @@ const ActivityPanel = ({ sx }) => {
           </TableContainer>
         </Box>
       </Panel>
+
+      {/* Pagination Control */}
       {maxPages > 1 && (
         <ActivityControl
           currentPage={currentPage}
