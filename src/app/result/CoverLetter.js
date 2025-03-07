@@ -25,10 +25,20 @@ const CoverLetter = () => {
   const [copyButtonText, setCopyButtonText] = useState("Copy Letter");
 
   // Fetch cover letter content when component mounts
+
+  // Fetch resume analysis data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getMostRecentResponse("Cover Letter");
-      setCoverLetterContent(response.cover_letter);
+      var response;
+      if (id != null) {
+        response = await getResponseById(id);
+      } else {
+        response = await getMostRecentResponse("Cover Letter");
+      }
+      setStrengths(response.strengths);
+      setMatchScore(response.match_percentage);
+      setImprovements(response.areas_for_improvement);
+      // console.log(response);
     };
 
     fetchData();
