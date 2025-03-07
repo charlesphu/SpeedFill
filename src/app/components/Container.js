@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
+// This component is a custom container that can be used to wrap other components.
 const Container = ({ title, subtitle, sx, children }) => {
   return (
     <Box
