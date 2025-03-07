@@ -8,7 +8,6 @@ import {
   TableRow,
   Typography,
   Grow,
-  Button,
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -38,15 +37,7 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell
         sx={{
-          width: "18%",
-        }}>
-        <Typography variant="body1" color="primary">
-          ROLE
-        </Typography>
-      </TableCell>
-      <TableCell
-        sx={{
-          width: "23%",
+          width: "32%",
         }}>
         <Typography variant="body1" color="primary">
           RESUME
@@ -54,7 +45,7 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell
         sx={{
-          width: "13%",
+          width: "20%",
         }}>
         <Typography variant="body1" color="primary">
           TYPE
@@ -110,16 +101,6 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
         </TableCell>
 
         <TableCell>
-          <Typography
-            variant="body1"
-            color="text"
-            maxWidth="5rem"
-            sx={{ lineHeight: "1.2" }}>
-            {role}
-          </Typography>
-        </TableCell>
-
-        <TableCell>
           <Box
             display="flex"
             flexDirection="column"
@@ -133,7 +114,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
             <Typography
               fontSize="1.2rem"
               color="title"
-              maxWidth="8rem"
+              maxWidth="10rem"
               overflow="hidden"
               textOverflow="ellipsis"
               whiteSpace="nowrap"
@@ -391,7 +372,6 @@ const ActivityPanel = ({ sx }) => {
           index={index}
           date={activity.date}
           time={activity.time}
-          role={activity.role ?? "N/A"}
           resume={[
             activity.resume.name,
             activity.resume.size,
@@ -426,7 +406,7 @@ const ActivityPanel = ({ sx }) => {
     <Container
       title="Your History"
       subtitle="Review your previously generated cover letters and resume feedbacks"
-      sx={{ width: "45rem", maxWidth: "md", ...sx }}>
+      sx={{ width: "40rem", maxWidth: "md", ...sx }}>
       <Panel sx={{ maxWidth: "md" }}>
         <Box
           display="flex"
