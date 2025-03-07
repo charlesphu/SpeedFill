@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
 import {
   Box,
   Typography,
@@ -8,19 +6,24 @@ import {
   useTheme,
   Button,
 } from "@mui/material";
+
 import Container from "../components/Container";
 import Divider from "../components/Divider";
+
 import {
-  uploadFile,
-  getFile,
-  uploadEntry,
   setCurrentResume,
   getCurrentResume,
 } from "../hooks/supabase/uploadfile";
-const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
-  const [isFileUploading, setIsFileUploading] = useState(false);
 
+import { useState, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
+
+// Section component to display resume upload functionality
+const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
   const theme = useTheme();
+
+  // State to manage file upload status
+  const [isFileUploading, setIsFileUploading] = useState(false);
 
   useEffect(() => {
     // Load default resume when the component mounts
@@ -28,11 +31,13 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
       const storedResumeURL = await getCurrentResume(); // Fetch from Supabase
       if (storedResumeURL) {
         setIsFileUploading(true);
+
         const resumeFetch = await fetch(storedResumeURL);
         const resumeBlob = await resumeFetch.blob();
         const resume = new File([resumeBlob], "currentResume.pdf", {
           type: resumeBlob.type,
         });
+
         uploadResume(resume);
       }
     };
@@ -40,6 +45,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     loadDefaultResume();
   }, [setResumeData]);
 
+  // Function to handle file upload
   const uploadResume = (file) => {
     setIsFileUploading(true);
     setResumeData({ ...resumeData, file });
@@ -50,6 +56,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     }, 2000);
   };
 
+  // Function to clear the uploaded resume
   const handleClearResume = (e) => {
     if (e) {
       e.stopPropagation();
@@ -58,6 +65,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     setIsFileUploading(false);
   };
 
+  // Function to handle file drop using react-dropzone
   const onDrop = (acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
       return;
@@ -82,7 +90,8 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     disabled: isFileUploading,
   });
 
-  const handleClick = () => {
+  // Function to handle click event on the upload area
+  const onUploadButtonClick = () => {
     if (!isFileUploading) {
       open();
     }
@@ -93,6 +102,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
       title="Upload Your Resume"
       subtitle="Share your resume with us and let AI take a look"
       sx={{ ...sx }}>
+      {/* Upload area for resume file */}
       <Box
         display="flex"
         flexDirection="column"
@@ -107,7 +117,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
           backgroundColor: theme.palette.accent.main,
           cursor: "pointer",
         }}
-        onClick={handleClick}>
+        onClick={onUploadButtonClick}>
         <Box {...getRootProps()}>
           <input {...getInputProps()} disabled={isFileUploading} />
         </Box>
@@ -169,6 +179,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
         )}
       </Box>
 
+      {/* Divider to separate URL input from text area */}
       <Box
         sx={{
           display: "flex",
@@ -178,6 +189,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
         <Divider width="60%" verticalMargin="-0.3rem" />
       </Box>
 
+      {/* Text area for resume input */}
       <TextField
         placeholder="Or paste your resume here..."
         multiline

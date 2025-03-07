@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
   Box,
   useTheme,
@@ -8,22 +7,28 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
+
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import Background from "../components/Background";
 import Title from "../components/Title";
 import CustomButton from "../components/Button";
-import { NavBar, NavBarItem } from "../components/NavBar";
 import ResumeUpload from "./ResumeUpload";
 import JobDescriptionUpload from "./JobDescriptionUpload";
 import AdditionalDetails from "./AdditionalDetails";
+import { NavBar, NavBarItem } from "../components/NavBar";
 
+import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import useAIPrompt from "../hooks/useAIPrompt";
 
+// Main component for the Upload page
 const Upload = () => {
+  const theme = useTheme();
+  const router = useRouter();
+
   const {
     response,
     error,
@@ -33,9 +38,7 @@ const Upload = () => {
     handleAnalyzeResume,
   } = useAIPrompt();
 
-  const theme = useTheme();
-  const router = useRouter();
-
+  // Authentication
   const { user, logout, isLoadingUser } = useAuth();
 
   // Redirect to auth page if user is not logged in
@@ -45,6 +48,7 @@ const Upload = () => {
     }
   }, [user, isLoadingUser]);
 
+  // State variables for managing the form data and UI state
   const [position, setPosition] = useState(0); // 0 = left, 1 = middle, 2 = right
 
   const [resumeData, setResumeData] = useState({ file: null, text: "" });
@@ -52,8 +56,8 @@ const Upload = () => {
     url: "",
     text: "",
   });
-  const [additionalDetails, setAdditionalDetails] = useState("");
 
+  const [additionalDetails, setAdditionalDetails] = useState("");
   const [formsFilled, setFormsFilled] = useState(false);
 
   // Loading States
@@ -62,6 +66,7 @@ const Upload = () => {
 
   const isGeneratingResult = isAnalyizingResume || isGeneratingLetter;
 
+  // Effect to check if both forms are filled
   useEffect(() => {
     const isFilled = resumeData.file || resumeData.text;
     const isJobDescriptionFilled =
@@ -69,32 +74,35 @@ const Upload = () => {
     setFormsFilled(isFilled && isJobDescriptionFilled);
   }, [resumeData, jobDescriptionData]);
 
+  // Method to handle the click event for pagination
   const goToPosition = (index) => {
     if (index >= 0 && index <= 2) {
       setPosition(index);
     }
   };
 
+  // Method to handle the click event for analyzing the resume
   const AnalyzeResume = async () => {
     if (formsFilled) {
-      console.log("Analyze - Resume Data:", resumeData);
       await handleAnalyzeResume(
         resumeData,
         jobDescriptionData,
         additionalDetails
       );
+
       router.push("/result?type=resume");
     }
   };
 
+  // Method to handle the click event for generating the cover letter
   const GenerateCL = async () => {
     if (formsFilled) {
-      console.log("Cover Letter - Resume Data:", resumeData);
       await handleGenerateCoverLetter(
         resumeData,
         jobDescriptionData,
         additionalDetails
       );
+
       router.push("/result?type=coverletter");
     }
   };
@@ -327,7 +335,6 @@ const Upload = () => {
                       transform: "scale(0.95)",
                     },
                   }}
-                  // onClick={GenerateCL}>
                   onClick={() => {
                     if (!isGeneratingResult) {
                       setIsGeneratingLetter(true);

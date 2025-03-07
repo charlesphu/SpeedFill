@@ -2,6 +2,7 @@ import { Box, TextField, useTheme } from "@mui/material";
 import Divider from "../components/Divider";
 import Container from "../components/Container";
 
+// Section component to display job description input field
 const JobDescriptionUpload = ({
   jobDescriptionData,
   setJobDescriptionData,
@@ -14,6 +15,7 @@ const JobDescriptionUpload = ({
       title="Job Description"
       subtitle="Tell us a little about the job you're applying for"
       sx={{ ...sx }}>
+      {/* Text field for job application URL input */}
       <Box
         sx={{
           width: "100%",
@@ -66,6 +68,7 @@ const JobDescriptionUpload = ({
         />
       </Box>
 
+      {/* Divider to separate URL input from text area */}
       <Box
         sx={{
           width: "100%",
@@ -76,6 +79,8 @@ const JobDescriptionUpload = ({
         }}>
         <Divider width="60%" verticalMargin="-0.3rem" />
       </Box>
+
+      {/* Text area for job description input */}
       <Box
         sx={{
           width: "100%",
