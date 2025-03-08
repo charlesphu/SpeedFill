@@ -1,6 +1,5 @@
 import { generatePDF } from "../pdfToText";
 import { supabase, getUserID } from "./auth";
-// import { getFile } from "./uploadfile";
 
 export async function getMostRecentResponse(type) {
   const userid = await getUserID();
@@ -8,10 +7,10 @@ export async function getMostRecentResponse(type) {
     .from("userData")
     .select("*")
     .eq("user_id", userid)
-    .eq("type", type) // Filter by type
-    .not("response", "is", null) // Ensure content is not NULL (if needed)
-    .order("time", { ascending: false }) // Sort by timestamp descending
-    .limit(1); // Get only the latest record
+    .eq("type", type)
+    .not("response", "is", null)
+    .order("time", { ascending: false })
+    .limit(1);
 
   if (error) {
     console.error("Error fetching data:", error);
@@ -34,20 +33,16 @@ export async function getUserHistory() {
     .eq("user_id", userId)
     .order("time", { ascending: false });
 
-  // jsonArray = jsonArray.map(person => ({
-  //   ...person,
-  //   age: person.age + 1
-  // }));
   console.log("test", data);
   var results = await Promise.all(
     data.map(async (item) => {
-      const responseBlob = await generatePDF(`${item.response}`); // Await the PDF generation
-      const pdfUrl = URL.createObjectURL(responseBlob); // Create a URL from the blob
-      const responseSize = `${(responseBlob.size / 1024 / 1024).toFixed(2)} MB`; // Get the size in bytes
+      const responseBlob = await generatePDF(`${item.response}`);
+      const pdfUrl = URL.createObjectURL(responseBlob);
+      const responseSize = `${(responseBlob.size / 1024 / 1024).toFixed(2)} MB`;
       return {
         ...item,
         resumeFileSrc: await getFile(`${userId}/${item.filepath}`),
-        responseURL: pdfUrl, // Add the URL
+        responseURL: pdfUrl,
         responseSize: responseSize,
       };
     })
@@ -63,8 +58,8 @@ export async function getResponseById(id) {
     .select("*")
     .eq("user_id", userid)
     .eq("uniqueID", id)
-    .not("response", "is", null) // Ensure content is not NULL (if needed)
-    .order("time", { ascending: false }); // Sort by timestamp descending
+    .not("response", "is", null)
+    .order("time", { ascending: false });
 
   if (error) {
     console.error("Error fetching data:", error);
