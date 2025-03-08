@@ -4,7 +4,7 @@ import { Box, useTheme, useMediaQuery } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
 import FadeIn from "../components/utils/FadeIn";
-import AuthForm from "./authForm";
+import AuthForm from "./AuthForm";
 
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
