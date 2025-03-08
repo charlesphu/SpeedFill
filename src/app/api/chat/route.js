@@ -7,6 +7,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+// CHAN RENAME POST
 export async function POST(request) {
   try {
     const { type, resume, isPDF, jobDesc, jobURL, additionalDetails } =
