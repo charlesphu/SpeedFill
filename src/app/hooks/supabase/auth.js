@@ -47,7 +47,6 @@ export async function loginUser(email, password) {
     return { error };
   }
 
-  console.log("User logged in:", data.user);
   return data.user;
 }
 
@@ -75,7 +74,5 @@ export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.error("sign out error: ", error.message);
-  } else {
-    console.log("signed out");
   }
 }
