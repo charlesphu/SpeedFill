@@ -14,7 +14,7 @@ export async function signUpNewUser(email, password) {
   });
   if (error) {
     console.error("sign up error:", error.message);
-    return null;
+    return { error };
   }
   return loginUser(email, password);
 }
@@ -26,7 +26,7 @@ export async function handleSignInWithGoogle(response) {
   });
   if (error) {
     console.error("Google sign-in error:", error.message);
-    return null;
+    return { error };
   }
   return data.user;
 }
@@ -44,7 +44,7 @@ export async function loginUser(email, password) {
 
   if (error) {
     console.error("Login error:", error.message);
-    return null;
+    return { error };
   }
 
   console.log("User logged in:", data.user);

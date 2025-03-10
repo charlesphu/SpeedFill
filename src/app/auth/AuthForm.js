@@ -41,17 +41,13 @@ const AuthForm = () => {
         result = await signUpNewUser(email, password);
       }
 
-      if (result) {
-        router.push("/");
+      if (result?.error) {
+        throw new Error(result.error.message);
       } else {
-        throw new Error(result?.error?.message || "Authentication failed");
+        router.push("/");
       }
     } catch (error) {
-      setError(
-        `${isLogin ? "Login" : "Signup"} failed. Email: ${email} - Error: ${
-          error.message
-        }`
-      );
+      setError(`${isLogin ? "Login" : "Signup"} failed. ${error.message}`);
     }
   };
 
