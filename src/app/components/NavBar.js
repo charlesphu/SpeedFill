@@ -25,7 +25,9 @@ const NavBarItem = ({ text, src, onClick }) => {
         if (onClick) {
           onClick();
         }
-        router.push(src);
+        if (src) {
+          router.push(src);
+        }
       }}>
       {text}
     </Typography>
