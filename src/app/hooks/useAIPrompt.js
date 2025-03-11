@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 import { useState, useEffect } from "react";
 
 import { uploadEntry } from "./supabase/uploadfile";
@@ -22,33 +22,11 @@ export default function useAIPrompt() {
     // }
   }, []);
 
-  const checkCooldown = () => {
-    const now = Date.now();
-
-    // const lastRequestTime = localStorage.getItem("lastRequestTime");
-
-    // if (lastRequestTime && now - lastRequestTime < cooldownDuration) {
-    //   const timeLeft = (
-    //     (cooldownDuration - (now - lastRequestTime)) /
-    //     1000
-    //   ).toFixed(0);
-    //   setCooldownMessage(
-    //     `Please wait ${timeLeft} seconds before submitting again.`
-    //   );
-    //   return false;
-    // }
-
-    setCooldownMessage(""); // Clear message if cooldown is over
-    // localStorage.setItem("lastRequestTime", now);
-    return true;
-  };
-
   const handleGenerateCoverLetter = async (
     resumeData,
     jobDescription,
     additionalDetails
   ) => {
-    if (!checkCooldown()) return;
     setLoading(true);
     var result;
     var resumeText;
@@ -97,7 +75,6 @@ export default function useAIPrompt() {
     jobDescription,
     additionalDetails
   ) => {
-    if (!checkCooldown()) return;
     setLoading(true);
     var result;
     var resumeText;
@@ -132,12 +109,14 @@ export default function useAIPrompt() {
       }
       const data = await response.json();
       console.log("AI Response:", data);
-      setResponse(typeof data === "string" ? data : JSON.stringify(data, null, 2));
-      
+      setResponse(
+        typeof data === "string" ? data : JSON.stringify(data, null, 2)
+      );
+
       result = await response.json();
       setResponse(result);
     } catch (error) {
-      console.error("API Error:", error)
+      console.error("API Error:", error);
       setError(error.message || "An unknown error occurred.");
     } finally {
       uploadEntry(resumeData, "Resume Analysis", result);
@@ -145,5 +124,12 @@ export default function useAIPrompt() {
     }
   };
 
-  return { response, error, loading, cooldownMessage, handleGenerateCoverLetter, handleAnalyzeResume };
+  return {
+    response,
+    error,
+    loading,
+    cooldownMessage,
+    handleGenerateCoverLetter,
+    handleAnalyzeResume,
+  };
 }
