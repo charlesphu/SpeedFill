@@ -31,11 +31,6 @@ export async function handleSignInWithGoogle(response) {
   return data.user;
 }
 
-export async function signUpWithGoogle() {
-  // Placeholder function for future implementation
-  return;
-}
-
 export async function loginUser(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

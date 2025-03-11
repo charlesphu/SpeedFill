@@ -6,7 +6,7 @@ import Divider from "../components/Divider";
 import {
   signUpNewUser,
   loginUser,
-  signUpWithGoogle,
+  handleSignInWithGoogle,
 } from "../hooks/supabase/auth";
 
 import React, { useState } from "react";
@@ -51,7 +51,7 @@ const AuthForm = () => {
     }
   };
 
-  // Function to handle Google sign-in
+  // Switch between login / signup
   const handleToggleAuth = () => {
     setFade(false);
     setTimeout(() => {
@@ -172,7 +172,7 @@ const AuthForm = () => {
               {/* Google sign-in button */}
               <Button
                 variant="outlined"
-                onClick={signUpWithGoogle}
+                onClick={handleSignInWithGoogle}
                 sx={{
                   margin: "1rem 0",
                   borderRadius: "5px",
