@@ -8,6 +8,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function POST(request) {
+  let final_response;
+
   try {
     const { type, resume, _, jobDesc, jobURL, additionalDetails } =
       await request.json(); // Parse the JSON body
@@ -127,12 +129,15 @@ export async function POST(request) {
       );
     }
 
-    return NextResponse.json(aiResponse);
+    final_response = NextResponse.json(aiResponse);
   } catch (error) {
     console.error("Error in API route:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
     );
+  } finally {
+    console.log("RETURNING RESPONSE:", final_response);
+    return final_response;
   }
 }

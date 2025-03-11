@@ -100,6 +100,8 @@ export default function useAIPrompt() {
       setResponse(
         typeof data === "string" ? data : JSON.stringify(data, null, 2)
       );
+
+      result = data;
     } catch (error) {
       console.error("API Error:", error);
       setError(error.message || "An unknown error occurred.");
@@ -113,7 +115,6 @@ export default function useAIPrompt() {
     response,
     error,
     loading,
-    cooldownMessage,
     handleGenerateCoverLetter,
     handleAnalyzeResume,
   };
