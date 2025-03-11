@@ -76,6 +76,7 @@ export default function useAIPrompt() {
     additionalDetails
   ) => {
     setLoading(true);
+
     var result;
     var resumeText;
     if (resumeData.file == null) {
@@ -107,14 +108,11 @@ export default function useAIPrompt() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       const data = await response.json();
-      console.log("AI Response:", data);
       setResponse(
         typeof data === "string" ? data : JSON.stringify(data, null, 2)
       );
-
-      result = await response.json();
-      setResponse(result);
     } catch (error) {
       console.error("API Error:", error);
       setError(error.message || "An unknown error occurred.");

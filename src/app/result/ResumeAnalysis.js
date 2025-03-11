@@ -18,7 +18,6 @@ import {
 } from "../hooks/supabase/getfile";
 
 import { useSearchParams } from "next/navigation";
-import { analyzeResumeSchema } from "../api/chat/route"; // Import the schema
 
 // Component that displays the match score with a visual progress bar
 const MatchSection = ({ score }) => {
@@ -240,7 +239,6 @@ const ResumeAnalysis = () => {
       if (response == null) {
         router.push("/upload");
       } else {
-        console.log(response);
         setStrengths(response.strengths);
         setMatchScore(response.match_percentage);
         setImprovements(response.areas_for_improvement);

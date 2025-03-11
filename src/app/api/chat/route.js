@@ -1,37 +1,15 @@
 import { NextResponse } from "next/server"; // Import NextResponse from Next.js for handling responses
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { z } from "zod"; // Import Zod
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// Define the Zod schema
-const coverLetterSchema = z.object({
-  cover_letter: z.string(),
-});
-
-const analyzeResumeSchema = z.object({
-  match_percentage: z.string(),
-  strengths: z.array(z.string()),
-  areas_for_improvement: z.array(z.string()),
-  overall_feedback: z.string(),
-  interview_questions: z.array(
-    z.object({
-      question: z.string(),
-      answer: z.string(),
-    })
-  ),
-});
-
-export { analyzeResumeSchema }; // Export the schema
-
-// CHAN RENAME POST
 export async function POST(request) {
   try {
-    const { type, resume, isPDF, jobDesc, jobURL, additionalDetails } =
+    const { type, resume, _, jobDesc, jobURL, additionalDetails } =
       await request.json(); // Parse the JSON body
 
     let jobDetails = jobDesc;
@@ -69,15 +47,6 @@ export async function POST(request) {
       );
     }
 
-    const interviewQuestions = [
-      {
-        question: "Tell me about yourself",
-      },
-      {
-        question: "Why are you interested in this role?",
-      },
-    ];
-
     let prompt = "";
 
     if (type === "coverLetter") {
@@ -86,9 +55,9 @@ export async function POST(request) {
       Job Description: ${jobDetails}
       Additional Details: ${additionalDetails || "N/A"}
 
-      Respond in JSON format:
+      Provide a response in JSON format with the following fields, ensure the response is valid JSON without additional text.
       {
-        "cover_letter": "Your generated cover letter text"
+        "cover_letter": (string)
       }`;
     } else if (type === "analyzeResume") {
       prompt = `Analyze the resume for this job and provide a structured JSON response:
@@ -99,23 +68,18 @@ export async function POST(request) {
       Provide the following details:
       - Match percentage: How well the resume fits the job
       - Strengths: Key areas where the candidate excels
-      - Areas for improvement: What needs to be improved in the resume
-      - Overall feedback: Summary evaluation
-      - Interview questions: Provide 3-5 commonly interview questions with well-thought-out answers.
+      - Areas for improvement: What needs to be improved in the resume based on job description
+      - Interview questions: Provide 3 common generic behavioral interview questions with example answers.
 
-      Respond in JSON format:
+      Provide a response in JSON format with the following fields, ensure the response is valid JSON without additional text.
       {
-        "match_percentage": "X%",
-        "strengths": ["strength 1", "strength 2", "strength 3"],
-        "areas_for_improvement": ["improvement 1", "improvement 2", "improvement 3"],
+        "match_percentage": (integer, 0-100),
+        "strengths": (array of strings),
+        "areas_for_improvement": (array of strings),
         "interview_questions": [
           {
-            "question": "What are your greatest strengths?",
-            "answer": "My greatest strengths are..."
-          },
-          {
-            "question": "Can you describe a challenge you faced at work?",
-            "answer": "One major challenge I faced was..."
+            "question": (string),
+            "answer": (string)
           }
         ]
       }`;
@@ -126,26 +90,28 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
     const result = await model.generateContent(prompt);
 
     if (!result || !result.response) {
       return NextResponse.json(
-        { error: "AI response failed" },
+        { error: "AI response did not respond" },
         { status: 500 }
       );
     }
 
     let aiResponse;
+
     try {
       let rawText = await result.response.text();
       rawText = rawText
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim();
-      
-      let parsedResponse;
+
+      // Validate JSON response format
       try {
-        parsedResponse = JSON.parse(rawText);
+        aiResponse = JSON.parse(rawText);
       } catch (error) {
         console.error("JSON Parse Error:", error);
         return NextResponse.json(
@@ -153,26 +119,12 @@ export async function POST(request) {
           { status: 500 }
         );
       }
-
-      // Validate AI response using Zod schema
-      try {
-        if (type === "coverLetter") {
-          aiResponse = coverLetterSchema.parse(parsedResponse);
-        } else if (type === "analyzeResume") {
-          aiResponse = analyzeResumeSchema.parse(parsedResponse);
-        }
-      } catch (error) {
-        console.error("Zod Validation Error:", error);
-        return NextResponse.json(
-          { error: "Invalid data structure in AI response" },
-          { status: 500 }
-        );
-      }
-
-      return NextResponse.json(aiResponse);
     } catch (error) {
       console.error("AI Response JSON Parse Error:", error);
-      aiResponse = { raw_response: await result.response.text() };
+      return NextResponse.json(
+        { error: "AI Response JSON Parse Error" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(aiResponse);
