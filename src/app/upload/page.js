@@ -29,14 +29,8 @@ const Upload = () => {
   const theme = useTheme();
   const router = useRouter();
 
-  const {
-    response,
-    error,
-    loading,
-    cooldownMessage,
-    handleGenerateCoverLetter,
-    handleAnalyzeResume,
-  } = useAIPrompt();
+  const { _, __, ___, handleGenerateCoverLetter, handleAnalyzeResume } =
+    useAIPrompt();
 
   // Authentication
   const { user, logout, isLoadingUser } = useAuth();
