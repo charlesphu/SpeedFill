@@ -8,19 +8,6 @@ export default function useAIPrompt() {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [lastRequestTime, setLastRequestTime] = useState(
-  //   () => localStorage.getItem("lastRequestTime") || null
-  // );
-  const [cooldownMessage, setCooldownMessage] = useState("");
-
-  const cooldownDuration = 60000; // 60 sec
-
-  useEffect(() => {
-    // const savedTime = localStorage.getItem("lastRequestTime");
-    // if (savedTime) {
-    //   setLastRequestTime(parseInt(savedTime, 10));
-    // }
-  }, []);
 
   const handleGenerateCoverLetter = async (
     resumeData,
