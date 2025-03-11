@@ -1,8 +1,10 @@
 import * as pdfjsLib from "pdfjs-dist";
 import "pdfjs-dist/build/pdf.worker";
 import { jsPDF } from "jspdf";
+// make a global worker to be used by pdfjs
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
+// Function to generate a PDF from text
 export const generatePDF = async (text) => {
   const doc = new jsPDF();
   const maxWidth = 190;
@@ -13,6 +15,7 @@ export const generatePDF = async (text) => {
   return pdfBlob;
 };
 
+// Function to convert a PDF to text
 export async function pdfToText(pdfUrl) {
   const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
   let fullText = "";
