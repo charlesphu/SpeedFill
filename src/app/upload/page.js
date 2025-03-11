@@ -312,7 +312,7 @@ const Upload = () => {
               </Box>
               <Box sx={{ position: "relative", display: "inline-block" }}>
                 <CustomButton
-                  icon={!isGeneratingLetter ? "./icons/file.svg" : ""}
+                  icon={!isGeneratingLetter ? "./icons/File.svg" : ""}
                   sx={{
                     width: "18rem",
                     backgroundColor: theme.palette.menu.submit_button,
