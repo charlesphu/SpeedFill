@@ -2,6 +2,9 @@ import { getUserID, supabase } from "./auth";
 import { getFile } from "./getfile";
 import { v4 } from "uuid";
 
+// Function to upload an entry to the database
+// we get userID, upload the file, and then insert the data into the database
+// we also make sure that the file is uploaded before we return
 export async function uploadEntry(file, type, response) {
   const userId = await getUserID();
   const timeStamp = new Date().toISOString();
@@ -21,10 +24,13 @@ export async function uploadEntry(file, type, response) {
     console.error("Error inserting data:", error.message);
     return { error };
   }
+
+  // we make sure that the file is uploaded before we return
   await getFile(`${userId}/${timeStamp}-${file.name}`);
 }
 
-// Upload file using standard upload
+// Function to upload a file to the storage bucket
+// get the userId, and upload the file to the storage bucket
 export async function uploadFile(file, time) {
   const userId = await getUserID();
 
@@ -39,6 +45,8 @@ export async function uploadFile(file, time) {
   }
 }
 
+// Function to set the current resume file
+// we get the userID, delete the current resume, and then upload the new file
 export async function setCurrentResume(file) {
   // Ensure file is provided
   if (!file) {
@@ -67,6 +75,9 @@ export async function setCurrentResume(file) {
   getCurrentResume();
 }
 
+// Function to get the current resume file URL
+// we get the userID, and then get the first file in the currentResume folder
+// we return the public URL of the file
 export async function getCurrentResume() {
   const userId = await getUserID();
   var bucketName = "currentResume";
@@ -92,6 +103,8 @@ export async function getCurrentResume() {
   return publicUrl;
 }
 
+// Function to open the current resume file in a new tab
+// we get the current resume URL and open it in a new tab
 export async function openCurrentResume() {
   const url = await getCurrentResume();
   if (url == null) {
@@ -100,6 +113,8 @@ export async function openCurrentResume() {
   window.open(url, "_blank");
 }
 
+// Function to delete the current resume file
+// we get the userID, and delete everything under the currentResume folder
 export async function deleteCurrentResume() {
   const userId = await getUserID();
 

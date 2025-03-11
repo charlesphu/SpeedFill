@@ -1,7 +1,10 @@
-"use client"; 
+"use client";
 import { useState, useEffect } from "react";
 import { supabase, getUser, logout } from "./supabase/auth";
 
+// Custom hook to handle authentication
+// we get the user, logout function, and isLoadingUser
+// we also get the user and set the user
 export default function useAuth() {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
@@ -19,7 +22,7 @@ export default function useAuth() {
       try {
         const { data, error } = await supabase.auth.getUser();
         if (error) {
-          // console.error(error);
+          console.error(error);
           setUser(null);
         } else {
           setUser(data.user);
