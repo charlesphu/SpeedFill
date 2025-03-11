@@ -1,6 +1,9 @@
+"use client"; 
 import { useState, useEffect } from "react";
+
 import { uploadEntry } from "./supabase/uploadfile";
 import { generatePDF, pdfToText } from "./pdfToText";
+
 export default function useAIPrompt() {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -21,6 +24,7 @@ export default function useAIPrompt() {
 
   const checkCooldown = () => {
     const now = Date.now();
+
     // const lastRequestTime = localStorage.getItem("lastRequestTime");
 
     // if (lastRequestTime && now - lastRequestTime < cooldownDuration) {
@@ -126,10 +130,14 @@ export default function useAIPrompt() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      const data = await response.json();
+      console.log("AI Response:", data);
+      setResponse(typeof data === "string" ? data : JSON.stringify(data, null, 2));
+      
       result = await response.json();
       setResponse(result);
     } catch (error) {
-      console.error("API Error:", error);
+      console.error("API Error:", error)
       setError(error.message || "An unknown error occurred.");
     } finally {
       uploadEntry(resumeData, "Resume Analysis", result);
@@ -137,12 +145,5 @@ export default function useAIPrompt() {
     }
   };
 
-  return {
-    response,
-    error,
-    loading,
-    cooldownMessage,
-    handleGenerateCoverLetter,
-    handleAnalyzeResume,
-  };
+  return { response, error, loading, cooldownMessage, handleGenerateCoverLetter, handleAnalyzeResume };
 }

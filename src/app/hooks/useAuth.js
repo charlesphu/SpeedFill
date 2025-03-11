@@ -1,3 +1,4 @@
+"use client"; 
 import { useState, useEffect } from "react";
 import { supabase, getUser, logout } from "./supabase/auth";
 
