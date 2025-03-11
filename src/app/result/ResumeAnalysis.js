@@ -24,7 +24,11 @@ import { analyzeResumeSchema } from "../api/chat/route"; // Import the schema
 const MatchSection = ({ score }) => {
   // Ensure score is properly formatted and bounded between 0-100
   let matchScore = parseFloat(score);
-  matchScore = Math.max(0, Math.min(100, matchScore));
+  if (isNaN(matchScore)) {
+    matchScore = 0;
+  } else {
+    matchScore = Math.max(0, Math.min(100, matchScore));
+  }
 
   // Convert numeric score to qualitative rating
   const getRating = (score) => {
@@ -180,7 +184,7 @@ const QuestionsSection = ({ questions }) => {
 
   return (
     <Section title={title} subtitle={subtitle} icon="./icons/Speech.svg">
-      {questions.map((entry, index) => (
+      {questions?.map((entry, index) => (
         <Box
           key={index}
           sx={{
@@ -236,6 +240,7 @@ const ResumeAnalysis = () => {
       if (response == null) {
         router.push("/upload");
       } else {
+        console.log(response);
         setStrengths(response.strengths);
         setMatchScore(response.match_percentage);
         setImprovements(response.areas_for_improvement);
