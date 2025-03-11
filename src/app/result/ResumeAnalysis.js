@@ -17,6 +17,7 @@ import {
   getResponseById,
 } from "../hooks/supabase/getfile";
 import { useSearchParams } from "next/navigation";
+import { analyzeResumeSchema } from "../api/chat/route"; // Import the schema
 
 // Component that displays the match score with a visual progress bar
 const MatchSection = ({ score }) => {
@@ -98,7 +99,7 @@ const StrengthsSection = ({ strengths }) => {
   const subtitle =
     "Showcases your resume's standout skills and experiences for this role";
 
-  return (
+    return (
     <Section title={title} subtitle={subtitle} icon="./icons/Star.svg">
       <List
         sx={{
@@ -137,7 +138,7 @@ const ImprovementSection = ({ improvements }) => {
   const subtitle =
     "Suggests changes to increase resume clarity and maximize impact";
 
-  return (
+    return (
     <Section title={title} subtitle={subtitle} icon="./icons/Pencil.svg">
       <List
         sx={{
@@ -222,6 +223,7 @@ const ResumeAnalysis = () => {
   const [matchScore, setMatchScore] = useState(null);
   const [strengths, setStrengths] = useState(["Loading.."]);
   const [improvements, setImprovements] = useState(["Loading.."]);
+  const [interviewQuestions, setInterviewQuestions] = useState([]);
 
   // Fetch resume analysis data on component mount
   useEffect(() => {
@@ -236,25 +238,12 @@ const ResumeAnalysis = () => {
         setStrengths(response.strengths);
         setMatchScore(response.match_percentage);
         setImprovements(response.areas_for_improvement);
+        setInterviewQuestions(response.interview_questions);
       }
     };
 
     fetchData();
-  }, []);
-
-  // Sample interview questions and answers for demonstration
-  const TEST_QUESTIONS = [
-    {
-      question: "Tell me about yourself",
-      answer:
-        "I'm a marketing professional with over 5 years of experience in digital marketing, content strategy, and data-driven campaign management. I've had the opportunity to lead cross-functional teams, launch successful marketing initiatives, and drive significant engagement across various platforms. I'm particularly passionate about understanding customer behavior through data and using those insights to create impactful strategies. Outside of work, I'm continuously learning about emerging trends in marketing and how they can be applied to innovative business solutions.",
-    },
-    {
-      question: "Why are you interested in this role?",
-      answer:
-        "This position caught my attention because it directly aligns with my professional background and career goals. I have a strong foundation in project management and process optimization, which I know are essential for this role. The opportunity to work with a team that values creativity and efficiency is something I'm excited about. I've been following your company's growth and feel that my skill set in streamlining operations and leading diverse teams would make a meaningful impact here.",
-    },
-  ];
+  }, [id, router]);
 
   return (
     <Box
@@ -284,7 +273,7 @@ const ResumeAnalysis = () => {
           <MatchSection score={matchScore} />
           <StrengthsSection strengths={strengths} />
           <ImprovementSection improvements={improvements} />
-          <QuestionsSection questions={TEST_QUESTIONS} />
+          <QuestionsSection questions={interviewQuestions} />
         </Container>
       </Box>
 
