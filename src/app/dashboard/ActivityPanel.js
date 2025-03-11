@@ -264,9 +264,9 @@ const ActivityPanel = ({ sx }) => {
             entryDate.getMonth() + 1
           }-${entryDate.getDate()}-${entryDate.getFullYear()}`,
 
-          time: `${entryDate.getHours() % 12 || 12}:${entryDate.getMinutes()} ${
-            entryDate.getHours() >= 12 ? "PM" : "AM"
-          }`,
+          time: `${entryDate.getHours() % 12 || 12}:${String(
+            entryDate.getMinutes()
+          ).padStart(2, "0")} ${entryDate.getHours() >= 12 ? "PM" : "AM"}`,
 
           // Extract file name and size
           resume: {
