@@ -137,7 +137,6 @@ export async function POST(request) {
       { status: 500 }
     );
   } finally {
-    console.log("RETURNING RESPONSE:", final_response);
     return final_response;
   }
 }
