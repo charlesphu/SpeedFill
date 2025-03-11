@@ -1,5 +1,6 @@
 import { Divider } from "@mui/material";
 
+// This component is a custom divider that can be used in various parts of the application.
 const CustomDivider = ({ width, verticalMargin }) => {
   return (
     <Divider

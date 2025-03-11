@@ -1,39 +1,34 @@
 "use client"; 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-// import { createClient } from "@supabase/supabase-js";
 import { supabase, getUser, logout } from "./supabase/auth";
-
-// export default async function useAuth() {
-//   // const [user, setUser] = useState(null);
-//   // setUser(getUser());
-//   var user = getUser();
-
-//   return {
-//     user,
-//     logout,
-//   };
-// }
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   useEffect(() => {
     if (!supabase || !supabase.auth) {
       console.error("Supabase is not initialized properly.");
+      setIsLoadingUser(false);
       return;
     }
 
     const getUser = async () => {
+      setIsLoadingUser(true);
+
       try {
         const { data, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        setUser(data.user);
+        if (error) {
+          // console.error(error);
+          setUser(null);
+        } else {
+          setUser(data.user);
+        }
       } catch (error) {
-        // console.error("Error fetching user:", error.message);
         setUser(null);
-        return;
       }
+
+      setIsLoadingUser(false);
     };
 
     getUser();
@@ -55,5 +50,5 @@ export default function useAuth() {
     setUser(null);
   };
 
-  return { user, logout };
+  return { user, logout, isLoadingUser };
 }

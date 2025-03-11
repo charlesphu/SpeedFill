@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Panel from "../components/Panel";
 
+// Section component to display a title, subtitle, and content within CoverLetter or ResumeAnalysis
 const Section = ({ title, subtitle, icon, children }) => {
   return (
     <Panel

@@ -1,17 +1,32 @@
 "use client";
 
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Background from "../components/Background";
 import Title from "../components/Title";
+
 import AccountPanel from "./AccountPanel";
 import ActivityPanel from "./ActivityPanel";
+
 import Image from "next/image";
 import { NavBar, NavBarItem } from "../components/NavBar";
+
 import useAuth from "../hooks/useAuth";
+import { getUserHistory } from "../hooks/supabase/uploadfile";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const isSmallScreen = useMediaQuery("(max-width: 1200px)");
-  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const { user, logout, isLoadingUser } = useAuth();
+
+  // Redirect to auth page if user is not logged in
+  useEffect(() => {
+    if (!user && !isLoadingUser) {
+      router.push("/auth");
+    }
+  }, [user, isLoadingUser]);
 
   return (
     <>
@@ -23,7 +38,9 @@ const Dashboard = () => {
         }}>
         <Title />
       </Box>
-
+      {/* <Box>
+        <Button onClick={getUserHistory}> TEST BUTTON </Button>
+      </Box> */}
       <Box
         display="flex"
         justifyContent="center"
@@ -61,7 +78,6 @@ const Dashboard = () => {
       </Box>
 
       <NavBar>
-        <NavBarItem text="Home" src="/" />
         <NavBarItem text="Upload" src="/upload" />
         <NavBarItem text="Sign Out" src="/" onClick={logout} />
       </NavBar>

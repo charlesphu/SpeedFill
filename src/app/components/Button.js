@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
+// This component is a custom button that can be used throughout the application.
 const CustomButton = ({
   children,
   variant = "contained",

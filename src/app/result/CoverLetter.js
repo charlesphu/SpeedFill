@@ -44,7 +44,6 @@ const CoverLetter = () => {
       if (response == null) {
         router.push("/upload");
       }
-      // console.log(response);
     };
 
     fetchData();

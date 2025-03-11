@@ -12,10 +12,15 @@ import {
 
 import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
+import { getUserHistory } from "../hooks/supabase/getfile";
+import { useRouter } from "next/navigation";
 
 import Container from "../components/Container";
 import Panel from "../components/Panel";
 
+const MAX_ENTRY_PER_PAGE = 4;
+
+// ActivityPanel component to display user activity history
 const ActivityColumns = () => {
   const theme = useTheme();
   return (
@@ -35,15 +40,7 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell
         sx={{
-          width: "18%",
-        }}>
-        <Typography variant="body1" color="primary">
-          ROLE
-        </Typography>
-      </TableCell>
-      <TableCell
-        sx={{
-          width: "23%",
+          width: "32%",
         }}>
         <Typography variant="body1" color="primary">
           RESUME
@@ -51,7 +48,7 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell
         sx={{
-          width: "13%",
+          width: "20%",
         }}>
         <Typography variant="body1" color="primary">
           TYPE
@@ -59,16 +56,25 @@ const ActivityColumns = () => {
       </TableCell>
       <TableCell>
         <Typography variant="body1" color="primary">
-          CONTENT
+          RESPONSE
         </Typography>
       </TableCell>
     </TableRow>
   );
 };
 
+// ActivityRow component to display individual activity entry
 const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
+  // Destructure resume and content data
   const [resumeName, resumeSize, resumeSrc] = resume;
-  const [contentName, contentSize, contentSrc] = content;
+  const [contentName, contentSize, _, uniqueID] = content;
+
+  // Determine the route path based on type
+  const router = useRouter();
+  const routePath =
+    type == "Resume Analysis"
+      ? "/result?type=resume"
+      : "/result?type=coverletter";
 
   return (
     <Grow
@@ -77,6 +83,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
       style={{
         transitionDelay: `${index * 40}ms`,
       }}>
+      {/* Table Row for each activity entry */}
       <TableRow
         sx={{
           "& > td": {
@@ -98,16 +105,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Typography>
         </TableCell>
 
-        <TableCell>
-          <Typography
-            variant="body1"
-            color="text"
-            maxWidth="5rem"
-            sx={{ lineHeight: "1.2" }}>
-            {role}
-          </Typography>
-        </TableCell>
-
+        {/* Resume Column */}
         <TableCell>
           <Box
             display="flex"
@@ -115,13 +113,17 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
             sx={{
               userSelect: "none",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(resumeSrc);
             }}>
             <Typography
               fontSize="1.2rem"
               color="title"
-              maxWidth="8rem"
+              maxWidth="10rem"
               overflow="hidden"
               textOverflow="ellipsis"
+              whiteSpace="nowrap"
               sx={{
                 textDecoration: "underline",
               }}>
@@ -133,6 +135,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Box>
         </TableCell>
 
+        {/* Type Column */}
         <TableCell>
           <Typography
             variant="body1"
@@ -143,6 +146,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
           </Typography>
         </TableCell>
 
+        {/* Response Column */}
         <TableCell>
           <Box
             display="flex"
@@ -150,6 +154,9 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
             sx={{
               userSelect: "none",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(`${routePath}&id=${uniqueID}`);
             }}>
             <Typography
               fontSize="1.2rem"
@@ -172,6 +179,7 @@ const ActivityRow = ({ index, date, time, role, resume, content, type }) => {
   );
 };
 
+// ActivityControl component for pagination control
 const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
   return (
     <Box
@@ -217,81 +225,7 @@ const ActivityControl = ({ currentPage, maxPages, nextPage, prevPage }) => {
 
 const ActivityPanel = ({ sx }) => {
   // State management for activity panel
-  const TEST_USER_HISTORY = [
-    {
-      timestamp: new Date("1-26-2017 3:22 PM"),
-      role: "Backend Developer",
-      type: "Resume Analysis",
-      resume: "resume_final.pdf",
-      content: "final_version_name.pdf",
-    },
-    {
-      timestamp: new Date("6-15-2020 8:12 AM"),
-      role: "Full Stack Developer",
-      type: "Cover Letter",
-      resume: "portfolio.pdf",
-      content: "project_abc.pdf",
-    },
-    {
-      timestamp: new Date("12-5-2018 11:45 PM"),
-      role: "Frontend Engineer",
-      type: "Resume Analysis",
-      resume: "long_ass_file.pdf",
-      content: "portfolio_v1.pdf",
-    },
-    {
-      timestamp: new Date("2-21-2019 10:30 AM"),
-      role: "UI/UX Designer",
-      type: "Cover Letter",
-      resume: "portfolio.pdf",
-      content: "final_version_name.pdf",
-    },
-    {
-      timestamp: new Date("7-9-2015 9:00 AM"),
-      role: "Frontend Engineer",
-      type: "Cover Letter",
-      resume: "long_ass_file.pdf",
-      content: "lonnggg_ass_file_name.pdf",
-    },
-    {
-      timestamp: new Date("10-13-2021 5:10 PM"),
-      role: "Backend Developer",
-      type: "Resume Analysis",
-      resume: "long_ass_file.pdf",
-      content: "lonnggg_ass_file_name.pdf",
-    },
-    {
-      timestamp: new Date("3-11-2016 6:25 AM"),
-      role: "UI/UX Designer",
-      type: "Cover Letter",
-      resume: "resume_final.pdf",
-      content: "final_version_name.pdf",
-    },
-    {
-      timestamp: new Date("4-22-2014 2:50 PM"),
-      role: "Full Stack Developer",
-      type: "Resume Analysis",
-      resume: "long_ass_file.pdf",
-      content: "lonnggg_ass_file_name.pdf",
-    },
-    {
-      timestamp: new Date("9-10-2019 7:05 PM"),
-      role: "Frontend Engineer",
-      type: "Cover Letter",
-      resume: "resume_final.pdf",
-      content: "portfolio_v1.pdf",
-    },
-    {
-      timestamp: new Date("5-30-2022 1:20 AM"),
-      role: "Backend Developer",
-      type: "Resume Analysis",
-      resume: "long_ass_file.pdf",
-      content: "project_abc.pdf",
-    },
-  ];
-
-  const userHistory = TEST_USER_HISTORY;
-  const MAX_ENTRY_PER_PAGE = 4;
+  const [userHistory, setUserHistory] = useState([]);
 
   const [userActivities, setUserActivities] = useState([]);
   const [activityElements, setActivityElements] = useState([]);
@@ -299,18 +233,30 @@ const ActivityPanel = ({ sx }) => {
   const [maxPages, setMaxPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Fetch user history from server
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getUserHistory();
+      setUserHistory(response);
+    };
+
+    fetchData();
+  }, []);
+
   // Process user history into separate pages
   useEffect(() => {
     const activites = [];
+    let uniqueNum = userHistory.length + 1;
 
+    // Iterate through user history and create entries
     for (let i = 0; i < userHistory.length; i += MAX_ENTRY_PER_PAGE) {
       const activityPage = [];
 
       for (const entry of userHistory.slice(i, i + MAX_ENTRY_PER_PAGE)) {
-        const entryDate = new Date(entry.timestamp);
+        const entryDate = new Date(entry.time);
+        uniqueNum -= 1;
 
         activityPage.push({
-          role: entry.role,
           type: entry.type,
 
           // Format timestamp
@@ -324,15 +270,16 @@ const ActivityPanel = ({ sx }) => {
 
           // Extract file name and size
           resume: {
-            name: entry.resume,
+            name: entry.filepath.split("Z-")[1],
             size: "1.2MB",
-            src: "/file.pdf",
+            src: entry.resumeFileSrc.publicUrl,
           },
 
           content: {
-            name: entry.content,
-            size: "1.2MB",
-            src: "/file.pdf",
+            name: `response${uniqueNum}.txt`,
+            size: entry.responseSize,
+            src: entry.responseURL,
+            uniqueID: entry.uniqueID,
           },
         });
       }
@@ -342,7 +289,7 @@ const ActivityPanel = ({ sx }) => {
 
     setUserActivities(activites);
     setMaxPages(activites.length);
-  }, []);
+  }, [userHistory]);
 
   // Update activity elements based on current page
   useEffect(() => {
@@ -354,7 +301,6 @@ const ActivityPanel = ({ sx }) => {
           index={index}
           date={activity.date}
           time={activity.time}
-          role={activity.role}
           resume={[
             activity.resume.name,
             activity.resume.size,
@@ -364,6 +310,7 @@ const ActivityPanel = ({ sx }) => {
             activity.content.name,
             activity.content.size,
             activity.content.src,
+            activity.content.uniqueID,
           ]}
           type={activity.type}
         />
@@ -372,6 +319,7 @@ const ActivityPanel = ({ sx }) => {
     setActivityElements(activityElements);
   }, [currentPage, userActivities]);
 
+  // State management for pagination
   const nextPage = () => {
     if (currentPage < maxPages) {
       setCurrentPage(currentPage + 1);
@@ -388,7 +336,7 @@ const ActivityPanel = ({ sx }) => {
     <Container
       title="Your History"
       subtitle="Review your previously generated cover letters and resume feedbacks"
-      sx={{ width: "45rem", maxWidth: "md", ...sx }}>
+      sx={{ width: "40rem", maxWidth: "md", ...sx }}>
       <Panel sx={{ maxWidth: "md" }}>
         <Box
           display="flex"
@@ -409,6 +357,8 @@ const ActivityPanel = ({ sx }) => {
           </TableContainer>
         </Box>
       </Panel>
+
+      {/* Pagination Control */}
       {maxPages > 1 && (
         <ActivityControl
           currentPage={currentPage}

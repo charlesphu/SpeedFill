@@ -108,7 +108,6 @@ export async function POST(request) {
         "match_percentage": "X%",
         "strengths": ["strength 1", "strength 2", "strength 3"],
         "areas_for_improvement": ["improvement 1", "improvement 2", "improvement 3"],
-        "overall_feedback": "A brief summary of the resume’s fit for the job.",
         "interview_questions": [
           {
             "question": "What are your greatest strengths?",
@@ -143,9 +142,7 @@ export async function POST(request) {
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim();
-
-      // console.log("Raw AI Response:", rawText); // Log the raw response for debugging
-
+      
       let parsedResponse;
       try {
         parsedResponse = JSON.parse(rawText);

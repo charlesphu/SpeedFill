@@ -1,6 +1,7 @@
 import { Box, TextField, useTheme } from "@mui/material";
 import Container from "../components/Container";
 
+// Section component to display additional details input field
 const AdditionalDetails = ({ additionalDetails, setAdditionalDetails, sx }) => {
   const theme = useTheme();
 

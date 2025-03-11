@@ -4,11 +4,12 @@
 
 import { Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
+
 import { useRouter } from "next/navigation";
 
+// NavBarItem component represents a single item in the navigation bar
 const NavBarItem = ({ text, src, onClick }) => {
   const router = useRouter();
-  const theme = useTheme();
 
   return (
     <Typography
@@ -20,21 +21,21 @@ const NavBarItem = ({ text, src, onClick }) => {
         cursor: "pointer",
         whiteSpace: "nowrap",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        // "&:hover": {
-        //   transform: "scale(1.05)",
-        // },
       }}
       onClick={() => {
         if (onClick) {
           onClick();
         }
-        router.push(src);
+        if (src) {
+          router.push(src);
+        }
       }}>
       {text}
     </Typography>
   );
 };
 
+// NavBar component represents the entire navigation bar
 const NavBar = ({ children }) => {
   const theme = useTheme();
 
@@ -52,6 +53,7 @@ const NavBar = ({ children }) => {
         backgroundColor: theme.palette.menu.main,
         padding: "1rem",
       }}>
+      {/* Background image for the navigation bar */}
       <img
         src="/icons/ribbon.svg"
         alt="Ribbon"
@@ -63,6 +65,18 @@ const NavBar = ({ children }) => {
           top: "0rem",
         }}
       />
+      <img
+        src="/icons/scribbles/highlight.svg"
+        alt="Highlight"
+        style={{
+          height: "4rem",
+          width: "4rem",
+          position: "absolute",
+          right: "1rem",
+          top: "100%",
+        }}
+      />
+
       <Box
         sx={{
           display: "flex",

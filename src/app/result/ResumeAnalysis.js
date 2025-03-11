@@ -16,6 +16,7 @@ import {
   getMostRecentResponse,
   getResponseById,
 } from "../hooks/supabase/getfile";
+
 import { useSearchParams } from "next/navigation";
 import { analyzeResumeSchema } from "../api/chat/route"; // Import the schema
 
@@ -99,7 +100,7 @@ const StrengthsSection = ({ strengths }) => {
   const subtitle =
     "Showcases your resume's standout skills and experiences for this role";
 
-    return (
+  return (
     <Section title={title} subtitle={subtitle} icon="./icons/Star.svg">
       <List
         sx={{
@@ -138,7 +139,7 @@ const ImprovementSection = ({ improvements }) => {
   const subtitle =
     "Suggests changes to increase resume clarity and maximize impact";
 
-    return (
+  return (
     <Section title={title} subtitle={subtitle} icon="./icons/Pencil.svg">
       <List
         sx={{
@@ -243,7 +244,7 @@ const ResumeAnalysis = () => {
     };
 
     fetchData();
-  }, [id, router]);
+  }, [id]);
 
   return (
     <Box

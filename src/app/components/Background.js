@@ -1,9 +1,8 @@
 import React from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
+// Component to handle background animation across all pages
 const Background = () => {
-  const theme = useTheme();
-
   return (
     <Box
       sx={{

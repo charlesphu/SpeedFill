@@ -3,21 +3,29 @@
 import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
+// Title component displays the app title with optional decorative elements
 const Title = ({ variant, sx }) => {
+  // Text content for the title sections
   const secondaryText = "Seamless Job Applications, Every Time";
   const tertiaryText =
     "Upload your resume and let AI help you land your dream job!";
 
-  // Hard code the sizes for the large variant, can't multiply rem
   const theme = useTheme();
+  const router = useRouter();
 
+  // Adjust text sizes based on variant
   const h1Size = variant === "large" ? "8rem" : theme.typography.h1.fontSize;
   const h2Size = variant === "large" ? "2.5rem" : theme.typography.h2.fontSize;
   const h3Size = variant === "large" ? "1.9rem" : theme.typography.h3.fontSize;
 
-  const iconSize = variant == "large" ? "7rem" : "3.5rem";
+  // Configure layout properties based on variant
+  const iconSize = variant === "large" ? "7rem" : "3.5rem";
   const textAlignment = variant === "large" ? "left" : "center";
+
+  // Small variant is clickable to navigate home
+  const isTitleClickable = variant !== "large";
 
   return (
     <Box
@@ -29,6 +37,7 @@ const Title = ({ variant, sx }) => {
         userSelect: "none",
         ...sx,
       }}>
+      {/* Main title with wand icon */}
       <Box
         sx={{
           display: "flex",
@@ -39,10 +48,16 @@ const Title = ({ variant, sx }) => {
           variant="h1"
           component="h1"
           color="title"
+          onClick={() => {
+            if (isTitleClickable) {
+              router.push("/");
+            }
+          }}
           sx={{
             fontSize: h1Size,
             textAlign: textAlignment,
             whiteSpace: "nowrap",
+            cursor: isTitleClickable ? "pointer" : "auto",
           }}>
           Speed
           <span
@@ -67,6 +82,7 @@ const Title = ({ variant, sx }) => {
         />
       </Box>
 
+      {/* Tagline with decorative elements */}
       <Box
         display="flex"
         justifyContent={textAlignment}
@@ -113,6 +129,7 @@ const Title = ({ variant, sx }) => {
         )}
       </Box>
 
+      {/* Subtitle with decorative underscores */}
       <Box display="flex" justifyContent={textAlignment} position="relative">
         <Typography
           variant="h3"
@@ -129,6 +146,8 @@ const Title = ({ variant, sx }) => {
           }}>
           {tertiaryText}
         </Typography>
+
+        {/* Small underscore decoration for small variant */}
         {variant !== "large" && (
           <Image
             width={130}
@@ -145,6 +164,7 @@ const Title = ({ variant, sx }) => {
         )}
       </Box>
 
+      {/* Large underscore decoration only for large variant */}
       {variant === "large" && (
         <Image
           width={900}

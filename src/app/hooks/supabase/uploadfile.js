@@ -1,39 +1,9 @@
-import { createClient } from "@supabase/supabase-js";
-// import { handleGenerateCoverLetter, handleAnalyzeResume } from "../useAIPrompt";
-export const supabase = createClient(
-  "https://nrkwgjlgdudnkyqxoglt.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ya3dnamxnZHVkbmt5cXhvZ2x0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzNTk1MTYsImV4cCI6MjA1NTkzNTUxNn0.EWMcHnA4aiAAmv5y4IIz3xEuSr6zgg5XN3P5tWLc2PQ",
-  {
-    auth: { persistSession: true },
-  }
-);
+import { getUserID, supabase } from "./auth";
+import { getFile } from "./getfile";
+import { v4 } from "uuid";
 
-// loginUser("charlesphu18@gmail.com", "test123");
-// const { data: user } = await supabase.auth.getUser();
-// if (!user) {
-//   console.error("User must be logged in to upload files");
-//   return;
-// } else {
-//   console.log("user is logged in");
-// }
-
-export async function uploadEntry(file, type) {
-  // get user data
-  const { data: userData, userError: userError } =
-    await supabase.auth.getUser();
-  const userId = userData.user.id;
-  if (userError) {
-    // Handle error
-    console.error(userError.message);
-    return;
-  }
-
-  // if (type == "resume-analysis") {
-  //   response = handleAnalyzeResume(text);
-  // } else if (type == "cover-letter") {
-  //   response = handleGenerateCoverLetter(text);
-  // }
-
+export async function uploadEntry(file, type, response) {
+  const userId = await getUserID();
   const timeStamp = new Date().toISOString();
   await uploadFile(file, timeStamp);
   const { data, error } = await supabase.from("userData").insert([
@@ -41,62 +11,119 @@ export async function uploadEntry(file, type) {
       user_id: userId,
       type: type,
       filepath: `${timeStamp}-${file.name}`,
-      response: "example response",
+      response: response,
       time: timeStamp,
+      uniqueID: v4(),
     },
   ]);
 
-  getFile(`${userId}/${timeStamp}-${file.name}`);
   if (error) {
     console.error("Error inserting data:", error.message);
     return { error };
   }
+  await getFile(`${userId}/${timeStamp}-${file.name}`);
 }
 
 // Upload file using standard upload
 export async function uploadFile(file, time) {
-  const { data: userData, userError: userError } =
-    await supabase.auth.getUser();
-  const userId = userData.user.id;
-  if (userError) {
-    // Handle error
-    console.error(userError.message);
-    return { userError };
-  }
+  const userId = await getUserID();
+
   const { data, databaseError } = await supabase.storage
     .from("filesStorage")
     .upload(`${userId}/${time}-${file.name}`, file);
   if (databaseError) {
-    // Handle error
     console.error(error.message);
     return { databaseError };
   } else {
-    // Handle success
-    console.log("file uploaded succesfully");
     return 0;
   }
 }
 
-export async function getFile(file) {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError) {
-    return { userError };
+export async function setCurrentResume(file) {
+  // Ensure file is provided
+  if (!file) {
+    console.error("No file provided");
+    return { error: "No file provided" };
   }
-  const userId = userData.user.id;
-  const { data } = supabase.storage.from("filesStorage").getPublicUrl(file); // change to createSignedUrl
-  console.log(data);
+
+  // Get user
+  const userId = await getUserID();
+
+  // delete everything under the folder
+  deleteCurrentResume();
+  const timeStamp = new Date().toISOString();
+  const filePath = `${userId}/${timeStamp}currentResume.pdf`;
+
+  // Upload file
+  var { data, error } = await supabase.storage
+    .from("currentResume")
+    .upload(filePath, file);
+
+  if (error) {
+    console.error(error.message);
+    return { error };
+  }
+
+  getCurrentResume();
 }
 
-// export async function downloadFile(file) {
-//   const { data, error } = await supabase.storage
-//     .from("filesStorage")
-//     .download(`${userId}/123`, {
-//       headers: {
-//         Authorization: `Bearer ${userJWT}`,
-//       },
-//     });
+export async function getCurrentResume() {
+  const userId = await getUserID();
+  var bucketName = "currentResume";
+  var folderPath = userId;
+  const { data, error } = await supabase.storage
+    .from(bucketName)
+    .list(folderPath);
 
-//   if (error) {
-//     console.error(error.message);
-//   }
-// }
+  if (!data || data.length === 0) {
+    return null;
+  }
+  if (error) {
+    console.error("Error listing files:", error);
+    return null;
+  }
+
+  const firstFile = data[0];
+  const filePath = `${folderPath}/${firstFile.name}`;
+
+  const publicUrl = supabase.storage.from(bucketName).getPublicUrl(filePath)
+    .data.publicUrl;
+
+  return publicUrl;
+}
+
+export async function openCurrentResume() {
+  const url = await getCurrentResume();
+  if (url == null) {
+    return;
+  }
+  window.open(url, "_blank");
+}
+
+export async function deleteCurrentResume() {
+  const userId = await getUserID();
+
+  var bucketName = "currentResume";
+  var folderPath = userId;
+  var { data, error } = await supabase.storage
+    .from(bucketName)
+    .list(folderPath);
+
+  if (error) {
+    console.error("Error listing files:", error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    return;
+  }
+
+  const filePaths = data.map((file) => `${folderPath}/${file.name}`);
+  const { error: deleteError } = await supabase.storage
+    .from(bucketName)
+    .remove(filePaths);
+
+  if (deleteError) {
+    console.error("Error deleting files:", deleteError);
+  }
+}
