@@ -27,13 +27,12 @@ export async function getFile(file) {
 
 export async function getUserHistory() {
   const userId = await getUserID();
-  const { data, error } = await supabase
+  const { data, _ } = await supabase
     .from("userData")
     .select("*")
     .eq("user_id", userId)
     .order("time", { ascending: false });
 
-  console.log("test", data);
   var results = await Promise.all(
     data.map(async (item) => {
       const responseBlob = await generatePDF(`${item.response}`);
