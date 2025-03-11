@@ -1,33 +1,60 @@
 import { NextResponse } from "next/server"; // Import NextResponse from Next.js for handling responses
+import axios from "axios";
+import * as cheerio from "cheerio";
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+// CHAN RENAME POST
 export async function POST(request) {
   try {
-    const body = await request.json(); // Parse the JSON body
-    console.log("Received API Request Data:", body);
-    const { type, resume, isPDF, jobDesc, isURL, appQuestion } = body;
-    // console.log(`${resume},${jobDesc},${isURL},${appQuestion}`)
-    if (!resume || !jobDesc) {
+    const { type, resume, isPDF, jobDesc, jobURL, additionalDetails } =
+      await request.json(); // Parse the JSON body
+
+    let jobDetails = jobDesc;
+
+    if (jobURL) {
+      try {
+        // Fetch and load HTML of the page
+        const { data: jobPostData } = await axios.get(jobURL, {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+            Accept:
+              "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+          },
+        });
+
+        const $ = cheerio.load(jobPostData);
+        const fullPageContent = $.html();
+
+        jobDetails = fullPageContent;
+      } catch (error) {
+        console.error(error);
+        return NextResponse.json(
+          { error: "Fail to request job details URL" },
+          { status: 400 } // Bad Request
+        );
+      }
+    }
+
+    if (!resume || !jobDetails) {
+      console.error("Missing required fields");
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 } // Bad Request
       );
     }
 
-    var actualJD = jobDesc;
-
-    console.log("Processing ${type} request...");
-
     let prompt = "";
 
     if (type == "coverLetter") {
       prompt = `Generate a professional cover letter based on the following details:
       Resume: ${resume}
-      Job Description: ${jobDesc}
-      Application Question: ${appQuestion || "N/A"}
+      Job Description: ${jobDetails}
+      Additional Details: ${additionalDetails || "N/A"}
 
       Respond in JSON format:
       {
@@ -36,7 +63,8 @@ export async function POST(request) {
     } else if (type === "analyzeResume") {
       prompt = `Analyze the resume for this job and provide a structured JSON response:
       Resume: ${resume}
-      Job Description: ${jobDesc}
+      Job Description: ${jobDetails}
+      Additional Details: ${additionalDetails || "N/A"}
 
       Respond in JSON format:
       {
@@ -46,22 +74,28 @@ export async function POST(request) {
         "overall_feedback": "A brief summary of the resume’s fit for the job."
       }`;
     } else {
-      return NextResponse.json({ error: "Invalid request type" }, { status: 400 });
+      console.error("Invalid request type");
+      return NextResponse.json(
+        { error: "Invalid request type" },
+        { status: 400 }
+      );
     }
-
-    console.log("Prompt Sent to AI:", prompt);
-
     const result = await model.generateContent(prompt);
 
     if (!result || !result.response) {
-      return NextResponse.json({ error: "AI response failed" }, { status: 500 });
+      return NextResponse.json(
+        { error: "AI response failed" },
+        { status: 500 }
+      );
     }
 
     let aiResponse;
     try {
       let rawText = await result.response.text();
-      console.log("Raw AI Response:", rawText);
-      rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+      rawText = rawText
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
       aiResponse = JSON.parse(rawText);
     } catch (error) {
       console.error("AI Response JSON Parse Error:", error);
@@ -71,111 +105,9 @@ export async function POST(request) {
     return NextResponse.json(aiResponse);
   } catch (error) {
     console.error("Error in API route:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
-
-
-// export async function POST(request) {
-//     const apiKey = process.env.GEMINI_API_KEY; // Securely accessed on the server
-
-//     if (!apiKey) {
-//       return NextResponse.json({ error: 'API key not found.' }, { status: 500 });
-//     }
-
-//     // // Example of making a request to the Gemini API
-//     // const res = await fetch('https://gemini-api.example.com', {
-//     //   method: 'POST',
-//     //   headers: {
-//     //     Authorization: `Bearer ${apiKey}`,
-//     //     'Content-Type': 'application/json',
-//     //   },
-//     //   body: JSON.stringify(await request.json()), // Pass client data
-//     // });
-
-//     const data = await res.json();
-//     return NextResponse.json(data);
-//   }
-
-// import GeminiAPI from 'gemini-api'
-// // System prompt for the AI, providing guidelines on how to respond to users
-
-// // POST function to handle incoming requests
-// export async function POST(req) {
-//     const client = new GeminiAPI({
-//         key: process.env.GEMINI_API_KEY, // Your Gemini API key
-//         secret: process.env.GEMINI_API_SECRET, // Your Gemini API secret
-//         sandbox: true, // Set to false for production
-//     });
-
-//     const data = await req.json();
-
-//     let response;
-//     try {
-//         // Determine the type of request from the incoming data
-//         if (data.type === 'balance') {
-//             // Fetch account balances
-//             response = await client.getBalance();
-//         } else if (data.type === 'order') {
-//             // Place a new order
-//             const { symbol, amount, price, side } = data;
-//             response = await client.newOrder({
-//                 symbol,
-//                 amount,
-//                 price,
-//                 side,
-//                 type: 'exchange limit', // You can change this to other types as needed
-//             });
-//         } else {
-//             throw new Error('Invalid request type');
-//         }
-//     } catch (error) {
-//         return NextResponse.json({ error: error.message }, { status: 500 });
-//     }
-
-//     // Return the response as JSON
-//     return NextResponse.json(response);
-// }
-
-// import OpenAI from 'openai' // Import OpenAI library for interacting with the OpenAI API
-// const systemPrompt = `You are to summarize fed notes in a more understandable manner`// Use your own system prompt here
-
-// POST function to handle incoming requests for OPEN AI
-// export async function POST(req){
-//     const openai = new OpenAI({
-//         baseURL:"https://openrouter.ai/api/v1",
-//         apiKey: process.env.OPENROUTER_API_KEY,
-//     });
-//     const data = await req.json()
-
-//     const completion = await openai.chat.completions.create({
-//         messages: [
-//             { role: "system", content: systemPrompt },
-//             data, // Directly add the single object
-//         ],
-//         model: "openai/gpt-3.5-turbo",
-//         stream: true,
-//     });
-
-//     const stream = new ReadableStream({
-//         async start(controller) {
-//             const encoder = new TextEncoder()
-//             try {
-//                 for await (const chunk of completion) {
-//                     const content = chunk.choices[0].delta.content
-//                     if (content) {
-//                         const text = encoder.encode(content)
-//                         controller.enqueue(text)
-//                     }
-//                 }
-//             } catch (error) {
-//                 controller.error(err)
-//             } finally {
-//                 controller.close()
-//             }
-//         },
-//     })
-
-//     return new NextResponse(stream);
-
-// }
