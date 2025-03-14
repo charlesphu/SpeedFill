@@ -101,6 +101,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
       sx={{ ...sx }}>
       {/* Upload area for resume file */}
       <Box
+        {...getRootProps()}
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -115,9 +116,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
           cursor: "pointer",
         }}
         onClick={onUploadButtonClick}>
-        <Box {...getRootProps()}>
-          <input {...getInputProps()} disabled={isFileUploading} />
-        </Box>
+        <input {...getInputProps()} disabled={isFileUploading} />
         {isFileUploading ? (
           <>
             <Typography
