@@ -82,9 +82,6 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     onDrop,
     accept: {
       "application/pdf": [],
-      "application/msword": [],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        [],
     },
     maxSize: 5242880,
     disabled: isFileUploading,
@@ -173,7 +170,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
               Drag and drop or <strong>Click to upload</strong>
             </Typography>
             <Typography variant="body2" color="title">
-              PDF, DOC, or DOCX (MAX. 5MB)
+              PDF (MAX. 5MB)
             </Typography>
           </>
         )}
