@@ -19,7 +19,9 @@ export async function signUpNewUser(email, password) {
     console.error("sign up error:", error.message);
     return { error };
   }
-  return loginUser(email, password);
+  // show a email confirmation page instead
+
+  // return loginUser(email, password);
 }
 
 // Function to handle Google sign-in using an ID token
