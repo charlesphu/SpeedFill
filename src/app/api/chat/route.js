@@ -7,15 +7,19 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY2);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+// Handle POST requests for generating cover letters and resume analysis
 export async function POST(request) {
   let final_response;
 
   try {
+    // Extract request parameters from the JSON body
     const { type, resume, _, jobDesc, jobURL, additionalDetails } =
-      await request.json(); // Parse the JSON body
+      await request.json();
 
+    // Store job details from either direct description or URL
     let jobDetails = jobDesc;
 
+    // If URL is provided, scrape job details from the webpage
     if (jobURL) {
       try {
         // Fetch and load HTML of the page
@@ -41,6 +45,7 @@ export async function POST(request) {
       }
     }
 
+    // Validate required inputs
     if (!resume || !jobDetails) {
       console.error("Missing required fields");
       return NextResponse.json(
@@ -51,6 +56,7 @@ export async function POST(request) {
 
     let prompt = "";
 
+    // Generate appropriate prompt based on request type
     if (type === "coverLetter") {
       prompt = `Generate a professional cover letter based on the following details:
       Resume: ${resume}
@@ -93,6 +99,7 @@ export async function POST(request) {
       );
     }
 
+    // Send prompt to Gemini AI and get response
     const result = await model.generateContent(prompt);
 
     if (!result || !result.response) {
@@ -129,14 +136,17 @@ export async function POST(request) {
       );
     }
 
+    // Send successful response with parsed AI data
     final_response = NextResponse.json(aiResponse);
   } catch (error) {
+    // Log and return any unhandled errors
     console.error("Error in API route:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
     );
   } finally {
+    // Return the response object (successful or error)
     return final_response;
   }
 }

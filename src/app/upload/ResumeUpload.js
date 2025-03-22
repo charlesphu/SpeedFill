@@ -82,9 +82,6 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
     onDrop,
     accept: {
       "application/pdf": [],
-      "application/msword": [],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        [],
     },
     maxSize: 5242880,
     disabled: isFileUploading,
@@ -104,6 +101,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
       sx={{ ...sx }}>
       {/* Upload area for resume file */}
       <Box
+        {...getRootProps()}
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -118,9 +116,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
           cursor: "pointer",
         }}
         onClick={onUploadButtonClick}>
-        <Box {...getRootProps()}>
-          <input {...getInputProps()} disabled={isFileUploading} />
-        </Box>
+        <input {...getInputProps()} disabled={isFileUploading} />
         {isFileUploading ? (
           <>
             <Typography
@@ -173,7 +169,7 @@ const ResumeUpload = ({ resumeData, setResumeData, sx }) => {
               Drag and drop or <strong>Click to upload</strong>
             </Typography>
             <Typography variant="body2" color="title">
-              PDF, DOC, or DOCX (MAX. 5MB)
+              PDF (MAX. 5MB)
             </Typography>
           </>
         )}

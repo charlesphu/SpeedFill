@@ -36,13 +36,13 @@ const CoverLetter = () => {
       var response;
       if (id != null) {
         response = await getResponseById(id);
-        setCoverLetterContent(response.cover_letter);
       } else {
         response = await getMostRecentResponse("Cover Letter");
-        setCoverLetterContent(response.cover_letter);
       }
       if (response == null) {
         router.push("/upload");
+      } else {
+        setCoverLetterContent(response.cover_letter);
       }
     };
 
