@@ -22,6 +22,7 @@ import { NavBar, NavBarItem } from "../components/NavBar";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { getMostRecentData } from "../hooks/supabase/getfile";
 import useAIPrompt from "../hooks/useAIPrompt";
 
 // Main component for the Upload page
@@ -83,8 +84,9 @@ const Upload = () => {
         jobDescriptionData,
         additionalDetails
       );
-
-      router.push("/result?type=resume");
+      let response = await getMostRecentData("Resume Analysis");
+      let uniqueID = response.uniqueID;
+      router.push(`/result?type=resume&id=${uniqueID}`);
     }
   };
 
@@ -97,7 +99,9 @@ const Upload = () => {
         additionalDetails
       );
 
-      router.push("/result?type=coverletter");
+      let response = await getMostRecentData("Cover Letter");
+      let uniqueID = response.uniqueID;
+      router.push(`/result?type=coverletter&id=${uniqueID}`);
     }
   };
 

@@ -1,6 +1,25 @@
 import { generatePDF } from "../pdfToText";
 import { supabase, getUserID } from "./auth";
 
+// Function to get the first data row
+// gives all data in the database and not just response
+export async function getMostRecentData(type) {
+  const userid = await getUserID();
+  const { data, error } = await supabase
+    .from("userData")
+    .select("*")
+    .eq("user_id", userid)
+    .eq("type", type)
+    .not("response", "is", null)
+    .order("time", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+  return data.length ? data[0] : null;
+}
 // Function to get the most recent response of a specific type for the current user
 // we get the userID, and then fetch the most recent response of the specified type
 export async function getMostRecentResponse(type) {

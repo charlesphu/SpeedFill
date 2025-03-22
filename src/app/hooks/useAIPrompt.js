@@ -52,7 +52,7 @@ export default function useAIPrompt() {
     } catch (error) {
       setError(error);
     } finally {
-      uploadEntry(resumeData, "Cover Letter", result);
+      await uploadEntry(resumeData, "Cover Letter", result);
       setLoading(false);
     }
   };
@@ -106,7 +106,7 @@ export default function useAIPrompt() {
       console.error("API Error:", error);
       setError(error.message || "An unknown error occurred.");
     } finally {
-      uploadEntry(resumeData, "Resume Analysis", result);
+      await uploadEntry(resumeData, "Resume Analysis", result);
       setLoading(false);
     }
   };
