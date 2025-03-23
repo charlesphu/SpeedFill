@@ -16,11 +16,11 @@ export async function signUpNewUser(email, password) {
     password,
   });
   if (error) {
-    console.error("sign up error:", error.message);
+    // console.error("sign up error:", error.message);
     return { error };
   }
   // show a email confirmation page instead
-
+  return "Please check your email for the confirmation link";
   // return loginUser(email, password);
 }
 
@@ -31,7 +31,7 @@ export async function handleSignInWithGoogle(response) {
     token: response.credential,
   });
   if (error) {
-    console.error("Google sign-in error:", error.message);
+    // console.error("Google sign-in error:", error.message);
     return { error };
   }
   return data.user;
@@ -45,7 +45,7 @@ export async function loginUser(email, password) {
   });
 
   if (error) {
-    console.error("Login error:", error.message);
+    // console.error("Login error:", error.message);
     return { error };
   }
 
@@ -56,7 +56,7 @@ export async function loginUser(email, password) {
 export async function getUserID() {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData?.user) {
-    console.error(userError?.message || "User not found");
+    // console.error(userError?.message || "User not found");
     return null;
   }
   const userId = userData.user.id;
@@ -67,7 +67,7 @@ export async function getUserID() {
 export async function getUser() {
   const { data, error } = await supabase.auth.refreshSession();
   if (error) {
-    console.error(error.message);
+    // console.error(error.message);
     return null;
   } else {
     return data.user.email;
@@ -78,6 +78,6 @@ export async function getUser() {
 export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.error("sign out error: ", error.message);
+    // console.error("sign out error: ", error.message);
   }
 }
