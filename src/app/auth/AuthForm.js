@@ -32,7 +32,7 @@ const AuthForm = () => {
 
   const [fade, setFade] = useState(true);
   const [error, setError] = useState("");
-  const [waitingForConfirmation, setWaitingForConfirmation] = useState(true);
+  const [waitingForConfirmation, setWaitingForConfirmation] = useState(false);
   // Function to handle form submission
   const onAuthFormSubmit = async (e) => {
     e.preventDefault();
