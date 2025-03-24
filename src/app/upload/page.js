@@ -79,7 +79,7 @@ const Upload = () => {
   // Method to handle the click event for pagination
   const goToPosition = (index) => {
     if (index >= 0 && index <= 2) {
-      console.log("Position: ", position, "Index: ", index);
+      // console.log("Position: ", position, "Index: ", index);
       if (position === index) return;
       if (!isResumeFilled && position === 0) {
         setShowError(false);
