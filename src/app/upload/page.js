@@ -26,7 +26,7 @@ import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { getMostRecentData } from "../hooks/supabase/getfile";
 import useAIPrompt from "../hooks/useAIPrompt";
-import { set } from "zod";
+import { isValidResume } from "./sensibleInput";
 
 // Main component for the Upload page
 const Upload = () => {
@@ -63,6 +63,7 @@ const Upload = () => {
   const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);
   const [isResumeFilled, setIsResumeFilled] = useState(false);
   const [isJobDescriptionFilled, setIsJobDescriptionFilled] = useState(false);
+  const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
 
   const isGeneratingResult = isAnalyizingResume || isGeneratingLetter;
@@ -77,15 +78,26 @@ const Upload = () => {
   }, [resumeData, jobDescriptionData]);
 
   // Method to handle the click event for pagination
-  const goToPosition = (index) => {
+  const goToPosition = async (index) => {
     if (index >= 0 && index <= 2) {
       // console.log("Position: ", position, "Index: ", index);
       if (position === index) return;
       if (!isResumeFilled && position === 0) {
         setShowError(false);
+        setError("Please fill out the resume form before proceeding!");
         setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+      } else if (isResumeFilled && index > 0) {
+        const resumeValidation = await isValidResume(resumeData);
+        if (resumeValidation !== "Success") {
+          setShowError(false);
+          setError(resumeValidation);
+          setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+        } else if (resumeValidation === "Success") {
+          setPosition(index);
+        }
       } else if (!isJobDescriptionFilled && position === 1 && index > 1) {
         setShowError(false);
+        setError("Please fill out the job description form before proceeding!");
         setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
       } else {
         setPosition(index);
@@ -139,7 +151,7 @@ const Upload = () => {
             onClose={() => setShowError(false)}
             severity="error"
             sx={{ width: "100%" }}>
-            Please fill out the form before proceeding!
+            {error}
           </Alert>
         </Snackbar>
 
