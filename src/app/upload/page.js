@@ -80,12 +80,11 @@ const Upload = () => {
   const goToPosition = (index) => {
     if (index >= 0 && index <= 2) {
       console.log("Position: ", position, "Index: ", index);
+      if (position === index) return;
       if (!isResumeFilled && position === 0) {
-        console.warn("Please fill out Resume before proceeding");
         setShowError(false);
         setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
       } else if (!isJobDescriptionFilled && position === 1 && index > 1) {
-        console.warn("Please fill out Job Description before proceeding");
         setShowError(false);
         setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
       } else {
