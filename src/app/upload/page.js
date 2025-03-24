@@ -6,6 +6,8 @@ import {
   Fade,
   IconButton,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -24,6 +26,7 @@ import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { getMostRecentData } from "../hooks/supabase/getfile";
 import useAIPrompt from "../hooks/useAIPrompt";
+import { set } from "zod";
 
 // Main component for the Upload page
 const Upload = () => {
@@ -58,21 +61,35 @@ const Upload = () => {
   // Loading States
   const [isAnalyizingResume, setIsAnalyzingResume] = useState(false);
   const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);
+  const [isResumeFilled, setIsResumeFilled] = useState(false);
+  const [isJobDescriptionFilled, setIsJobDescriptionFilled] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const isGeneratingResult = isAnalyizingResume || isGeneratingLetter;
 
   // Effect to check if both forms are filled
   useEffect(() => {
-    const isFilled = resumeData.file || resumeData.text;
-    const isJobDescriptionFilled =
-      jobDescriptionData.url || jobDescriptionData.text;
-    setFormsFilled(isFilled && isJobDescriptionFilled);
+    setIsResumeFilled(resumeData.file || resumeData.text);
+    setIsJobDescriptionFilled(
+      jobDescriptionData.url || jobDescriptionData.text
+    );
+    setFormsFilled(isResumeFilled && isJobDescriptionFilled);
   }, [resumeData, jobDescriptionData]);
 
   // Method to handle the click event for pagination
   const goToPosition = (index) => {
     if (index >= 0 && index <= 2) {
-      setPosition(index);
+      // console.log("Position: ", position, "Index: ", index);
+      if (position === index) return;
+      if (!isResumeFilled && position === 0) {
+        setShowError(false);
+        setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+      } else if (!isJobDescriptionFilled && position === 1 && index > 1) {
+        setShowError(false);
+        setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+      } else {
+        setPosition(index);
+      }
     }
   };
 
@@ -114,6 +131,17 @@ const Upload = () => {
         }}>
         {/* Title */}
         <Title sx={{ paddingTop: "2rem" }} />
+        <Snackbar
+          open={showError}
+          autoHideDuration={3000}
+          onClose={() => setShowError(false)}>
+          <Alert
+            onClose={() => setShowError(false)}
+            severity="error"
+            sx={{ width: "100%" }}>
+            Please fill out the form before proceeding!
+          </Alert>
+        </Snackbar>
 
         {/* Forms */}
         <Box
