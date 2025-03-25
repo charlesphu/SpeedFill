@@ -26,7 +26,7 @@ import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { getMostRecentData } from "../hooks/supabase/getfile";
 import useAIPrompt from "../hooks/useAIPrompt";
-import { isValidResume } from "./sensibleInput";
+import { validResume, validJobDescription } from "./sensibleInput";
 
 // Main component for the Upload page
 const Upload = () => {
@@ -62,6 +62,8 @@ const Upload = () => {
   const [isAnalyizingResume, setIsAnalyzingResume] = useState(false);
   const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);
   const [isResumeFilled, setIsResumeFilled] = useState(false);
+  const [isValidResume, setIsValidResume] = useState(false);
+  const [isValidJobDescription, setIsValidJobDescription] = useState(false);
   const [isJobDescriptionFilled, setIsJobDescriptionFilled] = useState(false);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
@@ -85,20 +87,35 @@ const Upload = () => {
       if (!isResumeFilled && position === 0) {
         setShowError(false);
         setError("Please fill out the resume form before proceeding!");
-        setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
-      } else if (isResumeFilled && index > 0) {
-        const resumeValidation = await isValidResume(resumeData);
+        setTimeout(() => setShowError(true));
+      } else if (isResumeFilled && index == 1) {
+        const resumeValidation = await validResume(resumeData);
         if (resumeValidation !== "Success") {
           setShowError(false);
+          setIsValidResume(false);
           setError(resumeValidation);
-          setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+          setTimeout(() => setShowError(true));
         } else if (resumeValidation === "Success") {
+          setIsValidResume(true);
           setPosition(index);
         }
       } else if (!isJobDescriptionFilled && position === 1 && index > 1) {
         setShowError(false);
         setError("Please fill out the job description form before proceeding!");
-        setTimeout(() => setShowError(true)); // slight delay to re-enable the error message
+        setTimeout(() => setShowError(true));
+      } else if (isJobDescriptionFilled && index != 1) {
+        const jobDescriptionValidation = await validJobDescription(
+          jobDescriptionData
+        );
+        if (jobDescriptionValidation !== "Success") {
+          setShowError(false);
+          setIsValidJobDescription(false);
+          setError(jobDescriptionValidation);
+          setTimeout(() => setShowError(true));
+        } else if (jobDescriptionValidation === "Success") {
+          setIsValidJobDescription(true);
+          setPosition(index);
+        }
       } else {
         setPosition(index);
       }

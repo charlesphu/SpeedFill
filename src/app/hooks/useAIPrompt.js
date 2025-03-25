@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { uploadEntry } from "./supabase/uploadfile";
 import { generatePDF, pdfToText } from "./pdfToText";
