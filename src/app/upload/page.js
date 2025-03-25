@@ -72,13 +72,10 @@ const Upload = () => {
 
   // Effect to check if both forms are filled
   useEffect(() => {
-    // const isFilled = resumeData.file || resumeData.text;
-    // const isFilled2 = jobDescriptionData.url || jobDescriptionData.text;
     setIsResumeFilled(resumeData.file || resumeData.text);
     setIsJobDescriptionFilled(
       jobDescriptionData.url || jobDescriptionData.text
     );
-    // setFormsFilled(isFilled && isFilled2);
     setFormsFilled(
       (resumeData.file || resumeData.text) &&
         (jobDescriptionData.url || jobDescriptionData.text)
@@ -130,6 +127,26 @@ const Upload = () => {
 
   // Method to handle the click event for analyzing the resume
   const AnalyzeResume = async () => {
+    if (!isValidResume) {
+      const validate = await validResume(resumeData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsAnalyzingResume(false);
+        return;
+      }
+    }
+    if (!isValidJobDescription) {
+      const validate = await validJobDescription(jobDescriptionData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsAnalyzingResume(false);
+        return;
+      }
+    }
     if (formsFilled) {
       await handleAnalyzeResume(
         resumeData,
@@ -144,6 +161,26 @@ const Upload = () => {
 
   // Method to handle the click event for generating the cover letter
   const GenerateCL = async () => {
+    if (!isValidResume) {
+      const validate = await validResume(resumeData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsGeneratingLetter(false);
+        return;
+      }
+    }
+    if (!isValidJobDescription) {
+      const validate = await validJobDescription(jobDescriptionData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsGeneratingLetter(false);
+        return;
+      }
+    }
     if (formsFilled) {
       await handleGenerateCoverLetter(
         resumeData,
