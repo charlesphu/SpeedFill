@@ -57,7 +57,7 @@ export async function validJobDescription(jobDescription) {
     content = jobDescription.text;
   }
   const hasKeyWords = workKeywordsRegex.test(content);
-  if (text.length < minLength) {
+  if (content.length < minLength) {
     return `Job description is too short. Please upload a Job description that is at least ${minLength} characters long.`;
   }
   if (!hasKeyWords) {
