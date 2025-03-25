@@ -1,26 +1,6 @@
 import { pdfToText } from "../hooks/pdfToText";
-export const validResume = async (file) => {
-  let text = null;
-  if (file.file != null) {
-    text = await pdfToText(URL.createObjectURL(file.file));
-  } else {
-    text = file.text;
-  }
-  const minLength = 25;
-  const hasExperience = /experience|work history|employment|work/i.test(text);
-  const hasEducation = /education|degree|university|college|school/i.test(text);
-  const hasSkills = /skill|abilities|proficiencies|certification|project/i.test(
-    text
-  );
-  if (text.length < minLength) {
-    return `Your resume is too short. Please upload a resume that is at least ${minLength} characters long.`;
-  }
-  if (!hasExperience && !hasEducation && !hasSkills) {
-    return `Your resume does not contain any experience, education, or skills. Please upload a resume that contains at least one of these sections.`;
-  }
-  return "Success";
-};
 
+const minLength = 25;
 const workKeywordsRegex = new RegExp(
   "manager|developer|engineer|designer|market|product|owner|data|job|description" +
     "manager|customer support|sales|hr|writer|coordinator|" +
@@ -37,6 +17,27 @@ const workKeywordsRegex = new RegExp(
     "employment|work",
   "i"
 );
+
+export const validResume = async (file) => {
+  let text = null;
+  if (file.file != null) {
+    text = await pdfToText(URL.createObjectURL(file.file));
+  } else {
+    text = file.text;
+  }
+  const hasExperience = /experience|work history|employment|work/i.test(text);
+  const hasEducation = /education|degree|university|college|school/i.test(text);
+  const hasSkills = /skill|abilities|proficiencies|certification|project/i.test(
+    text
+  );
+  if (text.length < minLength) {
+    return `Your resume is too short. Please upload a resume that is at least ${minLength} characters long.`;
+  }
+  if (!hasExperience && !hasEducation && !hasSkills) {
+    return `Your resume does not contain any experience, education, or skills. Please upload a resume that contains at least one of these sections.`;
+  }
+  return "Success";
+};
 
 export async function validJobDescription(jobDescription) {
   let content = "";
@@ -56,6 +57,9 @@ export async function validJobDescription(jobDescription) {
     content = jobDescription.text;
   }
   const hasKeyWords = workKeywordsRegex.test(content);
+  if (text.length < minLength) {
+    return `Job description is too short. Please upload a resume that is at least ${minLength} characters long.`;
+  }
   if (!hasKeyWords) {
     return `The job description does not contain any relevant keywords. Please provide a valid job description.`;
   } else {
