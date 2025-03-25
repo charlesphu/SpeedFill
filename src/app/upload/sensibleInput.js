@@ -49,7 +49,12 @@ export async function validJobDescription(jobDescription) {
         body: JSON.stringify({ url: jobDescription.url }),
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
+      return "Invalid URL. Please provide a valid job description URL.";
+    }
+
+    console.log("response: ", response);
+    if (!response.ok) {
+      return "Invalid URL. Please provide a valid job description URL.";
     }
     response = await response.json();
     content = response.message;

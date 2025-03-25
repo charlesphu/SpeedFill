@@ -72,11 +72,17 @@ const Upload = () => {
 
   // Effect to check if both forms are filled
   useEffect(() => {
+    // const isFilled = resumeData.file || resumeData.text;
+    // const isFilled2 = jobDescriptionData.url || jobDescriptionData.text;
     setIsResumeFilled(resumeData.file || resumeData.text);
     setIsJobDescriptionFilled(
       jobDescriptionData.url || jobDescriptionData.text
     );
-    setFormsFilled(isResumeFilled && isJobDescriptionFilled);
+    // setFormsFilled(isFilled && isFilled2);
+    setFormsFilled(
+      (resumeData.file || resumeData.text) &&
+        (jobDescriptionData.url || jobDescriptionData.text)
+    );
   }, [resumeData, jobDescriptionData]);
 
   // Method to handle the click event for pagination
