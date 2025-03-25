@@ -13,7 +13,7 @@ const workKeywordsRegex = new RegExp(
     "fluent|licensing|credentials|years of experience|self-motivated|proven track record|strong foundation in|" +
     "expertise|familiarity|fast-paced|dynamic|collaborative|remote|hybrid|team-oriented|detail-oriented|" +
     "flexible|deadline-driven|results-oriented|creative environment|growth-oriented|full-time|part-time|contract|" +
-    "internship|on-site|hybrid|temporary|permanent|entry-level|mid-level|senior-level|experience|work history|" +
+    "intern|on-site|hybrid|temporary|permanent|entry-level|mid-level|senior-level|experience|work history|" +
     "employment|work",
   "i"
 );
