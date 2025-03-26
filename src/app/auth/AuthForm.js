@@ -65,17 +65,18 @@ const AuthForm = () => {
 
   useEffect(() => {
     const checkEmailConfirmation = async () => {
-      console.log("email: ", email, "password", password);
-      if (email === "" || password === "") return;
-      const user = loginUser(email, password);
-      console.log(
-        "Checking email confirmation..."
-        // user.user.email_confirmed_at
-      );
-      if (user?.email_confirmed_at) {
-        setWaitingForConfirmation(false);
-        console.log("User confirmed email!");
-      }
+      console.log("not implemented yet");
+      // console.log("email: ", email, "password", password);
+      // if (email === "" || password === "") return;
+      // const user = loginUser(email, password);
+      // console.log(
+      //   "Checking email confirmation..."
+      //   // user.user.email_confirmed_at
+      // );
+      // if (user?.email_confirmed_at) {
+      //   setWaitingForConfirmation(false);
+      //   console.log("User confirmed email!");
+      // }
     };
 
     // Poll every 5 seconds
