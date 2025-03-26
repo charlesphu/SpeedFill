@@ -1,6 +1,8 @@
 import { pdfToText } from "../hooks/pdfToText";
 
+// constants fo the minimum length
 const minLength = 25;
+// regex for the keywords that are expected in the job description
 const workKeywordsRegex = new RegExp(
   "manager|developer|engineer|designer|market|product|owner|data|job|description" +
     "manager|customer support|sales|hr|writer|coordinator|" +
@@ -18,6 +20,7 @@ const workKeywordsRegex = new RegExp(
   "i"
 );
 
+// checks if the resume is valid using regex values
 export const validResume = async (file) => {
   let text = null;
   if (file.file != null) {
@@ -39,6 +42,7 @@ export const validResume = async (file) => {
   return "Success";
 };
 
+// checks if the Job description is valid using regex values
 export async function validJobDescription(jobDescription) {
   let content = "";
   if (jobDescription.url !== "") {

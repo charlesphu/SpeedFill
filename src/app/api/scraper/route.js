@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import * as cheerio from "cheerio";
+
+// scrapes the given URL and returns the full page content
 export async function POST(request) {
   let fullPageContent;
   const reqeustBody = await request.json();
   const url = reqeustBody.url;
-  console.log(reqeustBody.url);
   try {
     const { data: jobPostData } = await axios.get(url, {
       headers: {
@@ -19,9 +20,7 @@ export async function POST(request) {
     const $ = cheerio.load(jobPostData);
     fullPageContent = $.html();
   } catch (error) {
-    console.error(error);
     throw new Error("Fail to request job details URL");
   }
-  console.log(fullPageContent);
   return NextResponse.json({ message: fullPageContent });
 }
