@@ -6,6 +6,8 @@ import {
   Fade,
   IconButton,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -24,6 +26,7 @@ import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { getMostRecentData } from "../hooks/supabase/getfile";
 import useAIPrompt from "../hooks/useAIPrompt";
+import { validResume, validJobDescription } from "./sensibleInput";
 
 // Main component for the Upload page
 const Upload = () => {
@@ -58,26 +61,92 @@ const Upload = () => {
   // Loading States
   const [isAnalyizingResume, setIsAnalyzingResume] = useState(false);
   const [isGeneratingLetter, setIsGeneratingLetter] = useState(false);
+  const [isResumeFilled, setIsResumeFilled] = useState(false);
+  const [isValidResume, setIsValidResume] = useState(false);
+  const [isValidJobDescription, setIsValidJobDescription] = useState(false);
+  const [isJobDescriptionFilled, setIsJobDescriptionFilled] = useState(false);
+  const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const isGeneratingResult = isAnalyizingResume || isGeneratingLetter;
 
   // Effect to check if both forms are filled
   useEffect(() => {
-    const isFilled = resumeData.file || resumeData.text;
-    const isJobDescriptionFilled =
-      jobDescriptionData.url || jobDescriptionData.text;
-    setFormsFilled(isFilled && isJobDescriptionFilled);
+    setIsResumeFilled(resumeData.file || resumeData.text);
+    setIsJobDescriptionFilled(
+      jobDescriptionData.url || jobDescriptionData.text
+    );
+    setFormsFilled(
+      (resumeData.file || resumeData.text) &&
+        (jobDescriptionData.url || jobDescriptionData.text)
+    );
   }, [resumeData, jobDescriptionData]);
 
   // Method to handle the click event for pagination
-  const goToPosition = (index) => {
+  const goToPosition = async (index) => {
     if (index >= 0 && index <= 2) {
-      setPosition(index);
+      // console.log("Position: ", position, "Index: ", index);
+      if (position === index) return;
+      if (!isResumeFilled && position === 0) {
+        setShowError(false);
+        setError("Please fill out the resume form before proceeding!");
+        setTimeout(() => setShowError(true));
+      } else if (isResumeFilled && index == 1) {
+        const resumeValidation = await validResume(resumeData);
+        if (resumeValidation !== "Success") {
+          setShowError(false);
+          setIsValidResume(false);
+          setError(resumeValidation);
+          setTimeout(() => setShowError(true));
+        } else if (resumeValidation === "Success") {
+          setIsValidResume(true);
+          setPosition(index);
+        }
+      } else if (!isJobDescriptionFilled && position === 1 && index > 1) {
+        setShowError(false);
+        setError("Please fill out the job description form before proceeding!");
+        setTimeout(() => setShowError(true));
+      } else if (isJobDescriptionFilled && index != 1) {
+        const jobDescriptionValidation = await validJobDescription(
+          jobDescriptionData
+        );
+        if (jobDescriptionValidation !== "Success") {
+          setShowError(false);
+          setIsValidJobDescription(false);
+          setError(jobDescriptionValidation);
+          setTimeout(() => setShowError(true));
+        } else if (jobDescriptionValidation === "Success") {
+          setIsValidJobDescription(true);
+          setPosition(index);
+        }
+      } else {
+        setPosition(index);
+      }
     }
   };
 
   // Method to handle the click event for analyzing the resume
   const AnalyzeResume = async () => {
+    if (!isValidResume) {
+      const validate = await validResume(resumeData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsAnalyzingResume(false);
+        return;
+      }
+    }
+    if (!isValidJobDescription) {
+      const validate = await validJobDescription(jobDescriptionData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsAnalyzingResume(false);
+        return;
+      }
+    }
     if (formsFilled) {
       await handleAnalyzeResume(
         resumeData,
@@ -92,6 +161,26 @@ const Upload = () => {
 
   // Method to handle the click event for generating the cover letter
   const GenerateCL = async () => {
+    if (!isValidResume) {
+      const validate = await validResume(resumeData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsGeneratingLetter(false);
+        return;
+      }
+    }
+    if (!isValidJobDescription) {
+      const validate = await validJobDescription(jobDescriptionData);
+      if (validate !== "Success") {
+        setShowError(false);
+        setError(validate);
+        setTimeout(() => setShowError(true));
+        setIsGeneratingLetter(false);
+        return;
+      }
+    }
     if (formsFilled) {
       await handleGenerateCoverLetter(
         resumeData,
@@ -114,6 +203,17 @@ const Upload = () => {
         }}>
         {/* Title */}
         <Title sx={{ paddingTop: "2rem" }} />
+        <Snackbar
+          open={showError}
+          autoHideDuration={3000}
+          onClose={() => setShowError(false)}>
+          <Alert
+            onClose={() => setShowError(false)}
+            severity="error"
+            sx={{ width: "100%" }}>
+            {error}
+          </Alert>
+        </Snackbar>
 
         {/* Forms */}
         <Box
