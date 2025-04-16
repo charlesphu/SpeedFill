@@ -46,8 +46,8 @@ export async function uploadEntry(url, jobTitle, company, date, time, status) {
         url: url,
         jobTitle: jobTitle,
         company: company,
-        // date: null,
-        // time: null,
+        date: date,
+        time: time,
         status: status,
       },
     ])
